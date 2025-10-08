@@ -27,7 +27,7 @@
                                     <input type="hidden" id="id" name="id">
                                     <label class="form-control-label">Número Processos:</label>
                                     <input type="text" class="form-control" name="numero_processo"
-                                        data-mask="9999999-99.9999.9.99.9999" required id="numero-processo" />
+                                        data-mask="9999999-99.9999.9.99.9999" id="numero-processo" />
                                 </div>
 
                                 <div class="col-lg-2 mt-2">
@@ -41,7 +41,7 @@
                                 </div>
 
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Reclamante:</label>
+                                    <label class="form-control-label" id="reclamante_div">Reclamante:</label>
                                     <input type="text" class="form-control" name="reclamante" id="reclamante" />
                                 </div>
 
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Reclamado:</label>
+                                    <label class="form-control-label" id="reclamada_div">Reclamado:</label>
                                     <input type="text" class="form-control" name="reclamada" id="reclamada" />
                                 </div>
 
@@ -63,35 +63,36 @@
                                 </div>
 
                                 <div class="col-lg-4 mt-2">
-                                    <label class="form-control-label">Carga:</label>
+                                    <label class="form-control-label" id="carga_div">Carga:</label>
                                     <input type="date" class="form-control" name="carga" id="carga" />
                                 </div>
 
                                 <div class="col-lg-4 mt-2">
-                                    <label class="form-control-label">Prazo:</label>
+                                    <label class="form-control-label" id="prazo_div">Prazo:</label>
                                     <input type="date" class="form-control" name="prazo" id="prazo" />
                                 </div>
 
                                 <div class="col-lg-4 mt-2">
-                                    <label class="form-control-label">Entrega Laudo Judicial:</label>
+                                    <label class="form-control-label" id="laudo-judicial_div">Entrega Laudo
+                                        Judicial:</label>
                                     <input type="date" class="form-control" name="laudo_judicial" id="laudo-judicial" />
                                 </div>
 
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Calculista:</label>
+                                    <label class="form-control-label" id="equipe_div">Calculista:</label>
                                     <select class="form-control" name="equipe_id" id="equipe"></select>
                                 </div>
 
                                 <div class="col-lg-3 mt-2">
                                     <label class="form-control-label">Honorário:</label>
-                                    <input type="text" id="honorario" class="form-control" name='honorario' placeholder="0,00"
-                                        oninput="mascaraMoeda(this)">
+                                    <input type="text" id="honorario" class="form-control" name='honorario'
+                                        placeholder="0,00" oninput="mascaraMoeda(this)">
                                 </div>
 
                                 <div class="col-lg-3 mt-2">
                                     <label class="form-control-label">Calculo Erro:</label>
-                                    <input type="text" id="calculo-conforme-erro" name="calculo_conforme_erro" class="form-control" placeholder="0,00"
-                                        readonly>
+                                    <input type="text" id="calculo-conforme-erro" name="calculo_conforme_erro"
+                                        class="form-control" placeholder="0,00" readonly>
                                 </div>
 
                                 <div class="col-lg-4 mt-2">
@@ -115,11 +116,6 @@
                                     <textarea class="form-control" name="observacoes" id="observacoes"></textarea>
 
                                 </div>
-                                <div class="col-lg-12 mt-2" id="inputs-hidden">
-
-
-                                </div>
-
                             </div>
                             <div class="form-group row pl-4 pb-4 mt-4">
                                 <div class="col">
@@ -166,13 +162,16 @@
                             <table class="table table-bordered table-vcenter">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="4" style="background-color:#E6E6FA;">
+                                        <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
                                             Esclarecimentos</th>
                                     </tr>
                                     <tr>
+                                        <th></th>
                                         <th style="width:30%;">Carga</th>
                                         <th class="text-center" style="width:30%;">Entrega Judicial</th>
-                                        <th style="width:40%;">Advogado</th>
+                                        <th style="width:30%;">Prazo</th>
+                                        <th></th>
+
                                     </tr>
                                 </thead>
                                 <tbody id="control-esclarecimentos"></tbody>
@@ -180,13 +179,17 @@
                             <table class="table table-bordered table-vcenter">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="4" style="background-color:#E6E6FA; ">
+                                        <th class="text-center" colspan="6" style="background-color:#E6E6FA; ">
                                             Pagamentos</th>
                                     </tr>
                                     <tr>
+                                        <th style="width:5%;"></th>
                                         <th style="width:20%;">Valor R$</th>
-                                        <th class="text-center" style="width:20%;">Data</th>
-                                        <th style="width:60%;">Observação</th>
+                                        <th class="text-center" style="width:10%;">Data</th>
+                                        <th class="text-center" style="width:20%;">Recibo</th>
+                                        <th style="width:40%;">Observação</th>
+                                        <th style="width:5%;"></th>
+
                                     </tr>
                                 </thead>
                                 <tbody id="control-pagamentos"></tbody>
@@ -194,14 +197,16 @@
                             <table class="table table-bordered table-vcenter">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" colspan="4" style="background-color:#E6E6FA;">
+                                        <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
                                             Erros de Execução</th>
                                     </tr>
                                     <tr>
-                                        <th style="width:25%;">Tipo</th>
-                                        <th class="text-center" style="width:25%;">Data</th>
+                                        <th style="width:5%;"></th>
+                                        <th class="text-center" style="width:40%;">Tipo Erro</th>
+                                        <th style="width:25%;">Data</th>
                                         <th style="width:25%;">Custo de Apoio</th>
-                                        <th style="width:25%;">valor do Apoio</th>
+                                        <th style="width:5%;"></th>
+
                                     </tr>
                                 </thead>
                                 <tbody id="control-erro"></tbody>
@@ -212,23 +217,34 @@
                         <!-- Esclarecimentos -->
                         <div class="tab-pane " id="btabs-alt-static-esclarecimento" role="tabpanel">
                             <p class="p-10 bg-info text-white">Esclarecimento</p>
-                            <form id="form-esclareciemntos">
+
+                            <form id="form-esclarecimento">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-esclarecimento" />
                                 <div class="row">
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Carga:</label>
-                                        <input type="date" class="form-control" id="carga-esclarecimento" />
+                                        <input type="date" class="form-control" name="carga_esclarecimento"
+                                            id="carga-esclarecimento" />
                                     </div>
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Entrega Judicial:</label>
-                                        <input type="date" class="form-control" id="entrega-judicial-esclarecimento" />
+                                        <input type="date" class="form-control" name="entrega_judicial_esclarecimento"
+                                            id="entrega-judicial-esclarecimento" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Prazo:</label>
+                                        <input type="date" class="form-control" name="prazo_esclarecimento"
+                                            id="prazo-esclarecimento" />
                                     </div>
                                     <div class="col-lg-12 mt-2">
-                                        <label class="form-control-label">Advogado:</label>
-                                        <input type="text" class="form-control" id="advogado" />
+                                        <label class="form-control-label">Observação:</label>
+                                        <input type="text" class="form-control" name="observacao_esclarecimento"
+                                            id="observacao-esclarecimento" />
                                     </div>
                                     <div class="col-lg-3 mt-2">
                                         <button type="submit" class="btn btn-alt-success" id="salvar-esclarecimento">
-                                            <i class="fa fa-check"></i> Incluir
+                                            <i class="fa fa-check"></i> Salvar
                                         </button>
                                     </div>
                                 </div>
@@ -238,25 +254,31 @@
                         <!-- Pagamentos -->
                         <div class="tab-pane" id="btabs-alt-static-pagamento" role="tabpanel">
                             <p class="p-10 bg-info text-white">Pagamento</p>
-                            <form id="form-pagamentos">
-
+                            <form id="form-pagamentos" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-pagamento" />
                                 <div class="row">
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Valor:</label>
-                                        <input type="text" class="form-control" id="valor-pagamento"
+                                        <input type="text" class="form-control" name="valor_pagamento" id="valor-pagamento"
                                             oninput="mascaraMoeda(this)" />
                                     </div>
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Data de Pagamento:</label>
-                                        <input type="date" class="form-control" id="data-pagamento" />
+                                        <input type="date" class="form-control" name="data_pagamento" id="data-pagamento" />
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <label class="form-control-label">Recibo:</label>
+                                        <input type="file" class="form-control" id="recibo" name="recibo[]" multiple>
                                     </div>
                                     <div class="col-lg-12 mt-2">
                                         <label class="form-control-label">Observações:</label>
-                                        <textarea class="form-control" id="observacao-pagamento"></textarea>
+                                        <textarea class="form-control" name="observacao_pagamento"
+                                            id="observacao-pagamento"></textarea>
                                     </div>
                                     <div class="col-lg-3 mt-2">
                                         <button type="submit" class="btn btn-alt-success" id="salvar-pagamento">
-                                            <i class="fa fa-check"></i> Incluir
+                                            <i class="fa fa-check"></i> Salvar
                                         </button>
                                     </div>
                                 </div>
@@ -266,26 +288,29 @@
                         <!-- Erros de Execução -->
                         <div class="tab-pane" id="btabs-alt-static-fail" role="tabpanel">
                             <p class="p-10 bg-info text-white">Erros de Execução</p>
-                            <form id="form-erros">
+                            <form id="form-erro">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-erro" />
+
                                 <div class="row">
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Tipo Erro:</label>
-                                        <input type="text" class="form-control" id="tipo-erro" />
+                                        <input type="text" class="form-control" name="tipo_erro" id="tipo-erro" />
                                     </div>
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Data:</label>
-                                        <input type="date" class="form-control" id="data-erro" />
+                                        <input type="date" class="form-control" name="data_erro" id="data-erro" />
                                     </div>
                                     <div class="col-lg-6 mt-2">
                                         <label class="form-control-label">Gerou Custo de Apoio:</label>
-                                        <select class="form-control" id="custo-apoio">
+                                        <select class="form-control" name="custo_apoio" id="custo-apoio">
                                             <option value="0">Não</option>
                                             <option value="1">Sim</option>
                                         </select>
                                     </div>
                                     <div class="col-lg-12 mt-2">
                                         <label class="form-control-label">Observação:</label>
-                                        <input type="text" class="form-control" id="observacao-erro" />
+                                        <input type="text" class="form-control" name="observacao" id="observacao-erro" />
                                     </div>
                                     <div class="col-lg-3 mt-2">
                                         <button type="submit" class="btn btn-alt-success" id="salvar-erro">
@@ -302,65 +327,8 @@
 
         <hr>
 
-        <!-- Tabelas dinâmicas -->
-        <div class="col-lg-12 mt-2" id="esclarecimentos-table" style="display:none">
-            <table class="table table-hover table-vcenter">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="5" style="background-color:#FFA500; color:#fff;">Esclarecimentos
-                        </th>
-                    </tr>
-                    <tr>
-                        <th class="text-center" style="width:50px;">#</th>
-                        <th class="text-center" style="width:10%;">Carga</th>
-                        <th class="text-center" style="width:15%;">Entrega Judicial</th>
-                        <th class="text-center" style="width:180px;">Advogado</th>
-                        <th class="text-center" style="width:100px;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="body-esclarecimentos"></tbody>
-            </table>
-        </div>
-
-        <div class="col-lg-12 mt-2" id="pagamentos-table" style="display:none">
-            <table class="table table-hover table-vcenter">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="5" style="background-color:#3CB371; color:#fff;">Pagamentos</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center" style="width:50px;">#</th>
-                        <th style="width:10%;">Valor R$</th>
-                        <th class="text-center" style="width:15%;">Data</th>
-                        <th style="width:180px;">Observação</th>
-                        <th class="text-center" style="width:100px;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="body-pagamentos"></tbody>
-            </table>
-        </div>
-
-        <div class="col-lg-12 mt-2" id="erros-table" style="display:none">
-            <table class="table table-hover table-vcenter">
-                <thead>
-                    <tr>
-                        <th class="text-center" colspan="6" style="background-color:#B22222; color:#fff;">Erros de Execução
-                        </th>
-                    </tr>
-                    <tr>
-                        <th class="text-center" style="width:50px;">#</th>
-                        <th style="width:10%;">Tipo</th>
-                        <th class="text-center" style="width:15%;">Data</th>
-                        <th class="text-center" style="width:50px;">Custo Apoio</th>
-                        <th style="width:100px;">Observação</th>
-                        <th class="text-center" style="width:100px;">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="body-error"></tbody>
-            </table>
-        </div>
-
         <hr>
+        <div id="preview" style="margin-top:20px;"></div>
 
         <!-- Botões -->
 
@@ -368,315 +336,647 @@
     </div>
     </div>
 
+    <!-- Message Modal -->
+    <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="modal-message"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-popout modal-xl" role="document"> <!-- modal maior para PDFs -->
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title" id="modal-title"></h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="block-content text-center" id="modal-body" style="max-height: 80vh; overflow:auto;">
+                        <!-- Conteúdo dinâmico entra aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Message Modal -->
+
 @endsection
 @section('js_after')
     <!--form validation Custom js-->
-    <script src="{{asset('assets/js/codebase.app.min.js')}}"></script>
     <script src="{{asset('assets/js/codebase.core.min.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
     <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script>
-
+        localStorage.setItem("calculo-conforme-erro", 0)
+        localStorage.setItem("valor_pago", 0)
+        localStorage.setItem("id", null)
+        localStorage.setItem("tecnico", null)
         $(document).ready(function () {
-
+            var url = window.location.href
+            var parse = url.split('/')
+            var id = parse.pop() || parse.pop()
             var esc = 0;
             var pag = 0;
             var err = 0;
 
-            $("#salvar-esclarecimento").on("click", function (e) {
-                e.preventDefault();
-                esc++;
-                var escInputs = ''
-                var escTable = ''
 
-                if ($('#carga-esclarecimento').val() != '') {
-                    $('#esclarecimentos-table').show();
-                    escTable = `
-                                                                    <tr id="esclarecimento_${esc}">
-                                                                        <th class="text-center" scope="row">${esc}</th>
-                                                                        <td class="text-center">${dateFormat($('#carga-esclarecimento').val())}</td>
-                                                                        <td class="text-center">${dateFormat($('#entrega-judicial-esclarecimento').val())}</td>
-                                                                        <td class="text-center">${$('#advogado').val()}</td>
-                                                                        <td class="text-center">
-                                                                            <div class="btn-group">
-                                                                                <button type="button" class="btn btn-sm btn-secondary" data-toggle="tooltip"
-                                                                                    title="Delete" onclick="removerEsclarecimento(${esc})">
-                                                                                    <i class="fa fa-trash text-danger"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                        </td>
+            /** Submit do formulário de pagamento */
+            $("#form-pagamentos").on("submit", function (e) {
+                e.preventDefault(); // evita o envio normal do form
+                let pagamento = parseFloat(parseValorBR($('#valor-pagamento').val()))
+                let valorPago = parseFloat(localStorage.getItem("valor_pago"))
+                let calculoConformeErro = parseFloat(localStorage.getItem("calculo-conforme-erro"))
+                let acumulado = 0;
 
-                                                                    </tr>
-                                                                `;
-                    escInputs = `
-                                                                        <div id="input-esclarecimentos_${esc}">
-                                                                        <input type="hidden" name="carga_esclarecimento_${esc}" value="${$('#carga-esclarecimento').val()}">
-                                                                        <input type="hidden" name="entrega_judicial_esclarecimento_${esc}" value="${$('#entrega-judicial-esclarecimento').val()}">
-                                                                        <input type="hidden" name="advogado_${esc}" value="${$('#advogado').val()}">
-                                                                        </div>`
-
-
-                    $('#body-esclarecimentos').append(escTable)
-                    $('#inputs-hidden').append(escInputs)
-                    $("#form-esclareciemntos")[0].reset();
+                if ($('#id-pagamento').val() == "") {
+                    acumulado = pagamento + valorPago
+                } else {
+                    acumulado = pagamento
                 }
-            });
-
-            window.removerEsclarecimento = function (id) {
-                $('#esclarecimento_' + id).remove();
-                $('#input-esclarecimentos_' + id).remove();
-                esc--
-                if (esc == 0) {
-                    $('#esclarecimentos-table').hide();
-                }
-            };
-
-
-            $("#salvar-pagamento").on('click', function (p) {
-                p.preventDefault();
-                var pagTable = ''
-                var pagInputs = ''
-
-                if ($('#valor-pagamento').val() != "") {
-                    let pagamento = parseFloat(parseValorBR($('#valor-pagamento').val()))
-                    let valorPago = parseFloat(localStorage.getItem("valor_pago"))
-                    let acumulado = pagamento + valorPago
-                    let honorario = parseFloat(localStorage.getItem("honorario"))
-                    console.log(pagamento, valorPago, acumulado, honorario)
-                    if (acumulado > honorario) {
-                        Swal.fire({
-                            icon: "error",
-                            title: 'OPS!',
-                            customClass: {
-                                confirmButton: "btn btn-danger"
-                            },
-                            text: 'Valor de pagamento excede ao valor do honorário!'.toUpperCase(),
-                            confirmButtonText: "OK"
-                        })
-                        return; // <-- interrompe a função aqui
-                    } else if (acumulado == honorario) {
-                        $('#liquidado').val(1)
-                        $('#liquidado').trigger('change')
-                    }
-
-
-                    $('#pagamentos-table').show();
-                    pag++;
-                    pagTable = `
-                                                                    <tr id="pagamento_${pag}">
-                                                                        <td class="text-center" scope="row">${pag}</td>
-                                                                        <td class="text-right">${$('#valor-pagamento').val()}</td>
-                                                                        <td class="text-center">${dateFormat($('#data-pagamento').val())}</td>
-                                                                        <td >${$('#observacao-pagamento').val()}</td>
-                                                                        <td class="text-center">
-                                                                            <div class="btn-group">
-                                                                                <button type="button" class="btn btn-sm btn-secondary" data-toggle="tooltip"
-                                                                                    title="Delete" onclick="removerPagamento(${pag})">
-                                                                                    <i class="fa fa-trash text-danger"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                        </td>
-
-                                                                    </tr>
-                                                                `;
-                    pagInputs = `<div id="input-pagamentos_${pag}">
-                                                                <input type="hidden" name="valor_pagamento_${pag}" value="${$('#valor-pagamento').val()}">
-                                                                <input type="hidden" name="data_pagamento_${pag}" value="${$('#data-pagamento').val()}">
-                                                                <input type="hidden" name="observacao_pagamento_${pag}" value="${$('#observacao-pagamento').val()}">
-                                                                </div>`
-                    $('#body-pagamentos').append(pagTable);
-                    $('#inputs-hidden').append(pagInputs)
-                    $("#form-pagamentos")[0].reset();
-                }
-            });
-
-            window.removerPagamento = function (id) {
-                $('#pagamento_' + id).remove();
-                $('#input-pagamentos_' + id).remove();
-                pag--
-                if (pag == 0) {
-                    $('#pagamentos-table').hide();
-                }
-            };
-
-
-            $("#salvar-erro").on('click', function (r) {
-                r.preventDefault();
-                var errTable = ''
-                var errInputs = ''
-                if ($('#data-erro').val() != "") {
-                    $('#erros-table').show();
-                    err++;
-
-                    errTable = `
-                                                                    <tr id="erro_${err}">
-                                                                        <td class="text-center" scope="row">${err}</td>
-                                                                        <td class="text-center">${$('#tipo-erro').val()}</td>
-                                                                        <td class="text-center">${dateFormat($('#data-erro').val())}</td>
-                                                                        <td class="d-none d-sm-table-cell text-center">
-                                                                            <span class="${$('#erro-apoio').val() == 0 ? 'badge badge-success' : 'badge badge-danger'}">
-                                                                                ${$('#erro-apoio').val() == 0 ? "Não" : "Sim"}
-                                                                            </span>
-                                                                        </td>
-                                                                        <td class="d-none d-sm-table-cell">${$('#observacao-erro').val()}</td>
-                                                                        <td class="text-center">
-                                                                            <div class="btn-group">
-                                                                                <button type="button" class="btn btn-sm btn-secondary" data-toggle="tooltip"
-                                                                                    title="Delete" onclick="removerErro(${err})">
-                                                                                    <i class="fa fa-trash text-danger"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                        </td>
-
-                                                                    </tr>
-                                                                `;
-                    errInputs = `
-                                                    <div id='input-erros_${err}}'>
-                                                        <input type="hidden" name="tipo_erro_${err}" value="${$('#tipo-erro').val()}">
-                                                        <input type="hidden" name="data_erro_${err}" value="${$('#data-erro').val()}">
-                                                        <input type="hidden" name="custo_apoio_${err}" value="${$('#custo-apoio').val()}">
-                                                        <input type="hidden" name="observacao_erro_${err}" value="${$('#observacao-erro').val()}">
-                                                    </div>
-                                                    `
-                    $('#body-error').append(errTable);
-                    $('#inputs-hidden').append(errInputs)
-                    $("#form-erros")[0].reset();
-                }
-            });
-
-            window.removerErro = function (id) {
-                $('#erro_' + id).remove();
-                $('#input-erros_' + id).remove();
-                pag--
-                if (pag == 0) {
-                    $('#pagamentos-table').hide();
-                }
-            };
-
-
-            // Pega a URL atual
-            var url = window.location.href
-            // Divide a URL pelos '/' e pega o último elemento
-            var parse = url.split('/')
-            var id = parse.pop() || parse.pop() // Remove elementos vazios no final, se houver
-            $.ajax({
-                url: `/processo/getById/${id}` + location.search,
-                type: 'GET',
-                success: function (response) {
-                    var ctrlEsc = ''
-                    var ctrlPag = ''
-                    var ctrlErr = ''
-
-                    response.forEach(function (processo) {
-                        $("#id").val(processo.id)
-                        $("#numero-processo").val(processo.numero_processo)
-                        $("#vara").val(processo.vara)
-                        $("#mes-ano").val(processo.mes_ano)
-                        $("#reclamante").val(processo.reclamante)
-                        $("#doc-reclamante").val(processo.doc_reclamante)
-                        $("#reclamada").val(processo.reclamada)
-                        $("#doc-reclamada").val(processo.doc_reclamada)
-                        $("#carga").val(processo.carga)
-                        $("#prazo").val(processo.prazo)
-                        $("#status").val(processo.status)
-                        $('#liquidado').trigger('change')
-                        $("#laudo-judicial").val(processo.laudo_judicial)
-                        $("#observacoes").val(processo.observacoes)
-                        $("#honorario").val(processo.honorario.replaceAll('.',','))
-                        $("#calculo-conforme-erro").val(processo.calculo_conforme_erro)
-                        $("#liquidado").val(processo.liquidado)
-                        $('#liquidado').trigger('change')
-                        localStorage.setItem("honorario", processo.honorario);
-                        getEquipe(processo.equipe_id)
-                        if (processo && processo.esclarecimentos && processo.esclarecimentos.length > 0) {
-                            processo.esclarecimentos.forEach(function (esclarecimento) {
-                                ctrlEsc = `
-                                            <tr>
-                                                <td class="text-center">${dateFormat(esclarecimento.carga)}</td>
-                                                <td class="text-center">${dateFormat(esclarecimento.entrega_judicial)}</td>
-                                                <td class="text-center">${esclarecimento.advogado}</td>
-                                            </tr>`;
-                                $('#control-esclarecimentos').append(ctrlEsc);
-                            });
-                        } else {
-                            ctrlEsc = `<tr>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                    </tr>`
-                            $('#control-esclareciemntos').append(ctrlEsc)
-                        }
-                        if (processo && processo.pagamentos && processo.pagamentos.length > 0) {
-                            processo.honorario
-                            var valorPago = 0
-                            processo.pagamentos.forEach(function (pagamento) {
-                                let valor = parseFloat(pagamento.valor) || 0;
-                                valorPago += valor;
-                                ctrlPag = `
-                                            <tr>
-                                                <td class="text-center">${pagamento.valor}</td>
-                                                <td class="text-center">${dateFormat(pagamento.data)}</td>
-                                                <td >${pagamento.observacao == null ? '-' : pagamento.observacao    }</td>
-                                            </tr>`;
-                                $('#control-pagamentos').append(ctrlPag);
-                            });
-                            localStorage.setItem("valor_pago", valorPago);
-                        } else {
-                            ctrlPag = `<tr>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                    </tr>`
-                            $('#control-pagamentos').append(ctrlPag)
-                        }
-
-
-                        if (processo && processo.erros_execucao && processo.erros_execucao.length > 0) {
-                            processo.erros_execucao.forEach(function (erro_execucao) {
-                                let ctrlErr = `
-                                            <tr>
-                                                <td class="text-center">${erro_execucao.tipo_erro}</td>
-                                                <td class="text-center">${dateFormat(erro_execucao.data_erro)}</td>
-                                                <td class="d-none d-sm-table-cell text-center">
-                                                                            <span class="$${erro_execucao.custo_apoio} == 0 ? 'badge badge-success' : 'badge badge-danger'}">
-                                                                                ${erro_execucao.custo_apoio == 0 ? "Não" : "Sim"}
-                                                                            </span>
-                                                </td>
-                                                <td class="text-center">-</td>
-                                            </tr>`;
-                                $('#control-erro').append(ctrlErr);
-                            });
-                        } else {
-                            ctrlErr = `<tr>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                        <td class="text-center">-</td>
-                                                    </tr>`
-                            $('#control-erro').append(ctrlErr)
-                        }
-
-
-                    })
-
-                },
-                error: function (error) {
-                    var errorMessage = 'Erro desconhecido'
-                    if (error.responseJSON && error.responseJSON.message) {
-                        errorMessage = error.responseJSON.message
-                    }
+                let saldo = calculoConformeErro - valorPago
+                if (acumulado > calculoConformeErro) {
                     Swal.fire({
                         icon: "error",
                         title: 'OPS!',
                         customClass: {
                             confirmButton: "btn btn-danger"
                         },
-                        text: errorMessage.toLocaleUpperCase(),
+                        text: `Valor de pagamento excede ao valor ao saldo devedor  de R$ ${parseFloat(saldo).toFixed(2).replaceAll('.', ',')}`.toUpperCase(),
                         confirmButtonText: "OK"
                     })
+                    return; // <-- interrompe a função aqui
+                } else if (acumulado == honorario) {
+                    $('#liquidado').val(1)
+                    $('#liquidado').trigger('change')
                 }
+                let form = $(this)[0]; // pega o form "puro"
+                let formData = new FormData(form);
+                formData.append('processo_id', localStorage.getItem('id'))
+                formData.append('tecnico', localStorage.getItem('tecnico'))
+
+                $.ajax({
+                    url: "/processo/pagamento/create",
+                    type: "POST",
+                    data: formData,
+                    processData: false, // impede o jQuery de converter em querystring
+                    contentType: false, // impede jQuery de setar content-type errado
+                    dataType: "json",
+                    success: function (response) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Sucesso!",
+                            text: response.message ?? "Pagamento incluso com sucesso!",
+                            showDenyButton: true,
+                            confirmButtonText: "Continua no processo",
+                            denyButtonText: "Retornar",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+                            } else if (result.isDenied) {
+                                window.location.href = "/processos";
+                            }
+                        });
+                    },
+                    error: function (xhr) {
+                        let msg = "Ocorreu um erro ao processar a requisição.";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            icon: "error",
+                            title: "Erro!",
+                            text: msg,
+                            confirmButtonText: "Fechar"
+                        });
+                    }
+                })
+            })
+
+            /** Fim de submissão do pagamento  */
+            //**
+            // Exibição do arquivo selecionado
+            //  */
+            $(document).on('click', '.open-modal', function (e) {
+                e.preventDefault();
+
+                var fileUrl = $(this).data('url');
+                var nomeArquivo = $(this).data('nome');
+                var ext = fileUrl.split('.').pop().toLowerCase();
+                var content = '';
+
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(ext)) {
+                    content = `<img src="${fileUrl}" alt="${nomeArquivo}" style="max-width:100%; border:1px solid #ccc; padding:5px;">`;
+                } else if (ext === 'pdf') {
+                    content = `<iframe src="${fileUrl}" width="100%" height="600px" style="border:1px solid #ccc;"></iframe>`;
+                } else {
+                    content = `<p>Visualização não suportada. <a href="${fileUrl}" target="_blank">Baixar arquivo</a></p>`;
+                }
+
+                // Atualiza modal
+                $('#modal-title').text(nomeArquivo);
+                $('#btn-download').attr('href', fileUrl);
+                $('#modal-body').html(content);
+
+                // Abre modal
+                $('#modal-message').modal('show');
             });
+
+
+            (function () {
+                // Carrega jQuery dinamicamente caso não exista
+                function ensureJQuery(callback) {
+                    if (typeof window.jQuery !== 'undefined') {
+                        return callback();
+                    }
+                    var script = document.createElement('script');
+                    script.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
+                    script.crossOrigin = 'anonymous';
+                    script.onload = function () {
+                        callback();
+                    };
+                    script.onerror = function () {
+                        console.error('Falha ao carregar jQuery. Algumas funcionalidades podem não funcionar.');
+                        callback();
+                    };
+                    document.head.appendChild(script);
+                }
+
+                ensureJQuery(function () {
+                    var $ = window.jQuery; // pode ser undefined se falhar o load; cuidaremos disso abaixo
+
+                    // Utilitário para ativar a aba de forma compatível
+                    function activateTab(selector) {
+                        try {
+                            if ($ && $.fn && $.fn.tab) {
+                                $(selector).tab('show');
+                                return;
+                            }
+                        } catch (e) {
+                            // segue para fallback
+                        }
+                        // Fallback manual: adiciona classe active ao nav-link e exibe o tab-pane correspondente
+                        try {
+                            var link = document.querySelector(selector);
+                            if (!link) return;
+                            // remove active de todos os nav-links do mesmo grupo
+                            var nav = link.closest('.nav');
+                            if (nav) {
+                                nav.querySelectorAll('.nav-link').forEach(function (n) { n.classList.remove('active'); });
+                            }
+                            link.classList.add('active');
+                            // mostra tab-pane
+                            var href = link.getAttribute('href');
+                            if (href && href.startsWith('#')) {
+                                var panes = document.querySelectorAll('.tab-pane');
+                                panes.forEach(function (p) { p.classList.remove('active'); });
+                                var pane = document.querySelector(href);
+                                if (pane) pane.classList.add('active');
+                            }
+                        } catch (e) {
+                            console.error('activateTab fallback falhou', e);
+                        }
+                    }
+
+                    // Inicia após DOM pronto (jQuery if available, else DOMContentLoaded)
+                    function onReady(fn) {
+                        if ($) {
+                            $(fn);
+                        } else {
+                            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                                setTimeout(fn, 0);
+                            } else {
+                                document.addEventListener('DOMContentLoaded', fn);
+                            }
+                        }
+                    }
+
+                    onReady(function () {
+                        try {
+                            // pega o id do processo - tenta várias estratégias
+                            var idVar = (typeof id !== 'undefined' && id) ? id : null;
+                            if (!idVar) {
+                                // tenta pegar de um input escondido #id
+                                var elId = document.querySelector('#id');
+                                if (elId) idVar = elId.value || elId.getAttribute('value');
+                            }
+                            if (!idVar) {
+                                // tenta extrair da URL (último segmento numérico)
+                                var m = location.pathname.match(/(\d+)(?!.*\d)/);
+                                if (m) idVar = m[1];
+                            }
+
+                            if (!idVar) {
+                                console.warn('ID do processo não encontrado. Abortando carregamento de dados do processo.');
+                                return;
+                            }
+
+                            // Faz a requisição para buscar o processo
+                            (function fetchProcesso() {
+                                var url = '/processo/getById/' + encodeURIComponent(idVar) + location.search;
+                                // Se jQuery estiver disponível, use $.ajax, senão fallback para fetch
+                                if ($) {
+                                    $.ajax({
+                                        url: url,
+                                        type: 'GET',
+                                        success: handleResponse,
+                                        error: function (xhr) {
+                                            var msg = 'Ocorreu um erro ao processar a requisição.';
+                                            if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                                            if (window.Swal) {
+                                                window.Swal.fire({ icon: 'error', title: 'Erro!', text: msg, confirmButtonText: 'Fechar' });
+                                            } else {
+                                                alert(msg);
+                                            }
+                                            console.error(xhr);
+                                        }
+                                    });
+                                } else if (window.fetch) {
+                                    fetch(url, { method: 'GET', credentials: 'same-origin' })
+                                        .then(function (res) { if (!res.ok) throw res; return res.json(); })
+                                        .then(handleResponse)
+                                        .catch(function (err) { console.error(err); alert('Erro ao carregar processo (fetch). Veja console).'); });
+                                } else {
+                                    console.error('Nenhuma forma de fazer requisição (nem jQuery nem fetch disponíveis).');
+                                }
+                            })();
+
+                            function handleResponse(response) {
+                                try {
+                                    var processos = Array.isArray(response) ? response : [response];
+                                    // define o processo global como o primeiro registro
+                                    window.processo = processos[0] || null;
+
+                                    // limpa áreas antes de popular
+                                    if ($) {
+                                        $('#control-esclarecimentos').empty();
+                                        $('#control-pagamentos').empty();
+                                        $('#control-erro').empty();
+                                    } else {
+                                        var ce = document.getElementById('control-esclarecimentos'); if (ce) ce.innerHTML = '';
+                                        var cp = document.getElementById('control-pagamentos'); if (cp) cp.innerHTML = '';
+                                        var ce2 = document.getElementById('control-erro'); if (ce2) ce2.innerHTML = '';
+                                    }
+
+                                    processos.forEach(function (processo) {
+                                        // preencher campos do formulário principal (mantive fiel ao original)
+                                        function setVal(selector, value) {
+                                            if ($) { $(selector).val(value); }
+                                            else {
+                                                var el = document.querySelector(selector);
+                                                if (el) el.value = value;
+                                            }
+                                        }
+
+                                        setVal('#id', processo.id);
+                                        setVal('#numero-processo', processo.numero_processo);
+                                        setVal('#vara', processo.vara);
+                                        setVal('#mes-ano', processo.mes_ano);
+                                        setVal('#reclamante', processo.reclamante);
+                                        setVal('#doc-reclamante', processo.doc_reclamante);
+                                        setVal('#reclamada', processo.reclamada);
+                                        setVal('#doc-reclamada', processo.doc_reclamada);
+                                        setVal('#carga', processo.carga);
+                                        setVal('#prazo', processo.prazo);
+                                        setVal('#status', processo.status);
+                                        // dispara changes se existir (usa jQuery se disponível)
+                                        try { if ($) { $('#liquidado').trigger('change'); } else { var liq = document.querySelector('#liquidado'); if (liq) liq.dispatchEvent(new Event('change')); } } catch (e) { }
+                                        setVal('#laudo-judicial', processo.laudo_judicial);
+                                        setVal('#observacoes', processo.observacoes);
+                                        try { setVal('#honorario', String(processo.honorario || '').replaceAll('.', ',')); } catch (e) { setVal('#honorario', processo.honorario || ''); }
+                                        setVal('#calculo-conforme-erro', processo.calculo_conforme_erro);
+                                        setVal('#liquidado', processo.liquidado);
+                                        try { if ($) { $('#liquidado').trigger('change'); } } catch (e) { }
+                                        try { localStorage.setItem('calculo-conforme-erro', processo.calculo_conforme_erro); localStorage.setItem('id', processo.id); } catch (e) { }
+
+                                        if (typeof getEquipe === 'function') {
+                                            try { getEquipe(processo.equipe_id); } catch (e) { console.warn('getEquipe falhou', e); }
+                                        }
+
+                                        // Esclarecimentos
+                                        if (processo && processo.esclarecimentos && processo.esclarecimentos.length > 0) {
+                                            processo.esclarecimentos.forEach(function (esclarecimento) {
+                                                var row = '<tr>' +
+                                                    '<td class="text-center"><a href="#btabs-alt-static-esclarecimento" class="btn btn-link text-cente nav-link" type="button" onClick="showEsclarecimento(' + esclarecimento.id + ')">' +
+                                                    '<i class="fa fa-folder-open-o"></i>' +
+                                                    '</a></td>' +
+                                                    '<td class="text-center">' + (typeof dateFormat === 'function' ? dateFormat(esclarecimento.carga) : (esclarecimento.carga || '')) + '</td>' +
+                                                    '<td class="text-center">' + (typeof dateFormat === 'function' ? dateFormat(esclarecimento.entrega_judicial) : (esclarecimento.entrega_judicial || '')) + '</td>' +
+                                                    '<td>' + (typeof dateFormat === 'function' ? dateFormat(esclarecimento.prazo) : (esclarecimento.prazo || '')) + '</td>' +
+                                                    `<td class="text-center"><i class="fa fa-trash text-danger" id="deleteEsclarecimento" data-esclarecimento-id = "${esclarecimento.id}" data-esclarecimento-carga = "${dateFormat(esclarecimento.carga)}" data-toggle="tooltip" data-placement="top" title="Excluir">
+                                                                                                            </i></td>`+
+                                                    '</tr>';
+                                                if ($) $('#control-esclarecimentos').append(row); else { var el = document.getElementById('control-esclarecimentos'); if (el) el.insertAdjacentHTML('beforeend', row); }
+                                            });
+                                        } else {
+                                            var emptyRow = '<tr><td class="text-center">-</td><td class="text-center">-</td><td class="text-center">-</td></tr>';
+                                            if ($) $('#control-esclarecimentos').append(emptyRow); else { var el = document.getElementById('control-esclarecimentos'); if (el) el.insertAdjacentHTML('beforeend', emptyRow); }
+                                        }
+
+                                        // Pagamentos
+                                        if (processo && processo.pagamentos && processo.pagamentos.length > 0) {
+                                            var valorPago = 0;
+                                            processo.pagamentos.forEach(function (pagamento) {
+                                                var valorNum = parseFloat(pagamento.valor) || 0;
+                                                valorPago += valorNum;
+
+                                                var recibosHtml = '-';
+                                                if (pagamento.recibos && pagamento.recibos.length > 0) {
+                                                    recibosHtml = pagamento.recibos.map(function (recibo) {
+                                                        return '<a href="#" class="open-modal" data-url="' + (recibo.blob || '') + '" data-nome="' + (recibo.nome_arquivo || '') + '">' + (recibo.nome_arquivo || '') + '</a><br>';
+                                                    }).join('');
+                                                }
+
+                                                var row = '<tr>' +
+                                                    '<td class="text-center"><a href="#btabs-alt-static-pagamento" class="btn btn-link text-cente nav-link" type="button" onClick="showPagamento(' + pagamento.id + ')">' +
+                                                    '<i class="fa fa-folder-open-o"></i>' +
+                                                    '</a></td>' +
+                                                    '<td class="text-center">' + (pagamento.valor || '-') + '</td>' +
+                                                    '<td class="text-center">' + (typeof dateFormat === 'function' ? dateFormat(pagamento.data) : (pagamento.data || '-')) + '</td>' +
+                                                    '<td class="text-center">' + recibosHtml + '</td>' +
+                                                    '<td>' + (pagamento.observacao == null ? '-' : pagamento.observacao) + '</td>' +
+                                                    `<td class="text-center"><i class="fa fa-trash text-danger" id="deletePagamento" data-pagamento-id = "${pagamento.id}" data-pagamento-valor = "${pagamento.valor}" data-toggle="tooltip" data-placement="top" title="Excluir">
+                                                                                                            </i></td>`+
+                                                    '</tr>';
+
+                                                if ($) $('#control-pagamentos').append(row); else { var el = document.getElementById('control-pagamentos'); if (el) el.insertAdjacentHTML('beforeend', row); }
+                                            });
+                                            try { localStorage.setItem('valor_pago', valorPago); } catch (e) { }
+                                        } else {
+                                            var emptyPag = '<tr><td class="text-center">-</td><td class="text-center">-</td><td class="text-center">-</td></tr>';
+                                            if ($) $('#control-pagamentos').append(emptyPag); else { var el = document.getElementById('control-pagamentos'); if (el) el.insertAdjacentHTML('beforeend', emptyPag); }
+                                        }
+
+                                        // Erros de execução
+                                        if (processo && processo.erros_execucao && processo.erros_execucao.length > 0) {
+                                            processo.erros_execucao.forEach(function (erro_execucao) {
+                                                var row = '<tr>' +
+                                                    '<td class="text-center"><a href="#btabs-alt-static-fail" class="btn btn-link text-cente nav-link" type="button" onClick="showErroExecucao(' + erro_execucao.id + ')">' +
+                                                    '<i class="fa fa-folder-open-o"></i>' +
+                                                    '</a></td>' +
+                                                    '<td>' + (erro_execucao.tipo_erro || '') + '</td>' +
+                                                    '<td class="text-center">' + (typeof dateFormat === 'function' ? dateFormat(erro_execucao.data_erro) : (erro_execucao.data_erro || '')) + '</td>' +
+                                                    '<td class="text-center">' + ((erro_execucao.custo_apoio == 1) ? 'Sim' : 'Não') + '</td>' +
+                                                    `<td class="text-center"><i class="fa fa-trash text-danger" id="delete-erro" data-erro-execucao-id = "${erro_execucao.id}" data-tipo-erro = "${erro_execucao.tipo_erro}" data-toggle="tooltip" data-placement="top" title="Excluir">
+                                                                                                            </i></td>` +
+                                                    '</tr>';
+                                                if ($) $('#control-erro').append(row); else { var el = document.getElementById('control-erro'); if (el) el.insertAdjacentHTML('beforeend', row); }
+                                            });
+                                        } else {
+                                            var emptyErr = '<tr><td class="text-center">-</td><td class="text-center">-</td><td class="text-center">-</td><td class="text-center">-</td></tr>';
+                                            if ($) $('#control-erro').append(emptyErr); else { var el = document.getElementById('control-erro'); if (el) el.insertAdjacentHTML('beforeend', emptyErr); }
+                                        }
+
+                                    }); // end processos.forEach
+
+                                } catch (e) {
+                                    console.error('Erro ao manipular resposta do processo', e);
+                                }
+                            }
+
+                            // Implementa showEsclarecimento globalmente (acessível por onClick)
+                            window.showEsclarecimento = function (id) {
+
+                                try {
+                                    var proc = window.processo;
+                                    console.log(proc)
+                                    if (!proc || !proc.esclarecimentos) return;
+                                    var esclarecimento = proc.esclarecimentos.find(function (e) { return String(e.id) === String(id); });
+                                    if (!esclarecimento) return;
+                                    if ($) $('#id-esclarecimento').val(id); else { var el = document.querySelector('#id-esclarecimento'); if (el) el.value = id; }
+                                    // data
+                                    function dateToInput(v) {
+                                        if (!v) return '';
+                                        var m = String(v).match(/(\d{4}-\d{2}-\d{2})/);
+                                        if (m) return m[1];
+                                        var d = new Date(v);
+                                        if (!isNaN(d)) {
+                                            var mm = String(d.getMonth() + 1).padStart(2, '0');
+                                            var dd = String(d.getDate()).padStart(2, '0');
+                                            return d.getFullYear() + '-' + mm + '-' + dd;
+                                        }
+                                        return '';
+                                    }
+
+                                    //Carga
+                                    var cargaVal = dateToInput(esclarecimento.carga);
+                                    if ($) $('#carga-esclarecimento').val(cargaVal); else { var el = document.querySelector('#carga-esclarecimento'); if (el) el.value = cargaVal; }
+
+                                    //Entrega Judicial
+                                    var entregaJudicialVal = dateToInput(esclarecimento.entrega_judicial);
+                                    if ($) $('#entrega-judicial-esclarecimento').val(entregaJudicialVal); else { var el = document.querySelector('#entrega-judicial-esclarecimento'); if (el) el.value = entregaJudicialVal; }
+
+                                    // prazo
+                                    var prazoVal = dateToInput(esclarecimento.prazo);
+                                    if ($) $('#prazo-esclarecimento').val(prazoVal); else { var el = document.querySelector('#prazo-esclarecimento'); if (el) el.value = prazoVal; }
+
+                                    // observacao
+                                    if ($) $('#observacao-esclarecimento').val(esclarecimento.observacao || ''); else { var el = document.querySelector('#observacao-esclarecimento'); if (el) el.value = (esclarecimento.observacao || ''); }
+
+
+                                    // ativa aba de pagamentos
+                                    activateTab('a[href="#btabs-alt-static-esclarecimento"]');
+
+                                } catch (e) {
+                                    console.error('showEsclarecimento falhou', e);
+                                }
+                            };
+                            // end window.showEsclarecimento
+
+                            // Implementa showPagamento globalmente (acessível por onClick)
+                            window.showPagamento = function (id) {
+                                try {
+                                    var proc = window.processo;
+                                    if (!proc || !proc.pagamentos) return;
+                                    var pagamento = proc.pagamentos.find(function (p) { return String(p.id) === String(id); });
+                                    if (!pagamento) return;
+
+                                    // valor
+                                    var valor = pagamento.valor;
+                                    if (valor === null || valor === undefined) {
+                                        valor = '';
+                                    } else {
+                                        if (typeof valor === 'number') valor = valor.toFixed(2).replace('.', ',');
+                                        else {
+                                            var s = String(valor).trim();
+                                            if (/^\d+(\.\d+)?$/.test(s)) valor = parseFloat(s).toFixed(2).replace('.', ',');
+                                            else valor = s;
+                                        }
+                                    }
+                                    if ($) $('#id-pagamento').val(id); else { var el = document.querySelector('#id-pagamento'); if (el) el.value = id; }
+
+                                    if ($) $('#valor-pagamento').val(valor); else { var el = document.querySelector('#valor-pagamento'); if (el) el.value = valor; }
+
+                                    // data
+                                    function dateToInput(v) {
+                                        if (!v) return '';
+                                        var m = String(v).match(/(\d{4}-\d{2}-\d{2})/);
+                                        if (m) return m[1];
+                                        var d = new Date(v);
+                                        if (!isNaN(d)) {
+                                            var mm = String(d.getMonth() + 1).padStart(2, '0');
+                                            var dd = String(d.getDate()).padStart(2, '0');
+                                            return d.getFullYear() + '-' + mm + '-' + dd;
+                                        }
+                                        return '';
+                                    }
+                                    var dataVal = dateToInput(pagamento.data);
+                                    if ($) $('#data-pagamento').val(dataVal); else { var el = document.querySelector('#data-pagamento'); if (el) el.value = dataVal; }
+
+                                    // observacao
+                                    if ($) $('#observacao-pagamento').val(pagamento.observacao || ''); else { var el = document.querySelector('#observacao-pagamento'); if (el) el.value = (pagamento.observacao || ''); }
+
+                                    // limpa input file (não é possível setar valor por JS)
+                                    if ($) $('#recibo').val(''); else { var f = document.querySelector('#recibo'); if (f) try { f.value = ''; } catch (e) { } }
+
+                                    // lista recibos anexados (somente visualização)
+                                    var recibosHtml = '';
+                                    if (pagamento.recibos && pagamento.recibos.length > 0) {
+                                        recibosHtml = pagamento.recibos.map(function (r) {
+                                            return `<tr><td><a href="#" class="open-modal font-w600" data-url=" ${r.blob || ''} " data-nome=" ${r.nome_arquivo || ''} "><strong>${r.nome_arquivo || ''}</strong></a></td>
+                                                                                                                                    <td><i class="fa fa-trash text-danger" id="deleteFileId" data-recibo-id = "${r.id}" data-arquivo = "${r.nome_arquivo}" data-toggle="tooltip" data-placement="top" title="Excluir">
+                                                                                                            </i></td>
+                                                                                                                                    </tr>`
+                                        }).join('');
+                                    }
+
+                                    if (recibosHtml) {
+                                        if ($) {
+                                            if ($('#recibo-list').length === 0) {
+                                                var parentCol = $('#recibo').closest('.col-lg-12');
+                                                if (parentCol.length) parentCol.after('<div class="col-lg-12 mt-2" id="recibo-list"></div>');
+                                                else $('#form-pagamentos').append('<div id="recibo-list" class="mt-2"></div>');
+                                            }
+                                            $('#recibo-list').html(`<table class="table table-borderless table-vcenter">${recibosHtml}</table>`);
+                                        } else {
+                                            if (!document.getElementById('recibo-list')) {
+                                                var parent = document.querySelector('#recibo');
+                                                if (parent) {
+                                                    var pcol = parent.closest('.col-lg-12');
+                                                    if (pcol && pcol.parentNode) {
+                                                        var div = document.createElement('div'); div.className = 'col-lg-12 mt-2'; div.id = 'recibo-list'; pcol.parentNode.insertBefore(div, pcol.nextSibling);
+                                                    } else { var div2 = document.createElement('div'); div2.id = 'recibo-list'; document.getElementById('form-pagamentos').appendChild(div2); }
+                                                }
+                                            }
+                                            var rl = document.getElementById('recibo-list'); if (rl) rl.innerHTML = recibosHtml;
+                                        }
+                                    } else {
+                                        if ($) $('#recibo-list').remove(); else { var rl = document.getElementById('recibo-list'); if (rl) rl.parentNode.removeChild(rl); }
+                                    }
+
+                                    // ativa aba de pagamentos
+                                    activateTab('a[href="#btabs-alt-static-pagamento"]');
+
+                                } catch (e) {
+                                    console.error('showPagamento falhou', e);
+                                }
+                            };
+                            // end window.showPagamento
+
+                            // Implementa showErroExecucao globalmente (acessível por onClick)
+                            window.showErroExecucao = function (id) {
+
+                                try {
+                                    var proc = window.processo;
+                                    console.log(proc)
+                                    if (!proc || !proc.erros_execucao) return;
+                                    var erro_execucao = proc.erros_execucao.find(function (e) { return String(e.id) === String(id); });
+                                    if (!erro_execucao) return;
+                                    if ($) $('#id-erro-execucao').val(id); else { var el = document.querySelector('#id-erro-execucao'); if (el) el.value = id; }
+                                    // data
+                                    function dateToInput(v) {
+                                        if (!v) return '';
+                                        var m = String(v).match(/(\d{4}-\d{2}-\d{2})/);
+                                        if (m) return m[1];
+                                        var d = new Date(v);
+                                        if (!isNaN(d)) {
+                                            var mm = String(d.getMonth() + 1).padStart(2, '0');
+                                            var dd = String(d.getDate()).padStart(2, '0');
+                                            return d.getFullYear() + '-' + mm + '-' + dd;
+                                        }
+                                        return '';
+                                    }
+
+                                    //Data_erro
+                                    var dataErroVal = dateToInput(erro_execucao.data_erro);
+                                    if ($) $('#data-erro').val(dataErroVal); else { var el = document.querySelector('#data-erro'); if (el) el.value = dataErroVal; }
+
+                                    //Tipo Erro
+
+                                    if ($) $('#tipo-erro').val(erro_execucao.tipo_erro); else { var el = document.querySelector('#tipo-erro'); if (el) el.value = erro_execucao.tipo_erro; }
+
+                                    // observacao
+                                    if ($) $('#observacao-erro').val(erro_execucao.observacao || ''); else { var el = document.querySelector('#observacao-erro'); if (el) el.value = (esclarecimento.observacao || ''); }
+
+                                    //custo Apoio
+                                    if (window.jQuery) {
+                                        $('#custo-apoio').val(erro_execucao.custo_apoio).trigger('change');
+                                    } else {
+                                        var el = document.querySelector('#custo-apoio');
+                                        if (el) el.value = erro_execucao.custo_apoio;
+                                    }
+
+                                    // ativa aba de pagamentos
+                                    activateTab('a[href="#btabs-alt-static-fail"]');
+
+                                } catch (e) {
+                                    console.error('showErroExecucao falhou', e);
+                                }
+                            }; // end window.showErroExecucao
+
+                        } catch (e) {
+                            console.error('Erro na inicialização do script de edição do processo', e);
+                        }
+                    }); // end onReady
+
+                }); // end ensureJQuery
+            })();
+
+
+            $(document).on('click', '#deleteFileId', function (e) {
+
+                var fileId = $(this).data('recibo-id');
+                var fileName = $(this).data('arquivo');
+
+                Swal.fire({
+                    icon: "question",
+                    title: "Alerta!",
+                    text: `Deseja excluir o arquivo ${fileName} ?`,
+                    showDenyButton: true,
+                    confirmButtonText: "Sim, excluir!",
+                    denyButtonText: "Não",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/processo/pagamento/rebibo/delete/${fileId}` + location.search,
+                            type: 'GET',
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Sucesso!",
+                                    text: response.message ?? "Recibo exclido com sucesso!",
+                                })
+
+                                window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+
+
+                            },
+                            error: function (error) {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'OPS!',
+                                    text: `${error.message}`
+                                })
+                            }
+                        });
+
+                    } else if (result.isDenied) {
+                        // Redireciona para a lista de equipe
+                    }
+                });
+
+            })
             function getEquipe(equipe_id) {
                 $.ajax({
                     url: '/equipe/getAll' + location.search,
@@ -698,6 +998,8 @@
 
                     data.forEach(function (membro) {
                         if (membro.id == equipe_id) {
+                            localStorage.setItem("tecnico", membro.nome)
+
                             var row = `<option value = ${membro.id} selected>${membro.nome.toUpperCase()}</option>`;
 
                         } else {
@@ -770,23 +1072,227 @@
 
             campo.value = valor;
         }
+        /**
+         * Persistência de Esclarecimento
+         *
+         *
+         */
+        $("#form-esclarecimento").on("submit", function (e) {
+            e.preventDefault(); // evita o envio normal do form
+            let actionUrl = '/processo/esclarecimento/create' + location.search;
+            let form = $(this)[0]; // pega o form "puro"
+            let formData = new FormData(form);
+            formData.append('processo_id', localStorage.getItem('id'))
+            $.ajax({
+                url: actionUrl,
+                type: "POST",
+                data: formData,
+                processData: false, // impede o jQuery de converter em querystring
+                contentType: false, // impede jQuery de setar content-type errado
+                dataType: "json",
+                success: function (response) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Sucesso!",
+                        text: response.message ?? "Esclarecimento salvo com sucesso!",
+                        showDenyButton: true,
+                        confirmButtonText: "Continua no processo",
+                        denyButtonText: "Voltar para lista",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Limpa o formulário para novo cadastro
+                            window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+                        } else if (result.isDenied) {
+                            // Redireciona para a lista de equipe
+                            window.location.href = "/processos";
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    let msg = "Ocorreu um erro ao processar a requisição.";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        msg = xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Erro!",
+                        text: msg,
+                        confirmButtonText: "Fechar"
+                    });
+                }
+            })
+
+        })
+
+
+        /**
+         * Persistência de Erro
+         *
+         *
+         */
+
+        $("#form-erro").on("submit", function (e) {
+            e.preventDefault(); // evita o envio normal do form
+            let actionUrl = '/processo/erro-execucao/create' + location.search;
+            let form = $(this)[0]; // pega o form "puro"
+            let formData = new FormData(form);
+            formData.append('processo_id', localStorage.getItem('id'))
+            $.ajax({
+                url: actionUrl,
+                type: "POST",
+                data: formData,
+                processData: false, // impede o jQuery de converter em querystring
+                contentType: false, // impede jQuery de setar content-type errado
+                dataType: "json",
+                success: function (response) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Sucesso!",
+                        text: response.message ?? "Registro salvo com sucesso!",
+                        showDenyButton: true,
+                        confirmButtonText: "Continua no processo",
+                        denyButtonText: "Voltar para lista",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Limpa o formulário para novo cadastro
+                            window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+                        } else if (result.isDenied) {
+                            // Redireciona para a lista de equipe
+                            window.location.href = "/processos";
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    let msg = "Ocorreu um erro ao processar a requisição.";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        msg = xhr.responseJSON.message;
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        title: "Erro!",
+                        text: msg,
+                        confirmButtonText: "Fechar"
+                    });
+                }
+            })
+
+        })
+
+        /**
+         *
+         * Validando formulário do processo #
+         *
+         *
+         */
+
+        function validarCampos() {
+
+            const reclamante = $('#reclamante').val()
+            const reclamada = $('#reclamada').val()
+            const carga = $('#carga').val()
+            const prazo = $('#prazo').val()
+            const laudo_judicial = $('#laudo-judicial').val()
+            const select_membros = $('#equipe').val()
+            var c = 0
+
+
+            if (reclamante === '') {
+                marcarCampoInvalido('reclamante');
+                c++
+            } else {
+                desmarcarCampoInvalido('reclamante');
+            }
+
+            if (reclamada === '') {
+                marcarCampoInvalido('reclamada');
+                c++
+            } else {
+                desmarcarCampoInvalido('reclamada');
+            }
+
+            if (carga === '') {
+                marcarCampoInvalido('carga');
+                c++
+            } else {
+
+
+                desmarcarCampoInvalido('carga');
+
+            }
+
+            if (prazo === '') {
+                marcarCampoInvalido('prazo');
+                c++
+            } else {
+                desmarcarCampoInvalido('prazo');
+
+            }
+            if (laudo_judicial === '') {
+                marcarCampoInvalido('laudo-judicial');
+                c++
+            } else {
+                    desmarcarCampoInvalido('laudo-judicial');
+            }
+
+            if (select_membros === '') {
+                marcarCampoInvalido('equipe');
+                c++
+            } else {
+                desmarcarCampoInvalido('equipe');
+            }
+
+            if (c > 0) {
+                return false
+            } else {
+                return true;
+            }
+        }
+
+        function marcarCampoInvalido(campoId) {
+            // Adiciona uma borda vermelha ao campo com o ID fornecido
+            var minhaDiv = campoId + "_div"
+            $('#' + minhaDiv).addClass("text-danger");
+        }
+
+        function desmarcarCampoInvalido(campoId) {
+
+            var minhaDiv = campoId + "_div"
+            $('#' + minhaDiv).removeClass("text-danger");
+        }
+
+
+
+        /**
+         * UPDATE DO PROCESSO
+         *
+         *
+         */
 
         $("#form-processo").on("submit", function (e) {
-            console.log("teste")
-            e.preventDefault(); // evita o envio normal do form
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            let form = $(this);
-            let actionUrl = '/processo/update' + location.search;
-            let formData = form.serialize();
+            e.preventDefault() // evita o envio normal do form
+
+            var validade = validarCampos()
+            if (validade == false) {
+                Swal.fire(
+                    `OPS !!!`,
+                    'PREENCHA OS CAMPOS OBRIGATÓRIO!',
+                    'error'
+                )
+                return false;
+            }
+
+            let actionUrl = '/processo/update' + location.search
+            let form = $(this)[0] // pega o form "puro"
+            let formData = new FormData(form)
+
+
 
             $.ajax({
                 url: actionUrl,
                 type: "POST",
                 data: formData,
+                processData: false, // impede o jQuery de converter em querystring
+                contentType: false, // impede jQuery de setar content-type errado
                 dataType: "json",
                 success: function (response) {
                     Swal.fire({
@@ -820,6 +1326,147 @@
                 }
             });
         });
+        /***
+         * EXCLUSÕES
+         *
+         */
+
+        //Exclusão de esclarecimento
+        $(document).on('click', '#deleteEsclarecimento', function (e) {
+
+
+            e.preventDefault(); // evita o envio normal do form
+
+            var esclarecimentoId = $(this).data('esclarecimento-id');
+            var carga = $(this).data('esclarecimento-carga');
+
+            Swal.fire({
+                icon: "question",
+                title: "Alerta!",
+                text: `Deseja excluir o esclarecimento de carga em ${carga} ?`,
+                showDenyButton: true,
+                confirmButtonText: "Sim, excluir!",
+                denyButtonText: "Não",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/processo/esclarecimento/delete/${esclarecimentoId}` + location.search,
+                        type: 'GET',
+                        success: function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Sucesso!",
+                                text: response.message ?? "Esclarecimento excluído com sucesso!",
+                            })
+
+                            window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+
+
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'OPS!',
+                                text: `${error.message}`
+                            })
+                        }
+                    });
+
+                } else if (result.isDenied) {
+                    // Redireciona para a lista de equipe
+                }
+            })
+        })
+        //Exclusão de Pagamento
+        $(document).on('click', '#deletePagamento', function (e) {
+
+            e.preventDefault(); // evita o envio normal do form
+
+            var pagamentoId = $(this).data('pagamento-id');
+            var valor = $(this).data('pagamento-valor');
+
+            Swal.fire({
+                icon: "question",
+                title: "Alerta!",
+                text: `Deseja excluir o pagamento de R$ ${valor} ?`,
+                showDenyButton: true,
+                confirmButtonText: "Sim, excluir!",
+                denyButtonText: "Não",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/processo/pagamento/delete/${pagamentoId}` + location.search,
+                        type: 'GET',
+                        success: function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Sucesso!",
+                                text: response.message ?? "Pagamento excluído com sucesso!",
+                            })
+
+                            window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+
+
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'OPS!',
+                                text: `${error.message}`
+                            })
+                        }
+                    });
+
+                } else if (result.isDenied) {
+                    // Redireciona para a lista de equipe
+                }
+            })
+        })
+
+        //Esclusão de Erro de Execução
+        $(document).on('click', '#delete-erro', function (e) {
+
+            e.preventDefault(); // evita o envio normal do form
+            console.log("entro")
+            var erroId = $(this).data('erro-execucao-id');
+            var tipoErro = $(this).data('tipo-erro');
+
+            Swal.fire({
+                icon: "question",
+                title: "Alerta!",
+                text: `Deseja excluir o erro de execução do tipo ${tipoErro} ?`,
+                showDenyButton: true,
+                confirmButtonText: "Sim, excluir!",
+                denyButtonText: "Não",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/processo/erro-execucao/delete/${erroId}` + location.search,
+                        type: 'GET',
+                        success: function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Sucesso!",
+                                text: response.message ?? "Erro de Execução excluído com sucesso!",
+                            })
+                            window.location.href = `/processo/show/${localStorage.getItem('id')}`;
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                type: 'error',
+                                title: 'OPS!',
+                                text: `${error.message}`
+                            })
+                        }
+                    });
+
+                } else if (result.isDenied) {
+                    // Redireciona para a lista de equipe
+                }
+            })
+        })
+
+
 
     </script>
 @endsection

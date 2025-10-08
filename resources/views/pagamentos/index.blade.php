@@ -143,7 +143,7 @@
                         var processoTable=''
                         response.forEach(function(processo) {
                             console.log(processo)
-                            processoTable = `
+                            processoTable += `
                             <tr>
                                 <td><button class="btn btn-link btn-processos" type="button" onclick="showProcesso(${processo.id})">
                                     <i class="fa fa-folder-open-o"></i>
@@ -156,8 +156,9 @@
                             </tr>
                            `
                            console.log(processoTable)
-                            $('#processos-body').append(processoTable)
+
                         })
+                        $('#processos-body').html(processoTable)
                     },
                     error: function () {
                         Swal.fire('Erro', 'Não foi possível carregar os processos.', 'error');

@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('esclarecimentos', function (Blueprint $table) {
+        Schema::create('recibos', function (Blueprint $table) {
             $table->id();
-            $table->date('carga')->nullable();
-            $table->date('entrega_judicial')->nullable();
-            $table->date('prazo')->nullable();
-            $table->bigInteger('processo_id');
-            $table->longText('observacao')->nullable();
-
+            $table->bigInteger('pagamento_id');
+            $table->string('nome_arquivo');
+            $table->string('blob'); // campo blob
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('esclarecimentos');
+        Schema::dropIfExists('recibo');
     }
 };

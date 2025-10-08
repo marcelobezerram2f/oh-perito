@@ -13,7 +13,6 @@
 
 @section('content')
     <div class="content">
-
         <div class="block">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Processos</h3>
@@ -22,6 +21,40 @@
                 <a class="btn btn-alt-success mb-4" href="/processo/create">
                     <i class="fa fa-plus"></i> Novo Processo
                 </a>
+
+                <form class="form-horizontal" id="form-search-all" autocomplete="off">
+                    @csrf
+                    <div class="row g-3 align-items-end">
+                        <div class="col-sm-2">
+                            <label class="control-label">Processo</label>
+                            <input type="text" class="form-control" name="numero_processo" id="numero_processo"
+                                   data-mask="9999999-99.9999.9.99.9999" />
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label class="control-label">Reclamante/ Reclamado</label>
+                            <input type="text" class="form-control" name="reclamante_reclamado" id="reclamante-reclamado">
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="control-label">Prazo</label>
+                            <input type="date" class="form-control" name="prazo" id="prazo">
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label class="control-label">Técnico Calculista</label>
+                            <select class="form-control" name="equipe_id" id="equipe_id"></select>
+                        </div>
+
+                        <div class="col-sm-3 d-flex gap-2">
+                            <button class="btn btn-primary btn-outline ml-3" type="submit">
+                                <i class="fa fa-search"></i> Buscar
+                            </button>
+                            <button class="btn btn-success btn-outline ml-3" id="btn-search-all-reset" type="button">
+                                <i class="fa fa-refresh"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
                 <table id="focus" class="table table-bordered table-striped table-vcenter js-dataTable-full" width="100%">
                     <thead class="bg-earth-lighter">
@@ -39,159 +72,145 @@
                             <td class="text-center no-sort" style="width: 10px"><i class="si si-settings"></i></td>
                         </tr>
                     </thead>
-                    <tbody id="list-all">
-                    </tbody>
+                    <tbody id="list-all"></tbody>
                 </table>
-
             </div>
         </div>
-
     </div>
 @endsection
 
 @section('js_after')
-    <script src="{{ asset('plugins/js/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('plugins/js/datatable/dataTables.min.js')}}"></script>
-    <script src="{{ asset('plugins/js/datatable/dataTables.bootstrap5.min.js')}}"></script>
-    <script src="{{ asset('plugins/js/datatable/dataTables.responsive.min.js')}}"></script>
-    <script src="{{ asset('plugins/js/datatable/responsive.bootstrap5.min.js')}}"></script>
-    <script>
-       $('#focus').DataTable({
-    ajax: {
-        url: '/processos/getAll' + location.search,
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('plugins/js/datatable/dataTables.min.js')}}"></script>
+<script src="{{ asset('plugins/js/datatable/dataTables.bootstrap5.min.js')}}"></script>
+<script src="{{ asset('plugins/js/datatable/dataTables.responsive.min.js')}}"></script>
+<script src="{{ asset('plugins/js/datatable/responsive.bootstrap5.min.js')}}"></script>
+<script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
+
+<script>
+$(document).ready(function () {
+    // Máscara do campo processo
+    $('[data-mask]').mask('9999999-99.9999.9.99.9999');
+
+    // Carregar técnicos
+    $.ajax({
+        url: '/equipe/getAll',
         type: 'GET',
-        dataSrc: '' // porque a resposta já vem como array
-    },
-    columns: [
-        {
-            data: 'id',
-            className: 'text-center',
-            render: function (data, type, row) {
-                return `<button class="btn btn-link text-center" type="button"
-                            data-membro="${data}"
-                            onClick="showProcesso(${data})">
-                            <i class="fa fa-folder-open-o"></i>
-                        </button>`;
-            }
-        },
-        { data: 'mes_ano', render: data => formatarData(data) },
-        { data: 'pasta' },
-        { data: 'numero_processo' },
-        { data: 'reclamante' },
-        { data: 'reclamada' },
-        { data: 'carga', render: data => formatarData(data) },
-        { data: 'prazo', render: data => formatarData(data) },
-        { data: 'equipe.nome' },
-        {
-            data: 'status',
-            render: function (data) {
-                if (data === 'andamento') {
-                    return `<span class="badge bg-badge bg-primary" style="color:#fff">${data.toUpperCase()}</span>`;
-                }
-                if (data === 'entregue') {
-                    return `<span class="badge bg-badge bg-success" style="color:#fff">${data.toUpperCase()}</span>`;
-                }
-                return data;
-            }
-        },
-        {
-            data: 'id',
-            className: 'text-center',
-            render: function (data, type, row) {
-                return `<i class="fa fa-trash text-danger"
-                            onClick="deleteprocesso(${data}, '${row.nome}')"
-                            data-nomeprocesso="${row.numero_processo}"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Excluir">
-                        </i>`;
-            }
+        success: function (response) {
+            var selectMembros = $('#equipe_id');
+            selectMembros.append('<option value="">Selecione...</option>');
+            response.forEach(function (membro) {
+                selectMembros.append(`<option value="${membro.id}">${membro.nome.toUpperCase()}</option>`);
+            });
         }
-    ],
-    responsive: true,
-    pageLength: 10,
-    lengthChange: true,
-    searching: true,
-    language: {
-        url: "{{ asset('plugins/js/datatable/pt-BR.json') }}"
-    }
+    });
+
+    // DataTable
+    var tabela = $('#focus').DataTable({
+        ajax: {
+            url: '/processos/getAll',
+            type: 'GET',
+            data: function (d) {
+                // aplica os filtros se existirem
+                d.numero_processo = $('#numero_processo').val();
+                d.prazo = $('#prazo').val();
+                d.equipe_id = $('#equipe_id').val();
+                d.reclamante_reclamado = $('#reclamante-reclamado').val();
+            },
+            dataSrc: ''
+        },
+        columns: [
+            {
+                data: 'id',
+                className: 'text-center',
+                render: function (data) {
+                    return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
+                                <i class="fa fa-folder-open-o"></i>
+                            </button>`;
+                }
+            },
+            { data: 'mes_ano', render: data => formatarData(data) },
+            { data: 'pasta' },
+            { data: 'numero_processo' },
+            { data: 'reclamante' },
+            { data: 'reclamada' },
+            { data: 'carga', render: data => formatarData(data) },
+            { data: 'prazo', render: data => formatarData(data) },
+            { data: 'equipe.nome' },
+            {
+                data: 'status',
+                render: function (data) {
+                    if (data === 'andamento')
+                        return `<span class="badge bg-primary text-white">${data.toUpperCase()}</span>`;
+                    if (data === 'entregue')
+                        return `<span class="badge bg-success text-white">${data.toUpperCase()}</span>`;
+                    return data;
+                }
+            },
+            {
+                data: 'id',
+                className: 'text-center',
+                render: function (data, type, row) {
+                    return `<i class="fa fa-trash text-danger" id="delete-processo"
+                                data-nomeprocesso="${row.numero_processo}"
+                                data-idprocesso="${row.id}" title="Excluir"></i>`;
+                }
+            }
+        ],
+        responsive: true,
+        pageLength: 10,
+        lengthChange: true,
+        searching: false,
+        language: { url: "{{ asset('plugins/js/datatable/pt-BR.json') }}" }
+    });
+
+    // Filtro: desabilitar campos conforme regra
+    $('#numero_processo').on('input', function() {
+        if ($(this).val()) {
+            $('#prazo, #equipe_id, #reclamante-reclamado ').prop('disabled', true).val('');
+        } else {
+            $('#prazo, #equipe_id, #reclamante-reclamado').prop('disabled', false);
+        }
+    });
+
+    $('#prazo, #equipe_id, #reclamante-reclamado' ).on('change input', function() {
+        if ($('#prazo').val() || $('#equipe_id').val()) {
+            $('#numero_processo').prop('disabled', true).val('');
+        } else {
+            $('#numero_processo').prop('disabled', false);
+        }
+    });
+
+    // Submit do filtro
+    $('#form-search-all').on('submit', function (e) {
+        e.preventDefault();
+        tabela.ajax.reload();
+    });
+
+    // Reset filtro
+    $('#btn-search-all-reset').on('click', function () {
+        $('#form-search-all')[0].reset();
+        $('#numero_processo, #prazo, #equipe_id','#reclamante-reclamado').prop('disabled', false);
+        tabela.ajax.reload();
+    });
 });
 
-        function showProcesso(id) {
-            window.location.href = `/processo/show/${id}`
-        }
-
-
-        function deleteMembro(membroId, nomeMembro) {
-
-            Swal.fire({
-                title: 'CUIDADO!',
-                showCancelButton: true,
-                confirmButtonText: 'Sim, pode excluir!',
-                cancelButtonText: 'Não, cancelar',
-                text: `Deseja apagar o membro ${nomeMembro}`,
-                type: 'warning',
-                confirmButtonColor: '#F54400',
-                showLoaderOnConfirm: true,
-                preConfirm: () => {
-                    Swal.fire({
-                        title: 'Aguarde!',
-                        html: `Excluindo processo ${nomeMembro}`,// add html attribute if you want or remove
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading()
-                        }
-                    }),
-                        $.ajax({
-                            url: `/equipe/delete/${membroId}`,
-                            method: 'GET',
-                            success: function () {
-                                Swal.fire(
-                                    'Sucesso!',
-                                    `Membro excluido com sucesso!.`,
-                                    'success').then(function () {
-                                        location.href = '/equipe'
-                                    })
-                            },
-                            error: function () {
-                                Swal.fire(
-                                    'Falhou!',
-                                    `Problemas ao remover o membro!. Contate o Administrador do Sistema.`,
-                                    'error'
-                                ).then(function () {
-                                    location.href = '/equipe' + location.search
-                                })
-                            }
-                        })
-                }
-            })
-        }
-
-        function formatarData(input) {
-            // Meses em português
-            const meses = [
-                "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-                "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-            ];
-
-            if (!input) return "";
-
-            // Caso tenha dia (YYYY-MM-DD)
-            if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
-                const [ano, mes, dia] = input.split("-");
-                return `${dia}/${mes}/${ano}`;
-            }
-
-            // Caso seja apenas mês/ano (YYYY-MM)
-            if (/^\d{4}-\d{2}$/.test(input)) {
-                const [ano, mes] = input.split("-");
-                const nomeMes = meses[parseInt(mes, 10) - 1];
-                return `${nomeMes}/${ano}`;
-            }
-
-            return input; // se não bater em nenhum formato
-        }
-
-
-    </script>
+// Funções auxiliares
+function showProcesso(id) {
+    window.location.href = `/processo/show/${id}`;
+}
+function formatarData(input) {
+    if (!input) return "";
+    const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+        const [ano, mes, dia] = input.split("-");
+        return `${dia}/${mes}/${ano}`;
+    }
+    if (/^\d{4}-\d{2}$/.test(input)) {
+        const [ano, mes] = input.split("-");
+        return `${meses[parseInt(mes,10)-1]}/${ano}`;
+    }
+    return input;
+}
+</script>
 @endsection

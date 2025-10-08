@@ -3,6 +3,7 @@
 @section('title') - Processos
 @endsection
 @section('css_after')
+
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/css/sweetalert2/sweetalert2.min.css') }}" />
     <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/flatpickr/flatpickr.min.css')}}">
@@ -25,7 +26,7 @@
                 <div class="col-lg-6 mt-2">
                     <label class="form-control-label">Numero Processos:</label>
                     <input type="text" class="form-control" name="numero_processo" autofocus="autofocus"
-                        data-mask="9999999-99.9999.9.99.9999" required />
+                        data-mask="9999999-99.9999.9.99.9999" />
                 </div>
 
                 <div class="col-lg-2 mt-2">
@@ -37,48 +38,50 @@
                     <label class="form-control-label">Mês/Ano:</label>
                     <input type="month" class="form-control" name="mes_ano">
                 </div>
-                <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Reclamante:</label>
-                    <input type="text" class="form-control" name="reclamante" />
+                <div class="col-lg-3 mt-2" id="reclamante_div">
+                    <label class="form-control-label" id="reclamante_div">Reclamante:</label>
+                    <input type="text" class="form-control" name="reclamante" id="reclamante" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
                     <label class="form-control-label">Documento Reclamante :</label>
-                    <input type="text" class="form-control" name="doc_reclamante" data-mask="999.999.999-99" />
+                    <input type="text" class="form-control" name="doc_reclamante" id="doc-reclamante" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Reclamado :</label>
-                    <input type="text" class="form-control" name="reclamada" />
+                    <label class="form-control-label" id="reclamada_div">Reclamado :</label>
+                    <input type="text" class="form-control" name="reclamada" id="reclamada" />
                 </div>
                 <div class="col-lg-3 mt-2">
                     <label class="form-control-label">Documento Reclamado :</label>
-                    <input type="text" class="form-control" name="doc_reclamada" data-mask="999.999.999/9999-99"/>
+                    <input type="text" class="form-control" name="doc_reclamada" data-mask="999.999.999/9999-99" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Carga :</label>
-                    <input type="date" class="form-control" name="carga" placeholder="dd-mm-yyyy" />
+                    <label class="form-control-label" id="carga_div">Carga :</label>
+                    <input type="date" class="form-control" name="carga" id="carga" placeholder="dd-mm-yyyy" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Prazo:</label>
-                    <input type="date" class="form-control" name="prazo" placeholder="dd-mm-yyyy" />
+                    <label class="form-control-label" id="prazo_div">Prazo:</label>
+                    <input type="date" class="form-control" name="prazo" id="prazo" placeholder="dd-mm-yyyy" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Entrega Laudo Judicial:</label>
-                    <input type="date" class="form-control" name="laudo_judicial" placeholder="dd-mm-yyyy" />
+                    <label class="form-control-label" id="laudo-judicial_div">Entrega Laudo Judicial:</label>
+                    <input type="date" class="form-control" id="laudo-judicial" name="laudo_judicial"
+                        placeholder="dd-mm-yyyy" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
-                    <label class="form-control-label">Calculista:</label>
+                    <label class="form-control-label" id="select-membros_div">Calculista:</label>
                     <Select class="form-control" name="equipe_id" id="select-membros">
                     </Select>
                 </div>
                 <div class="col-lg-3 mt-2">
                     <label class="form-control-label">Honorário:</label>
-                    <input type="text"  name="honorario" id="honorario" class="form-control" placeholder="0,00" oninput="mascaraMoeda(this)">
+                    <input type="text" name="honorario" id="honorario" class="form-control" placeholder="0,00"
+                        oninput="mascaraMoeda(this)">
                 </div>
                 <div class="col-lg-3 mt-2">
                     <label class="form-control-label">Pago:</label>
@@ -90,14 +93,14 @@
                 <div class="col-lg-8 mt-2">
                     <label class="form-control-label">Observações:</label>
                     <textarea type="" class="form-control" name="obervacoes"> </textarea>
-               </div>
+                </div>
             </div>
             <hr>
             <hr />
 
             <div class="form-group row pl-4 pb-4">
                 <div class="col">
-                    <button type="button" class="btn btn-alt-warning btn150" onclick="location.href='/equipe'"><i
+                    <button type="button" class="btn btn-alt-warning btn150" onclick="location.href='/processos'"><i
                             class="fa fa-chevron-left"></i>
                         Voltar</button>
                     <button type="reset" class="btn btn-alt-info"><i class="fa fa-broom"></i>
@@ -120,6 +123,8 @@
     <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
     <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script>
+
+
         $.ajax({
             url: '/equipe/getAll' + location.search,
             type: 'GET',
@@ -151,56 +156,175 @@
                 $(this).mask(mask);
             });
         });
-        $(document).ready(function () {
-            $("#form-processo").on("submit", function (e) {
-                e.preventDefault(); // evita o envio normal do form
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                let form = $(this);
-                let actionUrl = '/processo/store';
-                let formData = form.serialize();
 
-                $.ajax({
-                    url: actionUrl,
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    success: function (response) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Sucesso!",
-                            text: response.message ?? "Registro salvo com sucesso!",
-                            showDenyButton: true,
-                            confirmButtonText: "Novo membro",
-                            denyButtonText: "Voltar para lista",
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Limpa o formulário para novo cadastro
-                                $("#form-tecnico")[0].reset();
-                            } else if (result.isDenied) {
-                                // Redireciona para a lista de equipe
-                                window.location.href = "/processos";
-                            }
-                        });
-                    },
-                    error: function (xhr) {
-                        let msg = "Ocorreu um erro ao processar a requisição.";
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            msg = xhr.responseJSON.message;
-                        }
-                        Swal.fire({
-                            icon: "error",
-                            title: "Erro!",
-                            text: msg,
-                            confirmButtonText: "Fechar"
-                        });
+
+
+        $(document).ready(function () {
+
+
+            function validarCampos() {
+
+                const reclamante = $('#reclamante').val()
+                const reclamada = $('#reclamada').val()
+                const carga = $('#carga').val()
+                const prazo = $('#prazo').val()
+                const laudo_judicial = $('#laudo-judicial').val()
+                const select_membros = $('#select-membros').val()
+
+                var c = 0
+
+
+                if (reclamante === '') {
+                    marcarCampoInvalido('reclamante');
+                    c++
+                } else {
+                    desmarcarCampoInvalido('reclamante');
+                }
+
+                if (reclamada === '') {
+                    marcarCampoInvalido('reclamada');
+                    c++
+                } else {
+                    desmarcarCampoInvalido('reclamada');
+                }
+
+                if (carga === '') {
+                    marcarCampoInvalido('carga');
+                    c++
+                } else {
+                    const currentDate = new Date();
+                    const selectedDate = new Date(carga);
+                    if (selectedDate < currentDate) {
+                        marcarCampoInvalido('carga');
+                        c++
+                    } else {
+                        desmarcarCampoInvalido('carga');
                     }
-                });
+                }
+
+                if (prazo === '') {
+                    marcarCampoInvalido('prazo');
+                    c++
+                } else {
+                    const currentDate = new Date();
+                    const selectedDate = new Date(prazo);
+                    if (selectedDate < currentDate) {
+                        marcarCampoInvalido('prazo');
+                        c++
+                    } else {
+                        desmarcarCampoInvalido('prazo');
+                    }
+                }
+                if (laudo_judicial === '') {
+                    marcarCampoInvalido('laudo-judicial');
+                    c++
+                } else {
+                    const currentDate = new Date();
+                    const selectedDate = new Date(prazo);
+                    if (selectedDate < currentDate) {
+                        marcarCampoInvalido('laudo-judicial');
+                        c++
+                    } else {
+                        desmarcarCampoInvalido('laudo-judicial');
+                    }
+                }
+
+                if (select_membros === '') {
+                    marcarCampoInvalido('select-membros');
+                    c++
+                } else {
+                    desmarcarCampoInvalido('select-membros');
+                }
+
+                if (c > 0) {
+                    return false
+                } else {
+                    return true;
+                }
+            }
+
+            function marcarCampoInvalido(campoId) {
+                // Adiciona uma borda vermelha ao campo com o ID fornecido
+                var minhaDiv = campoId + "_div"
+                $('#' + minhaDiv).addClass("text-danger");
+            }
+
+            function desmarcarCampoInvalido(campoId) {
+
+                var minhaDiv = campoId + "_div"
+                $('#' + minhaDiv).removeClass("text-danger");
+            }
+
+
+            $("#form-processo").on("submit", function (e) {
+                e.preventDefault();
+
+                try {
+                    const $form = $(this);
+                    // --- Proteção extra: console de debug para ver se DataTables quebra algo antes ---
+                    // (caso seu arquivo create.js tenha trechos usando DataTables, substitua por safeIsDataTable)
+
+                    // Validação — se falhar, interrompe o envio
+                    var validade = validarCampos()
+                    if (validade == false) {
+                        Swal.fire(
+                            `OPS !!!`,
+                            'PREENCHA OS CAMPOS OBRIGATÓRIO!',
+                            'error'
+                        )
+                        return false;
+                    }
+
+                    // Se chegou aqui, validou — prepara envio
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    const actionUrl = '/processo/store';
+                    const formData = $form.serialize();
+
+                    $.ajax({
+                        url: actionUrl,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        success: function (response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "Sucesso!",
+                                text: response.message ?? "Registro salvo com sucesso!",
+                                showDenyButton: true,
+                                confirmButtonText: "Novo processo",
+                                denyButtonText: "Voltar para lista",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $("#form-processo")[0].reset();
+                                } else if (result.isDenied) {
+                                    window.location.href = "/processos";
+                                }
+                            });
+                        },
+                        error: function (xhr) {
+                            let msg = "Ocorreu um erro ao processar a requisição.";
+                            if (xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                            Swal.fire({ icon: "error", title: "Erro!", text: msg, confirmButtonText: "Fechar" });
+                        }
+                    });
+
+                } catch (err) {
+                    // captura qualquer erro e impede que o fluxo seja interrompido silenciosamente
+                    console.error("Erro no submit handler:", err);
+                    Swal.fire({
+                        icon: "error",
+                        title: "Erro interno",
+                        text: `Ocorreu um erro: ${err.message}. Veja o console para detalhes.`
+                    });
+                    return false;
+                }
             });
-        });
+        })
 
 
         function mascaraMoeda(campo) {
@@ -224,5 +348,34 @@
 
             campo.value = valor;
         }
+
+        function aplicarMascara(input) {
+            input.addEventListener('input', function () {
+                let valor = input.value.replace(/\D/g, ''); // remove tudo que não for número
+
+                // CPF: 11 dígitos
+                if (valor.length <= 11) {
+                    valor = valor
+                        .replace(/^(\d{3})(\d)/, '$1.$2')
+                        .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+                        .replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2');
+                }
+                // Segundo formato: 14 dígitos
+                else if (valor.length <= 14) {
+                    valor = valor
+                        .replace(/^(\d{2})(\d)/, '$1.$2')
+                        .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                        .replace(/^(\d{2})\.(\d{3})\.(\d{2})(\d)/, '$1.$2.$3/$4')
+                        .replace(/(\d{4})(\d{2})$/, '$1-$2');
+                }
+                // Formato desconhecido → sem máscara
+                else {
+                    valor = input.value.replace(/[^\w\s]/g, '');
+                }
+
+                input.value = valor;
+            });
+        }
+
     </script>
 @endsection

@@ -11,8 +11,8 @@ class Esclarecimento extends Model
     protected $fillable = [
         'carga',
         'entrega_judicial',
+        'prazo',
         'processo_id',
-        'advogado',
         'observacao'
     ];
 }

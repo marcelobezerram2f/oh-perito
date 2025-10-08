@@ -47,13 +47,16 @@
                     <!-- User Info -->
                     <div class="content-header-item">
                         <a class="img-link mr-5" href="javascript:void(0)">
-                            <img class="img-avatar img-avatar32" src="media\avatars\avatar15.jpg" alt="">
+                            @if (is_null(Auth::user()->avatar))
+                                <img class="img-avatar img-avatar32" src="{{asset('media\avatars\avatar15.jpg')}}" alt="">
+                            @else
+                                <img class="img-avatar img-avatar64" src="{{ asset(Auth::user()->avatar) }}" alt="Avatar">
+                            @endif
                         </a>
 
 
 
-                        <a class="align-middle link-effect text-primary-dark font-w600"
-                            href="javascript:void(0)"></a>
+                        <a class="align-middle link-effect text-primary-dark font-w600" href="javascript:void(0)"></a>
                     </div>
                     <!-- END User Info -->
                 </div>
@@ -105,7 +108,7 @@
                         <a class="link-effect font-w700" href="index.php">
                             <img src="{{ asset('images/oh_logo.png') }}" width="80px" alt="">
                         </a>
-                         <!-- END Logo -->
+                        <!-- END Logo -->
                     </div>
                     <!-- END Normal Mode -->
                 </div>
@@ -115,17 +118,19 @@
                 <div class="content-side content-side-full content-side-user px-10 align-parent mt-20">
                     <!-- Visible only in mini mode -->
                     <div class="sidebar-mini-visible-b align-v animated fadeIn">
-                        <img data-target="#novaFoto" data-toggle="modal" class="img-avatar img-avatar64"
-                            src="" alt="">
+                        <img data-target="#novaFoto" data-toggle="modal" class="img-avatar img-avatar64" src="" alt="">
                     </div>
                     <!-- END Visible only in mini mode -->
 
                     <!-- Visible only in normal mode -->
                     <div class="sidebar-mini-hidden-b text-center">
-                        <a class="img-link" data-target="#novaFoto" data-toggle="modal">
+                        <a class="img-link" href="/profile">
+                            @if (is_null(Auth::user()->avatar))
+                                <img class="img-avatar img-avatar64" src="{{asset('media\avatars\avatar0.jpg')}}" alt="">
+                            @else
+                                <img class="img-avatar img-avatar64" src="{{ asset(Auth::user()->avatar) }}" alt="Avatar">
+                            @endif
 
-
-                            <img class="img-avatar img-avatar64" src="media\avatars\avatar0.jpg" alt="">
 
                         </a>
 
@@ -144,28 +149,24 @@
                 <div class="content-side content-side-full">
                     <ul class="nav-main">
                         <li>
-                            <a
-                                href="/">
+                            <a href="/">
                                 <i class="si si-cup"></i><span class="sidebar-mini-hide">Dashboard</span>
                             </a>
                         </li>
 
                         <li>
-                            <a
-                                href="/processos">
+                            <a href="/processos">
                                 <i class="si si-folder-alt"></i><span class="sidebar-mini-hide">Processos</span>
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="/pagamentos">
+                            <a href="/pagamentos">
                                 <i class="si si-wallet"></i><span class="sidebar-mini-hide">Pagamentos</span>
                             </a>
                         </li>
 
                         <li>
-                            <a
-                                href="/equipe">
+                            <a href="/equipe">
                                 <i class="si si-users"></i><span class="sidebar-mini-hide">Equipe</span>
                             </a>
                         </li>
@@ -219,74 +220,46 @@
                             <i class="fa fa-wrench"></i>
                         </button>
                         <div class="dropdown-menu min-width-300" aria-labelledby="page-header-options-dropdown">
-                            <h5 class="h6 text-center py-10 mb-10 border-b text-uppercase">Settings</h5>
-                            <h6 class="dropdown-header">Color Themes</h6>
+                            <h5 class="h6 text-center py-10 mb-10 border-b text-uppercase">Configurações</h5>
+                            <h6 class="dropdown-header">Cor de Fundo</h6>
                             <div class="row no-gutters text-center mb-5">
                                 <div class="col-2 mb-5">
-                                    <a class="text-default" data-toggle="theme" data-theme="default"
-                                        href="javascript:void(0)">
+                                    <a class="text-gray" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                                 <div class="col-2 mb-5">
-                                    <a class="text-elegance" data-toggle="theme"
-                                        data-theme="{{ asset('/css/themes/elegance.css') }}" href="javascript:void(0)">
+                                    <a class="text-black" data-toggle="theme" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                                 <div class="col-2 mb-5">
-                                    <a class="text-pulse" data-toggle="theme"
-                                        data-theme="{{ asset('/css/themes/pulse.css') }}" href="javascript:void(0)">
+                                    <a class="text-warning" data-toggle="theme" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                                 <div class="col-2 mb-5">
-                                    <a class="text-flat" data-toggle="theme"
-                                        data-theme="{{ asset('/css/themes/flat.css') }}" href="javascript:void(0)">
+                                    <a class="text-pulse" data-toggle="theme" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                                 <div class="col-2 mb-5">
-                                    <a class="text-corporate" data-toggle="theme"
-                                        data-theme="{{ asset('/css/themes/corporate.css') }}" href="javascript:void(0)">
+                                    <a class="text-flat" data-toggle="theme" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                                 <div class="col-2 mb-5">
-                                    <a class="text-earth" data-toggle="theme"
-                                        data-theme="{{ asset('/css/themes/earth.css') }}" href="javascript:void(0)">
+                                    <a class="text-corporate" data-toggle="theme" href="javascript:void(0)">
+                                        <i class="fa fa-2x fa-circle"></i>
+                                    </a>
+                                </div>
+                                <div class="col-2 mb-5">
+                                    <a class="text-earth" data-toggle="theme" href="javascript:void(0)">
                                         <i class="fa fa-2x fa-circle"></i>
                                     </a>
                                 </div>
                             </div>
-                            <h6 class="dropdown-header">Header</h6>
-                            <div class="row gutters-tiny text-center mb-5">
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-sm btn-block btn-alt-secondary"
-                                        data-toggle="layout" data-action="header_fixed_toggle">Fixed Mode</button>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button"
-                                        class="btn btn-sm btn-block btn-alt-secondary d-none d-lg-block mb-10"
-                                        data-toggle="layout" data-action="header_style_classic">Classic Style</button>
-                                </div>
-                            </div>
-                            <h6 class="dropdown-header">Sidebar</h6>
-                            <div class="row gutters-tiny text-center mb-5">
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10"
-                                        data-toggle="layout" data-action="sidebar_style_inverse_off">Light</button>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10"
-                                        data-toggle="layout" data-action="sidebar_style_inverse_on">Dark</button>
-                                </div>
-                            </div>
-                            <div class="d-none d-xl-block">
-                                <h6 class="dropdown-header">Main Content</h6>
-                                <button type="button" class="btn btn-sm btn-block btn-alt-secondary mb-10"
-                                    data-toggle="layout" data-action="content_layout_toggle">Toggle Layout</button>
-                            </div>
+
                         </div>
                     </div>
                     <!-- END Layout Options -->
@@ -368,7 +341,7 @@
         <!-- END Header -->
 
         <!-- Main Container -->
-        <main id="main-container">
+        <main id="main-container" class="">
             @yield('content')
         </main>
         <!-- END Main Container -->
@@ -397,39 +370,112 @@
 
     <script>
         // ACIONANDO E INCORPORANDO O ARQUIVO DE HELP
-        $('#lateral-suporte').on('click', function (e) {
-            e.preventDefault();
-            var raiz = window.location.href
-            var path = window.location.pathname;
-            var arquivo = raiz.replace(path, '');
-            var path = path.split('/');
 
-            $('.lateral-suporte').load(arquivo + '/help/' + path[1] + '.html');
+
+    </script>
+
+    @yield('js_after')
+</body>
+
+<script>
+
+
+    $(document).ready(function () {
+        let bg = {!! Auth::user() !!}
+        document.getElementById("main-container").style.backgroundColor = bg.background;
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Mapeamento das cores que você quer aplicar
+        const cores = {
+            "text-gray": "#e0e0e0",
+            "text-black": "#000000",
+            "text-warning": "#FFCA28",
+            "text-pulse": "#E74C3C",
+            "text-flat": "#70B29C",
+            "text-corporate": "#2FACB2",
+            "text-earth": "#6EAB4D"
+        };
+
+        // Seleciona todos os <a> dentro do menu de cores
+        const botoesCores = document.querySelectorAll('.dropdown-menu .row a');
+
+        botoesCores.forEach(btn => {
+            btn.addEventListener("click", function () {
+                // Descobre a classe usada (ex.: text-gray, text-elegance, etc.)
+                const classes = this.classList;
+                for (let c in cores) {
+                    if (classes.contains(c)) {
+                        // Aplica no elemento principal
+                        document.getElementById("main-container").style.backgroundColor = cores[c];
+                        saveBackgroud(cores[c])
+                    }
+                }
+            });
+        });
+
+
+    });
+
+    function saveBackgroud(cor) {
+        let actionUrl = '/user/change-background';
+        let formData = new FormData();
+        formData.append('user_id', {{ Auth::user()->id }})
+        formData.append('background', cor)
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        $.ajax({
+            url: actionUrl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json"
 
         })
+    }
 
-        $.ajax({
-                url: `/processo/getByDue` + location.search,
-                type: 'GET',
-                success: function (response) {
-                    tableDue = ''
-                    $("#qtd_due").html(response.length);
-                    response.forEach(function (processo) {
-                        if(processo.dias == 4) {
-                            var dias = `<span class="text-primary mr-5 mb-5 w600">${processo.dias} dias</span>`
-                        } else if(processo.dias == 3) {
-                            var dias = `<span class="text-info mr-5 mb-5">${processo.dias} dias</span>`
-                        } else if(processo.dias == 2) {
-                            var dias = `<span class=" text-warning mr-5 mb-5">${processo.dias} dias</span>`
-                        }  else if(processo.dias == 1) {
-                            var dias = `<span class="text-danger mr-5 mb-5 w600">${processo.dias} dia</span>`
-                        } else if(processo.dias == 5) {
-                            var dias = `<span class="text-secondary mr-5 mb-5">${processo.dias} dias</span>`
-                        }
-                        else if(processo.dias == 0) {
-                            var dias = `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`
-                        }
-                        tableDue = `<li>
+
+    $.ajax({
+        url: `/processo/getByDue` + location.search,
+        type: 'GET',
+        success: function (response) {
+            tableDue = ''
+            $("#qtd_due").html(response.length);
+            response.forEach(function (processo) {
+                if (processo.dias == 4) {
+                    var dias = `<span class="text-primary mr-5 mb-5 w600">${processo.dias} dias</span>`
+                    var li = '<li>'
+                } else if (processo.dias == 3) {
+                    var dias = `<span class="text-info mr-5 mb-5">${processo.dias} dias</span>`
+                    var li = '<li>'
+
+                } else if (processo.dias == 2) {
+                    var dias = `<span class=" text-warning mr-5 mb-5">${processo.dias} dias</span>`
+                    var li = '<li>'
+
+                } else if (processo.dias == 1) {
+                    var dias = `<span class="text-danger mr-5 mb-5 w600">${processo.dias} dia</span>`
+                    var li = '<li>'
+
+                } else if (processo.dias == 5) {
+                    var dias = `<span class="text-secondary mr-5 mb-5">${processo.dias} dias</span>`
+                    var li = '<li>'
+
+                }
+                else if (processo.dias == 0) {
+                    var dias = `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`
+                    var li = '<li>'
+
+                } else if (processo.dias < 0) {
+                    var dias = `<span class="text-danger mr-5 mb-5">${processo.dias} dias</span>`
+                    var li = '<li style="background:#FFEEBF">'
+
+                }
+                tableDue = `${li}
                                     <a class="text-body-color-dark media mb-15" href="/processo/show/${processo.id}">
                                         <div class="ml-5 mr-15">
                                             <i class="fa fa-fw fa-exclamation-triangle text-warning"></i>
@@ -441,43 +487,24 @@
                                     </a>
                                 </li>
                                 `
-                        $('#notify-due').append(tableDue);
-                    });
-                      // Destroi instância anterior para evitar conflito
-            if ($.fn.DataTable.isDataTable('#focus')) {
-                $('#focus').DataTable().destroy();
-            }
-
-            // Inicializa o DataTable
-            $('#focus').DataTable({
-                responsive: true,
-                pageLength: 10,
-                lengthChange: true,
-                searching: true
-
+                $('#notify-due').append(tableDue);
             });
 
+        },
+        error: function (error) {
+            var errorMessage = error.responseJSON?.message || 'Erro desconhecido';
+            Swal.fire({
+                icon: "error",
+                title: 'OPS!',
+                customClass: {
+                    confirmButton: "btn btn-danger"
                 },
-                error: function (error) {
-                    var errorMessage = error.responseJSON?.message || 'Erro desconhecido';
-                    Swal.fire({
-                        icon: "error",
-                        title: 'OPS!',
-                        customClass: {
-                            confirmButton: "btn btn-danger"
-                        },
-                        text: errorMessage.toLocaleUpperCase(),
-                        confirmButtonText: "OK"
-                    });
-                }
+                text: errorMessage.toLocaleUpperCase(),
+                confirmButtonText: "OK"
             });
+        }
+    });
 
-
-    </script>
-
-
-
-    @yield('js_after')
-</body>
+</script>
 
 </html>

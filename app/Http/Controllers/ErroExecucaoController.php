@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\PagamentosRepository;
+use App\Repositories\ErroExecucaoRepository;
 use Illuminate\Http\Request;
 
-class PagamentoController extends Controller
+class ErroExecucaoController extends Controller
 {
-    private $pagamentoRepository;
+    private $erroExecucaoRepository;
+
 
     public function __construct()
     {
-        $this->pagamentoRepository = new PagamentosRepository();
+        $this->erroExecucaoRepository =  new ErroExecucaoRepository();
     }
 
 
     public function create(Request $request)
     {
-
-        $response  =  $this->pagamentoRepository->create($request->all());
+        $response = $this->erroExecucaoRepository->create($request->all());
         if(isset($response['code'])){
             $code = $response['code'];
         } else {
@@ -27,31 +27,26 @@ class PagamentoController extends Controller
         return response()->json($response, $code);
     }
 
-    public function getMonth($month = null)
+    public function update(Request $request)
     {
-        $response  =  $this->pagamentoRepository->getMonth($month);
+        $response = $this->erroExecucaoRepository->update($request->all());
         if(isset($response['code'])){
             $code = $response['code'];
         } else {
             $code = 200;
         }
-
         return response()->json($response, $code);
-
     }
+
 
     public function delete($id)
     {
-        $response  =  $this->pagamentoRepository->delete($id);
+        $response = $this->erroExecucaoRepository->delete($id);
         if(isset($response['code'])){
             $code = $response['code'];
         } else {
             $code = 200;
         }
-
         return response()->json($response, $code);
-
     }
-
-
 }

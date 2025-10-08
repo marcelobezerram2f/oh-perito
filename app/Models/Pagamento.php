@@ -19,4 +19,9 @@ class Pagamento extends Model
     {
         return $this->hasOne(Processo::class, 'id', 'processo_id');
     }
+
+    public function recibos()
+    {
+        return $this->hasMany(Recibo::class, 'pagamento_id', 'id');
+    }
 }

@@ -10261,6 +10261,7 @@ a.badge-secondary:focus, a.badge-secondary.focus {
   padding: 12px 12px 1px;
   width: 100%;
   overflow-x: visible;
+
 }
 .content .pull-t {
   margin-top: -12px;
@@ -14042,6 +14043,8 @@ a.text-dual-primary-dark:hover, a.text-dual-primary-dark:focus {
 .text-default {
   color: #3f9ce8 !important;
 }
+
+
 
 a.text-default.link-effect::before {
   background-color: #3f9ce8;

@@ -311,6 +311,8 @@
                 if (dias == 2) return `<span class="btn btn-alt-danger mr-5 mb-5">${dias} dias</span>`;
                 if (dias == 1) return `<span class="btn btn-alt-secondary mr-5 mb-5">${dias} dias</span>`;
                 if (dias == 0) return `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`;
+                if (dias < 0) return `<span class="btn btn-danger mr-5 mb-5">vencido a ${Math.abs(dias)} dias</span>`;
+
             }
         }
     ],

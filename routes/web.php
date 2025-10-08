@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ErroExecucaoController;
+use App\Http\Controllers\EsclarecimentoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReciboController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\ProcessosController;
@@ -15,6 +20,15 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/user/registro', [RegisteredUserController::class, 'create'])
+       ->name('create.user');
+       Route::post('/user/registro/store', [RegisteredUserController::class, 'store'])
+       ->name('register');
+
+    Route::post('/user/update', [RegisteredUserController::class, 'update']);
+    Route::post('/user/change-background', [UserController::class, 'changeBackground']);
+
     Route::get('/equipe', function () {
         return view('tecnicos.index');
     });
@@ -46,11 +60,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/processo/show/{id}', function () {
         return view('processos.edit');
     });
+
     Route::get('/processo/getById/{id}', [ProcessosController::class, 'getById']);
     Route::get('/processo/getByDue', [ProcessosController::class, 'getByDue']);
     Route::post('/processos/inIds', [ProcessosController::class, 'inIds']);
 
+
     Route::post('/processo/update', [ProcessosController::class, 'update']);
+    Route::get('/processo/delete/{id}', [ProcessosController::class, 'delete']);
+
+    Route::post('/processo/pagamento/create', [PagamentoController::class, 'create']);
+    Route::get('/processo/pagamento/rebibo/delete/{id}', [ReciboController::class, 'delete']);
+    Route::get('/processo/pagamento/delete/{id}', [PagamentoController::class, 'delete']);
+
+    Route::post('/processo/esclarecimento/create', [EsclarecimentoController::class, 'create']);
+    Route::post('/processo/esclarecimento/update', [EsclarecimentoController::class, 'update']);
+    Route::get('/processo/esclarecimento/delete/{id}', [EsclarecimentoController::class, 'delete']);
+
+
+    Route::post('/processo/erro-execucao/create', [ErroExecucaoController::class, 'create']);
+    Route::post('/processo/erro-execucao/update', [ErroExecucaoController::class, 'update']);
+    Route::get('/processo/erro-execucao/delete/{id}', [ErroExecucaoController::class, 'delete']);
+
+
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
