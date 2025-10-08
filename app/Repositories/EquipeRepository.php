@@ -67,17 +67,17 @@ class EquipeRepository
 
         try {
             $calculista = $this->equipe->find($id);
-            $dadosBancarios = json_decode($calculista->dados_bancarios, true);
+            $dadosBancarios = is_null($calculista->dados_bancarios)? null:json_decode($calculista->dados_bancarios, true);
             $response = [
                 'id' => $calculista->id,
                 'nome' => $calculista->nome,
                 'telefone' => $calculista->telefone,
                 'ativo' => $calculista->ativo,
                 'email' => $calculista->email,
-                'banco' => $dadosBancarios['banco'],
-                'agencia' => $dadosBancarios['agencia'],
-                'conta_corrente' => $dadosBancarios['conta_corrente'],
-                'chave_pix' => $dadosBancarios['chave_pix'],
+                'banco' => is_null($dadosBancarios)?null:$dadosBancarios['banco'],
+                'agencia' => is_null($dadosBancarios)?null:$dadosBancarios['agencia'],
+                'conta_corrente' => is_null($dadosBancarios)?null:$dadosBancarios['conta_corrente'],
+                'chave_pix' => is_null($dadosBancarios)?null:$dadosBancarios['chave_pix'],
             ];
         } catch (Exception $e) {
             $response = ['message' => 'Falha fatal na coleta de membro da equipe, contate o suporte.', 'code' => 400, 'erro' => $e->getMessage()];
