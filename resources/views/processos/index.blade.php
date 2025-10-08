@@ -28,7 +28,7 @@
                         <div class="col-sm-2">
                             <label class="control-label">Processo</label>
                             <input type="text" class="form-control" name="numero_processo" id="numero_processo"
-                                   data-mask="9999999-99.9999.9.99.9999" />
+                                data-mask="9999999-99.9999.9.99.9999" />
                         </div>
 
                         <div class="col-sm-2">
@@ -80,137 +80,178 @@
 @endsection
 
 @section('js_after')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('plugins/js/datatable/dataTables.min.js')}}"></script>
-<script src="{{ asset('plugins/js/datatable/dataTables.bootstrap5.min.js')}}"></script>
-<script src="{{ asset('plugins/js/datatable/dataTables.responsive.min.js')}}"></script>
-<script src="{{ asset('plugins/js/datatable/responsive.bootstrap5.min.js')}}"></script>
-<script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('plugins/js/datatable/dataTables.min.js')}}"></script>
+    <script src="{{ asset('plugins/js/datatable/dataTables.bootstrap5.min.js')}}"></script>
+    <script src="{{ asset('plugins/js/datatable/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ asset('plugins/js/datatable/responsive.bootstrap5.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
 
-<script>
-$(document).ready(function () {
-    // Máscara do campo processo
-    $('[data-mask]').mask('9999999-99.9999.9.99.9999');
+    <script>
+        $(document).ready(function () {
 
-    // Carregar técnicos
-    $.ajax({
-        url: '/equipe/getAll',
-        type: 'GET',
-        success: function (response) {
-            var selectMembros = $('#equipe_id');
-            selectMembros.append('<option value="">Selecione...</option>');
-            response.forEach(function (membro) {
-                selectMembros.append(`<option value="${membro.id}">${membro.nome.toUpperCase()}</option>`);
+
+            // Máscara do campo processo
+            $('[data-mask]').mask('9999999-99.9999.9.99.9999');
+
+
+            // Carregar técnicos
+            $.ajax({
+                url: '/equipe/getAll',
+                type: 'GET',
+                success: function (response) {
+                    var selectMembros = $('#equipe_id');
+                    selectMembros.append('<option value="">Selecione...</option>');
+                    response.forEach(function (membro) {
+                        selectMembros.append(`<option value="${membro.id}">${membro.nome.toUpperCase()}</option>`);
+                    });
+                }
             });
-        }
-    });
 
-    // DataTable
-    var tabela = $('#focus').DataTable({
-        ajax: {
-            url: '/processos/getAll',
-            type: 'GET',
-            data: function (d) {
-                // aplica os filtros se existirem
-                d.numero_processo = $('#numero_processo').val();
-                d.prazo = $('#prazo').val();
-                d.equipe_id = $('#equipe_id').val();
-                d.reclamante_reclamado = $('#reclamante-reclamado').val();
-            },
-            dataSrc: ''
-        },
-        columns: [
-            {
-                data: 'id',
-                className: 'text-center',
-                render: function (data) {
-                    return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
+            // DataTable
+            var tabela = $('#focus').DataTable({
+                ajax: {
+                    url: '/processos/getAll',
+                    type: 'GET',
+                    data: function (d) {
+                        d.numero_processo = $('#numero_processo').val();
+                        d.prazo = $('#prazo').val();
+                        d.equipe_id = $('#equipe_id').val();
+                        d.reclamante_reclamado = $('#reclamante-reclamado').val();
+                    },
+                    dataSrc: ''
+                },
+                columns: [
+                    {
+                        data: 'id',
+                        className: 'text-center',
+                        render: function (data) {
+                            return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
                                 <i class="fa fa-folder-open-o"></i>
                             </button>`;
+                        }
+                    },
+                    { data: 'mes_ano', render: data => formatarData(data) },
+                    { data: 'pasta' },
+                    { data: 'numero_processo' },
+                    { data: 'reclamante' },
+                    { data: 'reclamada' },
+                    { data: 'carga', render: data => formatarData(data) },
+                    { data: 'prazo', render: data => formatarData(data) },
+                    { data: 'equipe.nome' },
+                    {
+                        data: 'status',
+                        render: function (data) {
+                            if (data === 'andamento')
+                                return `<span class="badge bg-primary text-white">${data.toUpperCase()}</span>`;
+                            if (data === 'entregue')
+                                return `<span class="badge bg-success text-white">${data.toUpperCase()}</span>`;
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            return `<i class="fa fa-trash text-danger delete-processo"
+                                data-nomeprocesso="${row.reclamante}"
+                                data-idprocesso="${row.id}"
+                                title="Excluir"></i>`;
+                        }
+                    }
+                ],
+                responsive: true,
+                pageLength: 10,
+                lengthChange: true,
+                searching: false,
+                language: { url: "{{ asset('plugins/js/datatable/pt-BR.json') }}" }
+            });
+
+            // Delegação de evento para exclusão
+            $(document).on('click', '.delete-processo', function () {
+                var processo_id = $(this).data('idprocesso');
+                var reclamante = $(this).data('nomeprocesso');
+
+                Swal.fire({
+                    icon: "question",
+                    title: "Alerta!",
+                    text: `Deseja excluir o processo do reclamante ${reclamante}?`,
+                    showDenyButton: true,
+                    confirmButtonText: "Sim, excluir!",
+                    denyButtonText: "Não",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/processo/delete/${processo_id}`,
+                            type: 'GET',
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Sucesso!",
+                                    text: "Processo excluído com sucesso."
+                                });
+                                tabela.ajax.reload(); // Atualiza a tabela
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Erro!",
+                                    text: "Não foi possível excluir o processo."
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+
+            // Filtro: desabilitar campos conforme regra
+            $('#numero_processo').on('input', function () {
+                if ($(this).val()) {
+                    $('#prazo, #equipe_id, #reclamante-reclamado ').prop('disabled', true).val('');
+                } else {
+                    $('#prazo, #equipe_id, #reclamante-reclamado').prop('disabled', false);
                 }
-            },
-            { data: 'mes_ano', render: data => formatarData(data) },
-            { data: 'pasta' },
-            { data: 'numero_processo' },
-            { data: 'reclamante' },
-            { data: 'reclamada' },
-            { data: 'carga', render: data => formatarData(data) },
-            { data: 'prazo', render: data => formatarData(data) },
-            { data: 'equipe.nome' },
-            {
-                data: 'status',
-                render: function (data) {
-                    if (data === 'andamento')
-                        return `<span class="badge bg-primary text-white">${data.toUpperCase()}</span>`;
-                    if (data === 'entregue')
-                        return `<span class="badge bg-success text-white">${data.toUpperCase()}</span>`;
-                    return data;
+            });
+
+            $('#prazo, #equipe_id, #reclamante-reclamado').on('change input', function () {
+                if ($('#prazo').val() || $('#equipe_id').val()) {
+                    $('#numero_processo').prop('disabled', true).val('');
+                } else {
+                    $('#numero_processo').prop('disabled', false);
                 }
-            },
-            {
-                data: 'id',
-                className: 'text-center',
-                render: function (data, type, row) {
-                    return `<i class="fa fa-trash text-danger" id="delete-processo"
-                                data-nomeprocesso="${row.numero_processo}"
-                                data-idprocesso="${row.id}" title="Excluir"></i>`;
-                }
+            });
+
+            // Submit do filtro
+            $('#form-search-all').on('submit', function (e) {
+                e.preventDefault();
+                tabela.ajax.reload();
+            });
+
+            // Reset filtro
+            $('#btn-search-all-reset').on('click', function () {
+                $('#form-search-all')[0].reset();
+                $('#numero_processo, #prazo, #equipe_id', '#reclamante-reclamado').prop('disabled', false);
+                tabela.ajax.reload();
+            });
+        });
+
+        // Funções auxiliares
+        function showProcesso(id) {
+            window.location.href = `/processo/show/${id}`;
+        }
+        function formatarData(input) {
+            if (!input) return "";
+            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+                const [ano, mes, dia] = input.split("-");
+                return `${dia}/${mes}/${ano}`;
             }
-        ],
-        responsive: true,
-        pageLength: 10,
-        lengthChange: true,
-        searching: false,
-        language: { url: "{{ asset('plugins/js/datatable/pt-BR.json') }}" }
-    });
-
-    // Filtro: desabilitar campos conforme regra
-    $('#numero_processo').on('input', function() {
-        if ($(this).val()) {
-            $('#prazo, #equipe_id, #reclamante-reclamado ').prop('disabled', true).val('');
-        } else {
-            $('#prazo, #equipe_id, #reclamante-reclamado').prop('disabled', false);
+            if (/^\d{4}-\d{2}$/.test(input)) {
+                const [ano, mes] = input.split("-");
+                return `${meses[parseInt(mes, 10) - 1]}/${ano}`;
+            }
+            return input;
         }
-    });
-
-    $('#prazo, #equipe_id, #reclamante-reclamado' ).on('change input', function() {
-        if ($('#prazo').val() || $('#equipe_id').val()) {
-            $('#numero_processo').prop('disabled', true).val('');
-        } else {
-            $('#numero_processo').prop('disabled', false);
-        }
-    });
-
-    // Submit do filtro
-    $('#form-search-all').on('submit', function (e) {
-        e.preventDefault();
-        tabela.ajax.reload();
-    });
-
-    // Reset filtro
-    $('#btn-search-all-reset').on('click', function () {
-        $('#form-search-all')[0].reset();
-        $('#numero_processo, #prazo, #equipe_id','#reclamante-reclamado').prop('disabled', false);
-        tabela.ajax.reload();
-    });
-});
-
-// Funções auxiliares
-function showProcesso(id) {
-    window.location.href = `/processo/show/${id}`;
-}
-function formatarData(input) {
-    if (!input) return "";
-    const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-    if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
-        const [ano, mes, dia] = input.split("-");
-        return `${dia}/${mes}/${ano}`;
-    }
-    if (/^\d{4}-\d{2}$/.test(input)) {
-        const [ano, mes] = input.split("-");
-        return `${meses[parseInt(mes,10)-1]}/${ano}`;
-    }
-    return input;
-}
-</script>
+    </script>
 @endsection

@@ -3,370 +3,373 @@
 @section('title') - Processos
 @endsection
 @section('css_after')
-
-<link rel="stylesheet" type="text/css" href="{{ asset('plugins/css/sweetalert2/sweetalert2.min.css') }}" />
-<link rel="stylesheet" href="{{asset('js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}">
-<link rel="stylesheet" href="{{asset('js/plugins/flatpickr/flatpickr.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/css/sweetalert2/sweetalert2.min.css') }}" />
+    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}">
+    <link rel="stylesheet" href="{{asset('js/plugins/flatpickr/flatpickr.min.css')}}">
 @endsection
 
 @section('content')
-<div class="content">
-    <div class="block">
-        <div class="block-header block-header-default">
-            <h3 class="block-title">Processos (Edição)</h3>
-        </div>
+    <div class="content">
+        <div class="block">
+            <div class="block-header block-header-default">
+                <h3 class="block-title">Processos (Edição)</h3>
+            </div>
 
-        <div class="block-content pb-6">
-            <form class="form-horizontal" id="form-processo" autocomplete="off">
-                {{ csrf_field() }}
+            <div class="block-content pb-6">
+                <form class="form-horizontal" id="form-processo" autocomplete="off">
+                    {{ csrf_field() }}
 
-                <div class="form-group row pl-4 pr-4">
-                    <!-- Coluna Esquerda -->
-                    <div class="col-lg-6 mt-2">
-                        <div class="row">
-                            <div class="col-lg-6 mt-2">
-                                <input type="hidden" id="id" name="id">
-                                <label class="form-control-label">Número Processos:</label>
-                                <input type="text" class="form-control" name="numero_processo"
-                                    data-mask="9999999-99.9999.9.99.9999" id="numero-processo" />
-                            </div>
-
-                            <div class="col-lg-2 mt-2">
-                                <label class="form-control-label">Vara:</label>
-                                <input type="text" class="form-control" name="vara" id="vara" />
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label">Mês/Ano:</label>
-                                <input type="month" class="form-control" name="mes_ano" id="mes-ano">
-                            </div>
-
-                            <div class="col-lg-6 mt-2">
-                                <label class="form-control-label" id="reclamante_div">Reclamante:</label>
-                                <input type="text" class="form-control" name="reclamante" id="reclamante" />
-                            </div>
-
-                            <div class="col-lg-6 mt-2">
-                                <label class="form-control-label">Documento Reclamante:</label>
-                                <input type="text" class="form-control" name="doc_reclamante" id="doc-reclamante"
-                                    data-mask="999.999.999-99" />
-                            </div>
-
-                            <div class="col-lg-6 mt-2">
-                                <label class="form-control-label" id="reclamada_div">Reclamado:</label>
-                                <input type="text" class="form-control" name="reclamada" id="reclamada" />
-                            </div>
-
-                            <div class="col-lg-6 mt-2">
-                                <label class="form-control-label">Documento Reclamado:</label>
-                                <input type="text" class="form-control" name="doc_reclamada" id="doc-reclamada"
-                                    data-mask="99.999.999/9999-99" />
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label" id="carga_div">Carga:</label>
-                                <input type="date" class="form-control" name="carga" id="carga" />
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label" id="prazo_div">Prazo:</label>
-                                <input type="date" class="form-control" name="prazo" id="prazo" />
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label" id="laudo-judicial_div">Entrega Laudo
-                                    Judicial:</label>
-                                <input type="date" class="form-control" name="laudo_judicial" id="laudo-judicial" />
-                            </div>
-
-                            <div class="col-lg-6 mt-2">
-                                <label class="form-control-label" id="equipe_div">Calculista:</label>
-                                <select class="form-control" name="equipe_id" id="equipe"></select>
-                            </div>
-
-                            <div class="col-lg-3 mt-2">
-                                <label class="form-control-label">Honorário:</label>
-                                <input type="text" id="honorario" class="form-control" name='honorario'
-                                    placeholder="0,00" oninput="mascaraMoeda(this)">
-                            </div>
-
-                            <div class="col-lg-3 mt-2">
-                                <label class="form-control-label">Calculo Erro:</label>
-                                <input type="text" id="calculo-conforme-erro" name="calculo_conforme_erro"
-                                    class="form-control" placeholder="0,00" readonly>
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label">Pago:</label>
-                                <select class="form-control" name="liquidado" id="liquidado">
-                                    <option value="0">Não</option>
-                                    <option value="1">Sim</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label">status:</label>
-                                <select class="form-control" name="status" id="status">
-                                    <option value="">Selecione...</option>
-                                    <option value="andamento">Andamento</option>
-                                    <option value="entregue">Entregue</option>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-12 mt-2">
-                                <label class="form-control-label">Observações:</label>
-                                <textarea class="form-control" name="observacoes" id="observacoes"></textarea>
-
-                            </div>
-                        </div>
-                        <div class="form-group row pl-4 pb-4 mt-4">
-                            <div class="col">
-                                <button type="button" class="btn btn-alt-warning" onclick="location.href='/processos'">
-                                    <i class="fa fa-chevron-left"></i> Voltar
-                                </button>
-                                <button type="reset" class="btn btn-alt-info">
-                                    <i class="fa fa-broom"></i> Limpar
-                                </button>
-                                <button type="submit" class="btn btn-alt-success">
-                                    <i class="fa fa-check"></i> Gravar
-                                </button>
-                            </div>
-                        </div>
-            </form>
-        </div>
-
-        <!-- Divisor -->
-        <div class="col-lg-1 d-flex justify-content-center">
-            <div style="border-left: 2px solid #ccc; height: 100%;"></div>
-        </div>
-
-        <!-- Coluna Direita -->
-        <div class="col-lg-5 mt-2">
-            <div class="block">
-                <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#btabs-alt-static-control">Controle</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#btabs-alt-static-esclarecimento">Esclarecimentos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#btabs-alt-static-pagamento">Pagamentos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#btabs-alt-static-fail">Erros de Execução</a>
-                    </li>
-                </ul>
-
-                <div class="block-content tab-content">
-                    <!-- Controle -->
-                    <div class="tab-pane active" id="btabs-alt-static-control" role="tabpanel">
-                        <table class="table table-bordered table-vcenter">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
-                                        Esclarecimentos</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th style="width:30%;">Carga</th>
-                                    <th class="text-center" style="width:30%;">Entrega Judicial</th>
-                                    <th style="width:30%;">Prazo</th>
-                                    <th></th>
-
-                                </tr>
-                            </thead>
-                            <tbody id="control-esclarecimentos"></tbody>
-                        </table>
-                        <table class="table table-bordered table-vcenter">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" colspan="6" style="background-color:#E6E6FA; ">
-                                        Pagamentos</th>
-                                </tr>
-                                <tr>
-                                    <th style="width:5%;"></th>
-                                    <th style="width:20%;">Valor R$</th>
-                                    <th class="text-center" style="width:10%;">Data</th>
-                                    <th class="text-center" style="width:20%;">Recibo</th>
-                                    <th style="width:40%;">Observação</th>
-                                    <th style="width:5%;"></th>
-
-                                </tr>
-                            </thead>
-                            <tbody id="control-pagamentos"></tbody>
-                        </table>
-                        <table class="table table-bordered table-vcenter">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
-                                        Erros de Execução</th>
-                                </tr>
-                                <tr>
-                                    <th style="width:5%;"></th>
-                                    <th class="text-center" style="width:40%;">Tipo Erro</th>
-                                    <th style="width:25%;">Data</th>
-                                    <th style="width:25%;">Custo de Apoio</th>
-                                    <th style="width:5%;"></th>
-
-                                </tr>
-                            </thead>
-                            <tbody id="control-erro"></tbody>
-                        </table>
-
-                    </div>
-
-                    <!-- Esclarecimentos -->
-                    <div class="tab-pane " id="btabs-alt-static-esclarecimento" role="tabpanel">
-                        <p class="p-10 bg-info text-white">Esclarecimento</p>
-
-                        <form id="form-esclarecimento">
-                            {{ csrf_field() }}
-                            <input type="hidden" class="form-control" name="id" id="id-esclarecimento" />
+                    <div class="form-group row pl-4 pr-4">
+                        <!-- Coluna Esquerda -->
+                        <div class="col-lg-6 mt-2">
                             <div class="row">
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Carga:</label>
-                                    <input type="date" class="form-control" name="carga_esclarecimento"
-                                        id="carga-esclarecimento" />
+                                    <input type="hidden" id="id" name="id">
+                                    <label class="form-control-label">Número Processos:</label>
+                                    <input type="text" class="form-control" name="numero_processo"
+                                        data-mask="9999999-99.9999.9.99.9999" id="numero-processo" />
                                 </div>
+
+                                <div class="col-lg-2 mt-2">
+                                    <label class="form-control-label">Vara:</label>
+                                    <input type="text" class="form-control" name="vara" id="vara" />
+                                </div>
+
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label">Mês/Ano:</label>
+                                    <input type="month" class="form-control" name="mes_ano" id="mes-ano">
+                                </div>
+
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Entrega Judicial:</label>
-                                    <input type="date" class="form-control" name="entrega_judicial_esclarecimento"
-                                        id="entrega-judicial-esclarecimento" />
+                                    <label class="form-control-label" id="reclamante_div">Reclamante:</label>
+                                    <input type="text" class="form-control" name="reclamante" id="reclamante" />
                                 </div>
+
                                 <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Prazo:</label>
-                                    <input type="date" class="form-control" name="prazo_esclarecimento"
-                                        id="prazo-esclarecimento" />
+                                    <label class="form-control-label">Documento Reclamante:</label>
+                                    <input type="text" class="form-control" name="doc_reclamante" id="doc-reclamante"
+                                        data-mask="999.999.999-99" />
                                 </div>
-                                <div class="col-lg-12 mt-2">
-                                    <label class="form-control-label">Observação:</label>
-                                    <input type="text" class="form-control" name="observacao_esclarecimento"
-                                        id="observacao-esclarecimento" />
+
+                                <div class="col-lg-6 mt-2">
+                                    <label class="form-control-label" id="reclamada_div">Reclamado:</label>
+                                    <input type="text" class="form-control" name="reclamada" id="reclamada" />
                                 </div>
+
+                                <div class="col-lg-6 mt-2">
+                                    <label class="form-control-label">Documento Reclamado:</label>
+                                    <input type="text" class="form-control" name="doc_reclamada" id="doc-reclamada"
+                                        data-mask="99.999.999/9999-99" />
+                                </div>
+
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label" id="carga_div">Carga:</label>
+                                    <input type="date" class="form-control" name="carga" id="carga" />
+                                </div>
+
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label" id="prazo_div">Prazo:</label>
+                                    <input type="date" class="form-control" name="prazo" id="prazo" />
+                                </div>
+
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label" id="laudo-judicial_div">Entrega Laudo
+                                        Judicial:</label>
+                                    <input type="date" class="form-control" name="laudo_judicial" id="laudo-judicial" />
+                                </div>
+
+                                <div class="col-lg-6 mt-2">
+                                    <label class="form-control-label" id="equipe_div">Calculista:</label>
+                                    <select class="form-control" name="equipe_id" id="equipe"></select>
+                                </div>
+
                                 <div class="col-lg-3 mt-2">
-                                    <button type="submit" class="btn btn-alt-success" id="salvar-esclarecimento">
-                                        <i class="fa fa-check"></i> Salvar
-                                    </button>
+                                    <label class="form-control-label">Honorário:</label>
+                                    <input type="text" id="honorario" class="form-control" name='honorario'
+                                        placeholder="0,00" oninput="mascaraMoeda(this)">
                                 </div>
-                            </div>
-                        </form>
-                    </div>
 
-                    <!-- Pagamentos -->
-                    <div class="tab-pane" id="btabs-alt-static-pagamento" role="tabpanel">
-                        <p class="p-10 bg-info text-white">Pagamento</p>
-                        <form id="form-pagamentos" class="form-horizontal" enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <input type="hidden" class="form-control" name="id" id="id-pagamento" />
-                            <div class="row">
-                                <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Valor:</label>
-                                    <input type="text" class="form-control" name="valor_pagamento" id="valor-pagamento"
-                                        oninput="mascaraMoeda(this)" />
-                                </div>
-                                <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Data de Pagamento:</label>
-                                    <input type="date" class="form-control" name="data_pagamento" id="data-pagamento" />
-                                </div>
-                                <div class="col-lg-12 mt-2">
-                                    <label class="form-control-label">Recibo:</label>
-                                    <input type="file" class="form-control" id="recibo" name="recibo[]" multiple>
-                                </div>
-                                <div class="col-lg-12 mt-2">
-                                    <label class="form-control-label">Observações:</label>
-                                    <textarea class="form-control" name="observacao_pagamento"
-                                        id="observacao-pagamento"></textarea>
-                                </div>
                                 <div class="col-lg-3 mt-2">
-                                    <button type="submit" class="btn btn-alt-success" id="salvar-pagamento">
-                                        <i class="fa fa-check"></i> Salvar
-                                    </button>
+                                    <label class="form-control-label">Calculo Erro:</label>
+                                    <input type="text" id="calculo-conforme-erro" name="calculo_conforme_erro"
+                                        class="form-control" placeholder="0,00" readonly>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
 
-                    <!-- Erros de Execução -->
-                    <div class="tab-pane" id="btabs-alt-static-fail" role="tabpanel">
-                        <p class="p-10 bg-info text-white">Erros de Execução</p>
-                        <form id="form-erro">
-                            {{ csrf_field() }}
-                            <input type="hidden" class="form-control" name="id" id="id-erro" />
-
-                            <div class="row">
-                                <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Tipo Erro:</label>
-                                    <input type="text" class="form-control" name="tipo_erro" id="tipo-erro" />
-                                </div>
-                                <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Data:</label>
-                                    <input type="date" class="form-control" name="data_erro" id="data-erro" />
-                                </div>
-                                <div class="col-lg-6 mt-2">
-                                    <label class="form-control-label">Gerou Custo de Apoio:</label>
-                                    <select class="form-control" name="custo_apoio" id="custo-apoio">
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label">Pago:</label>
+                                    <select class="form-control" name="liquidado" id="liquidado">
                                         <option value="0">Não</option>
                                         <option value="1">Sim</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-12 mt-2">
-                                    <label class="form-control-label">Observação:</label>
-                                    <input type="text" class="form-control" name="observacao" id="observacao-erro" />
+                                <div class="col-lg-4 mt-2">
+                                    <label class="form-control-label">status:</label>
+                                    <select class="form-control" name="status" id="status">
+                                        <option value="">Selecione...</option>
+                                        <option value="andamento">Andamento</option>
+                                        <option value="entregue">Entregue</option>
+                                    </select>
                                 </div>
-                                <div class="col-lg-3 mt-2">
-                                    <button type="submit" class="btn btn-alt-success" id="salvar-erro">
-                                        <i class="fa fa-check"></i> Incluir
+
+                                <div class="col-lg-12 mt-2">
+                                    <label class="form-control-label">Observações:</label>
+                                    <textarea class="form-control" name="observacoes" id="observacoes"></textarea>
+
+                                </div>
+                            </div>
+                            <div class="form-group row pl-4 pb-4 mt-4">
+                                <div class="col">
+                                    <button type="button" class="btn btn-alt-warning" onclick="location.href='/processos'">
+                                        <i class="fa fa-chevron-left"></i> Voltar
+                                    </button>
+                                    <button type="reset" class="btn btn-alt-info">
+                                        <i class="fa fa-broom"></i> Limpar
+                                    </button>
+                                    <button type="submit" class="btn btn-alt-success">
+                                        <i class="fa fa-check"></i> Gravar
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                </form>
+            </div>
+
+            <!-- Divisor -->
+            <div class="col-lg-1 d-flex justify-content-center">
+                <div style="border-left: 2px solid #ccc; height: 100%;"></div>
+            </div>
+
+            <!-- Coluna Direita -->
+            <div class="col-lg-5 mt-2">
+                <div class="block">
+                    <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#btabs-alt-static-control">Controle</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#btabs-alt-static-esclarecimento">Esclarecimentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#btabs-alt-static-pagamento">Pagamentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#btabs-alt-static-fail">Erros de Execução</a>
+                        </li>
+                    </ul>
+
+                    <div class="block-content tab-content">
+                        <!-- Controle -->
+                        <div class="tab-pane active" id="btabs-alt-static-control" role="tabpanel">
+                            <table class="table table-bordered table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
+                                            Esclarecimentos</th>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th style="width:30%;">Carga</th>
+                                        <th class="text-center" style="width:30%;">Entrega Judicial</th>
+                                        <th style="width:30%;">Prazo</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="control-esclarecimentos"></tbody>
+                            </table>
+                            <table class="table table-bordered table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" colspan="6" style="background-color:#E6E6FA; ">
+                                            Pagamentos</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:5%;"></th>
+                                        <th style="width:20%;">Valor R$</th>
+                                        <th class="text-center" style="width:10%;">Data</th>
+                                        <th class="text-center" style="width:20%;">Recibo</th>
+                                        <th style="width:40%;">Observação</th>
+                                        <th style="width:5%;"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="control-pagamentos"></tbody>
+                            </table>
+                            <table class="table table-bordered table-vcenter">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" colspan="5" style="background-color:#E6E6FA;">
+                                            Erros de Execução</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:5%;"></th>
+                                        <th class="text-center" style="width:40%;">Tipo Erro</th>
+                                        <th style="width:25%;">Data</th>
+                                        <th style="width:25%;">Custo de Apoio</th>
+                                        <th style="width:5%;"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody id="control-erro"></tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- Esclarecimentos -->
+                        <div class="tab-pane " id="btabs-alt-static-esclarecimento" role="tabpanel">
+                            <p class="p-10 bg-info text-white">Esclarecimento</p>
+
+                            <form id="form-esclarecimento">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-esclarecimento" />
+                                <div class="row">
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Carga:</label>
+                                        <input type="date" class="form-control" name="carga_esclarecimento"
+                                            id="carga-esclarecimento" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Entrega Judicial:</label>
+                                        <input type="date" class="form-control" name="entrega_judicial_esclarecimento"
+                                            id="entrega-judicial-esclarecimento" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Prazo:</label>
+                                        <input type="date" class="form-control" name="prazo_esclarecimento"
+                                            id="prazo-esclarecimento" />
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <label class="form-control-label">Observação:</label>
+                                        <input type="text" class="form-control" name="observacao_esclarecimento"
+                                            id="observacao-esclarecimento" />
+                                    </div>
+                                    <div class="col-lg-3 mt-2">
+                                        <button type="submit" class="btn btn-alt-success" id="salvar-esclarecimento">
+                                            <i class="fa fa-check"></i> Salvar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Pagamentos -->
+                        <div class="tab-pane" id="btabs-alt-static-pagamento" role="tabpanel">
+                            <p class="p-10 bg-info text-white">Pagamento</p>
+                            <form id="form-pagamentos" class="form-horizontal" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-pagamento" />
+                                <div class="row">
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Valor:</label>
+                                        <input type="text" class="form-control" name="valor_pagamento" id="valor-pagamento"
+                                            oninput="mascaraMoeda(this)" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Data de Pagamento:</label>
+                                        <input type="date" class="form-control" name="data_pagamento" id="data-pagamento" />
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <label class="form-control-label">Recibo:</label>
+                                        <input type="file" class="form-control" id="recibo" name="recibo[]" multiple>
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <label class="form-control-label">Observações:</label>
+                                        <textarea class="form-control" name="observacao_pagamento"
+                                            id="observacao-pagamento"></textarea>
+                                    </div>
+                                    <div class="col-lg-3 mt-2">
+                                        <button type="submit" class="btn btn-alt-success" id="salvar-pagamento">
+                                            <i class="fa fa-check"></i> Salvar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Erros de Execução -->
+                        <div class="tab-pane" id="btabs-alt-static-fail" role="tabpanel">
+                            <p class="p-10 bg-info text-white">Erros de Execução</p>
+                            <form id="form-erro">
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" name="id" id="id-erro" />
+
+                                <div class="row">
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Tipo Erro:</label>
+                                        <input type="text" class="form-control" name="tipo_erro" id="tipo-erro" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Data:</label>
+                                        <input type="date" class="form-control" name="data_erro" id="data-erro" />
+                                    </div>
+                                    <div class="col-lg-6 mt-2">
+                                        <label class="form-control-label">Gerou Custo de Apoio:</label>
+                                        <select class="form-control" name="custo_apoio" id="custo-apoio">
+                                            <option value="0">Não</option>
+                                            <option value="1">Sim</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <label class="form-control-label">Observação:</label>
+                                        <input type="text" class="form-control" name="observacao" id="observacao-erro" />
+                                    </div>
+                                    <div class="col-lg-3 mt-2">
+                                        <button type="submit" class="btn btn-alt-success" id="salvar-erro">
+                                            <i class="fa fa-check"></i> Incluir
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <hr>
+
+    </div>
+
+
+    <!-- Message Modal -->
+    <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="modal-message"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-popout modal-xl" role="document"> <!-- modal maior para PDFs -->
+            <div class="modal-content">
+                <div class="block block-themed block-transparent mb-0">
+                    <div class="block-header bg-primary-dark">
+                        <h3 class="block-title" id="modal-title"></h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                <i class="si si-close"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="block-content text-center" id="modal-body" style="max-height: 80vh; overflow:auto;">
+                        <!-- Conteúdo dinâmico entra aqui -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- END Message Modal -->
 
-    <hr>
-
-    <hr>
-
-</div>
-
-
-<!-- Message Modal -->
-<div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="modal-message"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-popout modal-xl" role="document"> <!-- modal maior para PDFs -->
-        <div class="modal-content">
-            <div class="block block-themed block-transparent mb-0">
-                <div class="block-header bg-primary-dark">
-                    <h3 class="block-title" id="modal-title"></h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
-                            <i class="si si-close"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="block-content text-center" id="modal-body" style="max-height: 80vh; overflow:auto;">
-                    <!-- Conteúdo dinâmico entra aqui -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END Message Modal -->
 @endsection
 @section('js_after')
-<!--form validation Custom js-->
-<script src="{{asset('assets/js/codebase.app.min.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
-<script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <!--form validation Custom js-->
+    <script src="{{asset('assets/js/codebase.core.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script>
 
-
-<script>
-
+$(document).on('click', '[data-bs-toggle="dropdown"]', function (e) {
+    e.preventDefault();
+    const dropdown = new bootstrap.Dropdown(this);
+    dropdown.toggle();
+});
         localStorage.setItem("calculo-conforme-erro", 0)
         localStorage.setItem("valor_pago", 0)
         localStorage.setItem("id", null)
@@ -945,8 +948,8 @@
             })();
 
 
-            $(document).on('click', '.deleteFileId', function (e) {
-                console.log("ate aqui")
+            $(document).on('click', '#deleteFileId', function (e) {
+
                 var fileId = $(this).data('recibo-id');
                 var fileName = $(this).data('arquivo');
 

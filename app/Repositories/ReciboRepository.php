@@ -23,10 +23,11 @@ class ReciboRepository
     public function create($data, $pagamentoId, )
     {
         try {
+            dd(removerAcentos($data['tecnico']));
             foreach($data['recibo'] as $recibo){
                 $file = $recibo;
                 $path = $file->storeAs(
-                    'recibos/' . $data['tecnico'] . '/' . date('M_Y', strtotime($data['data_pagamento'])),
+                    'recibos/' . removerAcentos($data['tecnico']) . '/' . date('M_Y', strtotime($data['data_pagamento'])),
                     $file->getClientOriginalName(),
                     'public'
                 );

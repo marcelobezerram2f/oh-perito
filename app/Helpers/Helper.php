@@ -1,4 +1,29 @@
 <?php
+function removerAcentos($string) {
+    // Substitui ç/Ç por c/C
+    $string = str_replace(
+        ['ç', 'Ç'],
+        ['c', 'C'],
+        $string
+    );
+
+    // Remove acentuação
+    $mapaAcentos = [
+        'á'=>'a','à'=>'a','ã'=>'a','â'=>'a','ä'=>'a',
+        'Á'=>'A','À'=>'A','Ã'=>'A','Â'=>'A','Ä'=>'A',
+        'é'=>'e','è'=>'e','ê'=>'e','ë'=>'e',
+        'É'=>'E','È'=>'E','Ê'=>'E','Ë'=>'E',
+        'í'=>'i','ì'=>'i','î'=>'i','ï'=>'i',
+        'Í'=>'I','Ì'=>'I','Î'=>'I','Ï'=>'I',
+        'ó'=>'o','ò'=>'o','ô'=>'o','õ'=>'o','ö'=>'o',
+        'Ó'=>'O','Ò'=>'O','Ô'=>'O','Õ'=>'O','Ö'=>'O',
+        'ú'=>'u','ù'=>'u','û'=>'u','ü'=>'u',
+        'Ú'=>'U','Ù'=>'U','Û'=>'U','Ü'=>'U',
+        'ñ'=>'n','Ñ'=>'N'
+    ];
+
+    return strtr($string, $mapaAcentos);
+}
 
 
 function contarEsclarecimentos(array $array): int {

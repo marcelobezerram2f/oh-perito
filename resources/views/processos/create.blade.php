@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-lg-3 mt-2">
                     <label class="form-control-label">Documento Reclamado :</label>
-                    <input type="text" class="form-control" name="doc_reclamada" data-mask="999.999.999/9999-99" />
+                    <input type="text" class="form-control" name="doc_reclamada" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
@@ -123,8 +123,6 @@
     <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
     <script src="{{ asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
     <script>
-
-
         $.ajax({
             url: '/equipe/getAll' + location.search,
             type: 'GET',
@@ -192,41 +190,20 @@
                     marcarCampoInvalido('carga');
                     c++
                 } else {
-                    const currentDate = new Date();
-                    const selectedDate = new Date(carga);
-                    if (selectedDate < currentDate) {
-                        marcarCampoInvalido('carga');
-                        c++
-                    } else {
-                        desmarcarCampoInvalido('carga');
-                    }
+                   desmarcarCampoInvalido('carga');
                 }
-
                 if (prazo === '') {
                     marcarCampoInvalido('prazo');
                     c++
                 } else {
-                    const currentDate = new Date();
-                    const selectedDate = new Date(prazo);
-                    if (selectedDate < currentDate) {
-                        marcarCampoInvalido('prazo');
-                        c++
-                    } else {
-                        desmarcarCampoInvalido('prazo');
-                    }
+                    desmarcarCampoInvalido('prazo');
                 }
+
                 if (laudo_judicial === '') {
                     marcarCampoInvalido('laudo-judicial');
                     c++
                 } else {
-                    const currentDate = new Date();
-                    const selectedDate = new Date(prazo);
-                    if (selectedDate < currentDate) {
-                        marcarCampoInvalido('laudo-judicial');
-                        c++
-                    } else {
-                        desmarcarCampoInvalido('laudo-judicial');
-                    }
+                    desmarcarCampoInvalido('laudo-judicial');
                 }
 
                 if (select_membros === '') {

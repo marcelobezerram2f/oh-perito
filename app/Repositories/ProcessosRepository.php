@@ -217,9 +217,9 @@ class ProcessosRepository
             $this->erroExecucao->where('processo_id', $id)->delete();
             $this->esclarecimento->where('processo_id', $id)->delete();
             $pagamentos = $this->pagamento->where('processo_id', $id)->get();
+            $pagamentoRepository = new PagamentosRepository();
             if ($pagamentos) {
                 foreach ($pagamentos as $pagamentoItem)
-                    $pagamentoRepository = new PagamentosRepository();
                 $pagamentoRepository->delete($pagamentoItem->id);
             }
             $processoDelete = $this->processo->find($id);
