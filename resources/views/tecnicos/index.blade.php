@@ -51,7 +51,7 @@
     <script src="{{ asset('plugins/js/datatable/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('plugins/js/datatable/responsive.bootstrap5.min.js')}}"></script>
     <script>
-       $('#focus').DataTable({
+    $('#focus').DataTable({
     ajax: {
         url: '/equipe/getAll' + location.search,
         type: 'GET',
@@ -62,6 +62,7 @@
             data: 'id',
             className: 'text-center',
             render: function (data) {
+                if (data == null) return "<span class='text-danger'>-</span>";
                 return `<button class="btn btn-link text-center" type="button"
                             data-membro="${data}"
                             onClick="showMembro(${data})">
@@ -69,18 +70,29 @@
                         </button>`;
             }
         },
-        { data: 'nome', render: nome => nome.toUpperCase() },
+        {
+            data: 'nome',
+            render: function (nome) {
+                return nome ? nome.toUpperCase() : "<span class='text-danger'>-</span>";
+            }
+        },
         {
             data: 'telefone',
             render: function (telefone) {
-                return telefone ? telefone : "<span class='text-danger'> - </span>";
+                return telefone ? telefone : "<span class='text-danger'>-</span>";
             }
         },
-        { data: 'email', render: email => email.toUpperCase() },
+        {
+            data: 'email',
+            render: function (email) {
+                return email ? email.toUpperCase() : "<span class='text-danger'>-</span>";
+            }
+        },
         {
             data: 'ativo',
             className: 'text-center',
             render: function (ativo) {
+                if (ativo == null) return "<span class='text-danger'>-</span>";
                 return ativo == 1
                     ? "<span class='badge bg-success text-white'>Ativo</span>"
                     : "<span class='badge bg-danger text-white'>Inativo</span>";
@@ -90,10 +102,11 @@
             data: 'id',
             className: 'text-center',
             render: function (data, type, row) {
+                if (data == null) return "<span class='text-danger'>-</span>";
                 return `<i class="fa fa-trash text-danger"
                             id="deleteMembroId"
-                            onClick="deleteMembro(${data}, '${row.nome}')"
-                            data-nomeMembro="${row.nome.toUpperCase()}"
+                            onClick="deleteMembro(${data}, '${(row.nome || '').toUpperCase()}')"
+                            data-nomeMembro="${(row.nome || '-').toUpperCase()}"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Excluir">
@@ -110,6 +123,7 @@
     },
     destroy: true // garante que não vai dar erro de reinit
 });
+
 
 
         function showMembro(id) {
