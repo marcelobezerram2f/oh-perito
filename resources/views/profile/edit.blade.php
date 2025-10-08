@@ -79,9 +79,9 @@
                             <div class="col-6">
                                 <div class="input-group ml-4" id="img-avatar">
                                     @if (is_null(Auth::user()->avatar))
-                                        <img class="img-avatar img-avatar128 " src="media\avatars\avatar0.jpg" alt="">
+                                        <img class="img-avatar img-avatar128 " src="{{asset('media\avatars\avatar0.jpg')}}" alt="">
                                     @else
-                                        <img class="img-avatar img-avatar128" src="media\avatars\{{ Auth::user()->avatar }}"
+                                        <img class="img-avatar img-avatar128"  src="{{ Auth::user()->avatar }}"
                                             alt="">
                                     @endif
                                 </div>
