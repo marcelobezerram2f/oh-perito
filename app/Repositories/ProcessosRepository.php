@@ -224,6 +224,7 @@ class ProcessosRepository
             }
             $processoDelete = $this->processo->find($id);
             $processoDelete->delete();
+
             $response = ['code' => 200];
         } catch (Exception $e) {
             $response = ['message' => 'Falha fatal na exclusão do processo, Contate o suporte!', 'code' => 400, 'erro' => $e->getMessage(), 'trace' => $e->getTraceAsString()];

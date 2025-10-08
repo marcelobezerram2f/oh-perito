@@ -49,7 +49,7 @@
                             <div class="col-lg-6 mt-2">
                                 <label class="form-control-label">Documento Reclamante:</label>
                                 <input type="text" class="form-control" name="doc_reclamante" id="doc-reclamante"
-                                    data-mask="999.999.999-99" />
+                                     />
                             </div>
 
                             <div class="col-lg-6 mt-2">
@@ -60,7 +60,7 @@
                             <div class="col-lg-6 mt-2">
                                 <label class="form-control-label">Documento Reclamado:</label>
                                 <input type="text" class="form-control" name="doc_reclamada" id="doc-reclamada"
-                                    data-mask="99.999.999/9999-99" />
+                                     />
                             </div>
 
                             <div class="col-lg-4 mt-2">

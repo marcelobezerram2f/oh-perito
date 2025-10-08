@@ -26,6 +26,7 @@ class EsclarecimentoRepository
                 $novoEsclarecimento = [
                     "carga" => $data["carga_esclarecimento"],
                     "entrega_judicial" => $data["entrega_judicial_esclarecimento"],
+                    "prazo" => $data["prazo_esclarecimento"],
                     "processo_id" => $data["processo_id"],
                     "observacao" => $data["observacao_esclarecimento"],
                 ];

@@ -29,7 +29,7 @@
 
                 <div class="col-lg-4 mt-2">
                     <label class="form-control-label">Telefone:</label>
-                    <input type="text" class="form-control" name="telefone" data-mask="(00) 0000-0000" />
+                    <input type="text" class="form-control" name="telefone" data-mask="(99) 99999-9999" />
                 </div>
 
                 <div class="col-lg-3 mt-2">
@@ -55,7 +55,7 @@
 
                 <div class="col-lg-8 mt-2">
                     <label class="form-control-label">Email:</label>
-                    <input type="text" class="form-control" name="email" value="{{old('email')}}" required />
+                    <input type="text" class="form-control" name="email" value="{{old('email')}}" />
                 </div>
             </div>
             <hr>
@@ -87,9 +87,18 @@
     <!--form validation Custom js-->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/plugins/masked-inputs/jquery.maskedinput.min.js')}}"></script>
 
 
     <script>
+        $(document).ready(function () {
+
+            $('[data-mask]').each(function () {
+                var mask = $(this).attr('data-mask');
+                $(this).mask(mask);
+            });
+        });
+
         $(document).ready(function () {
             $("#form-tecnico").on("submit", function (e) {
                 console.log("teste")

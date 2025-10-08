@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ErroExecucao;
+use App\Models\Processo;
 use Exception;
 
 
@@ -19,8 +20,6 @@ class ErroExecucaoRepository
 
     public function create($data)
     {
-
-
         try {
             if (isset($data['id']) && !is_null($data['id'])) {
                 return $this->update($data);
@@ -35,6 +34,9 @@ class ErroExecucaoRepository
                 ];
                 $persist = $this->erroExecucao->create($novoErro);
                 if ($persist->id) {
+                    $processo =  Processo::find($data["processo_id"]);
+                    $processo->calculo_conforme_erro = floatval($processo->honorario * 0.20);
+                    $processo->save();
                     $response = ['code' => 200];
                 }
             }
@@ -70,7 +72,14 @@ class ErroExecucaoRepository
     {
         try {
             $erroDelete = $this->erroExecucao->find($id);
+            $processoId = $erroDelete->processo_id;
             $erroDelete->delete();
+            $erros = $this->erroExecucao->where('processo_id', $processoId)->count();
+            if($erros == 0) {
+                $processo =  Processo::find($processoId);
+                $processo->calculo_conforme_erro = floatval($processo->honorario * 0.30);
+                $processo->save();
+            }
             $response = ['code' => 200];
         } catch (Exception $e) {
             $response = ["message" => "Falha fatal na esclusão de erro de execução.", "code" => 400];
