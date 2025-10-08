@@ -23,7 +23,6 @@ class ReciboRepository
     public function create($data, $pagamentoId, )
     {
         try {
-            dd(removerAcentos($data['tecnico']));
             foreach($data['recibo'] as $recibo){
                 $file = $recibo;
                 $path = $file->storeAs(
