@@ -105,7 +105,7 @@
                         <!-- END Close Sidebar -->
 
                         <!-- Logo -->
-                        <a class="link-effect font-w700" href="index.php">
+                        <a class="link-effect font-w700" href="/">
                             <img src="{{ asset('images/oh_logo.png') }}" width="80px" alt="">
                         </a>
                         <!-- END Logo -->
