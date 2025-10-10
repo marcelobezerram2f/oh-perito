@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('processos', function (Blueprint $table) {
             $table->id();
-            $table->string('numero_processo');
+            $table->string('numero_processo')->nullable();
             $table->string('mes_ano')->nullable();
             $table->integer('pasta')->default(0);
-            $table->string('vara');
+            $table->string('vara')->nullable();
             $table->string('reclamante');
             $table->string('doc_reclamante')->nullable();
             $table->string('status')->default('andamento');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->date('prazo')->nullable();
             $table->date('laudo_judicial')->nullable();
             $table->bigInteger('equipe_id')->nullable();
-            $table->decimal('honorario', 12,2);
+            $table->decimal('honorario', 12,2)->nullable();
             $table->boolean('liquidado')->default(0);
             $table->decimal('calculo_conforme_erro', 12, 2)->nullable();
             $table->longText('observacoes')->nullable();

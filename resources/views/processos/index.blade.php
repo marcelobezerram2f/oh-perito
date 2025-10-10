@@ -44,7 +44,6 @@
                             <label class="control-label">Técnico Calculista</label>
                             <select class="form-control" name="equipe_id" id="equipe_id"></select>
                         </div>
-
                         <div class="col-sm-3 d-flex gap-2">
                             <button class="btn btn-primary btn-outline ml-3" type="submit">
                                 <i class="fa fa-search"></i> Buscar
@@ -59,14 +58,16 @@
                 <table id="focus" class="table table-bordered table-striped table-vcenter js-dataTable-full" width="100%">
                     <thead class="bg-earth-lighter">
                         <tr>
+                            <td class="font-w600 text-center" width="1%"></td>
                             <td class="font-w600 text-center" width="5%"></td>
-                            <td class="font-w600 text-center">Mês/Ano</td>
-                            <td class="font-w600 text-center">Pasta</td>
-                            <td class="font-w600 text-center">Processo</td>
+                            <td class="font-w600 text-center" width="100px">Mês/Ano</td>
+                            <td class="font-w600 text-center" width="80px">Pasta</td>
+                            <td class="font-w600 text-center" width="250px">Processo</td>
+                            <td class="font-w600 text-center" width="150px">Vara</td>
                             <td class="font-w600 text-center">Reclamante</td>
                             <td class="font-w600 text-center">Reclamada</td>
                             <td class="font-w600 text-center">Carga</td>
-                            <td class="font-w600 text-center">Prazo</td>
+                            <td class="font-w600 text-center" width="150px">Prazo</td>
                             <td class="font-w600 text-center">Calculista</td>
                             <td class="font-w600 text-center">Status</td>
                             <td class="text-center no-sort" style="width: 10px"><i class="si si-settings"></i></td>
@@ -122,18 +123,21 @@
                     dataSrc: ''
                 },
                 columns: [
+                    { data: 'vencer', render: function() {return ''} },
                     {
+
                         data: 'id',
                         className: 'text-center',
                         render: function (data) {
                             return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
-                                <i class="fa fa-folder-open-o"></i>
-                            </button>`;
+                                        <i class="fa fa-folder-open-o"></i>
+                                    </button>`;
                         }
                     },
                     { data: 'mes_ano', render: data => formatarData(data) },
                     { data: 'pasta' },
                     { data: 'numero_processo' },
+                    { data: 'vara' },
                     { data: 'reclamante' },
                     { data: 'reclamada' },
                     { data: 'carga', render: data => formatarData(data) },
@@ -146,6 +150,12 @@
                                 return `<span class="badge bg-primary text-white">${data.toUpperCase()}</span>`;
                             if (data === 'entregue')
                                 return `<span class="badge bg-success text-white">${data.toUpperCase()}</span>`;
+                            if (data === 'suspenso')
+                                return `<span class="badge bg-warning text-white">${data.toUpperCase()}</span>`;
+                            if (data === 'cancelado')
+                                return `<span class="badge bg-danger text-white">${data.toUpperCase()}</span>`;
+                            if (data === 'assistência')
+                                return `<span class="badge bg-info text-white">${data.toUpperCase()}</span>`;
                             return data;
                         }
                     },
@@ -154,9 +164,9 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `<i class="fa fa-trash text-danger delete-processo"
-                                data-nomeprocesso="${row.reclamante}"
-                                data-idprocesso="${row.id}"
-                                title="Excluir"></i>`;
+                                        data-nomeprocesso="${row.reclamante}"
+                                        data-idprocesso="${row.id}"
+                                        title="Excluir"></i>`;
                         }
                     }
                 ],
@@ -164,8 +174,33 @@
                 pageLength: 10,
                 lengthChange: true,
                 searching: false,
-                language: { url: "{{ asset('plugins/js/datatable/pt-BR.json') }}" }
+                language: { url: "{{ asset('plugins/js/datatable/pt-BR.json') }}" },
+
+                // 🔥 Aqui está a nova lógica
+                createdRow: function (row, data) {
+                    var vencer = parseInt(data.vencer);
+                    // linha com prazo vencido e em andamento
+                    var $primeiraColuna = $('td', row).eq(0);
+                    if (vencer < 0 && data.status === 'andamento') {
+                        $(row).css('background-color', '#FFEEBF');
+                        $primeiraColuna.html(`
+                            <i class="fa fa-circle text-danger"></i>
+                            `);
+                    }
+                     else if (vencer > 0 &&  vencer < 6 && data.status === 'andamento') {
+                        $primeiraColuna.html(`
+                            <i class="fa fa-circle text-warning"></i>
+                            `);
+                    } else {
+                        $primeiraColuna.html(`
+                            <i class="fa fa-circle text-success"></i>
+                            `);
+                    }
+
+                }
+
             });
+
 
             // Delegação de evento para exclusão
             $(document).on('click', '.delete-processo', function () {

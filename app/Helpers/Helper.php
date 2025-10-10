@@ -1,4 +1,6 @@
 <?php
+
+
 function removerAcentos($string) {
     // Substitui ç/Ç por c/C
     $string = str_replace(

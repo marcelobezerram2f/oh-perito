@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pagamentos', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('honorario_id');
+            $table->bigInteger('processo_id');
             $table->date('data');
             $table->decimal('valor', 12,2);
             $table->longText('observacao')->nullable();

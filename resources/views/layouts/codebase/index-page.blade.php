@@ -447,31 +447,38 @@
             $("#qtd_due").html(response.length);
             response.forEach(function (processo) {
                 if (processo.dias == 4) {
+                    var vencimento = 'vencendo em'
                     var dias = `<span class="text-primary mr-5 mb-5 w600">${processo.dias} dias</span>`
                     var li = '<li>'
                 } else if (processo.dias == 3) {
+                    var vencimento = 'vencendo em'
                     var dias = `<span class="text-info mr-5 mb-5">${processo.dias} dias</span>`
                     var li = '<li>'
 
                 } else if (processo.dias == 2) {
+                    var vencimento = 'vencendo em'
                     var dias = `<span class=" text-warning mr-5 mb-5">${processo.dias} dias</span>`
                     var li = '<li>'
 
                 } else if (processo.dias == 1) {
+                    var vencimento = 'vencendo em'
                     var dias = `<span class="text-danger mr-5 mb-5 w600">${processo.dias} dia</span>`
                     var li = '<li>'
 
                 } else if (processo.dias == 5) {
+                    var vencimento = 'vencendo em'
                     var dias = `<span class="text-secondary mr-5 mb-5">${processo.dias} dias</span>`
                     var li = '<li>'
 
                 }
                 else if (processo.dias == 0) {
+                    var vencimento = 'vencendo'
                     var dias = `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`
                     var li = '<li>'
 
                 } else if (processo.dias < 0) {
-                    var dias = `<span class="text-danger mr-5 mb-5">${processo.dias} dias</span>`
+                    var vencimento = '<strong>vencido</strong> a'
+                   var dias = `<span class="text-danger mr-5 mb-5">${Math.abs(processo.dias)} dias</span>`
                     var li = '<li style="background:#FFEEBF">'
 
                 }
@@ -481,7 +488,7 @@
                                             <i class="fa fa-fw fa-exclamation-triangle text-warning"></i>
                                         </div>
                                         <div class="media-body pr-10">
-                                            <p class="mb-0">Processo número <strong>${processo.numero_processo} </strong> com prazo de entrega vencendo em ${dias} (${processo.prazo}}), responsável : <strong> ${processo.calculista} <strong>  !</p>
+                                            <p class="mb-0">Processo número <strong>${processo.numero_processo} </strong> com prazo de entrega ${vencimento} ${dias} (${processo.prazo}}), responsável : <strong> ${processo.calculista} <strong>  !</p>
 
                                         </div>
                                     </a>

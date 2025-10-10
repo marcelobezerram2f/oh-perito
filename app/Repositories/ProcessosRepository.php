@@ -54,10 +54,46 @@ class ProcessosRepository
             if (!empty($data['reclamante_reclamado'])) {
                 $query->where('reclamante', 'like', '%' . $data['reclamante_reclamado'] . '%')
                     ->orWhere('reclamada', 'like', '%' . $data['reclamante_reclamado'] . '%');
-                }
+            }
 
             $processos = $query->orderBy('created_at', 'DESC')->get();
-            return $processos;
+            $response = [];
+
+            foreach ($processos as $item) {
+                $array = [
+                    'id' => $item->id,
+                    'numero_processo' => $item->numero_processo,
+                    'mes_ano' => $item->mes_ano,
+                    'pasta' => $item->pasta,
+                    'vara' => $item->vara,
+                    'reclamante' => $item->reclamante,
+                    'doc_reclamante' => $item->doc_reclamante,
+                    'status' => $item->status,
+                    'reclamada' => $item->reclamada,
+                    'doc_reclamada' => $item->doc_reclamada,
+                    'carga' => $item->carga,
+                    'prazo' => $item->prazo,
+                    'vencer'=> diasRestantes($item->prazo),
+                    'laudo_judicial' => $item->laudo_judicial,
+                    'equipe_id' => $item->equipe_id,
+                    'honorario' => $item->honorario,
+                    'liquidado' => $item->liquidado,
+                    'calculo_conforme_erro' => $item->liquidado,
+                    'observacoes' => $item->observacoes
+                ];
+                    $array['equipe'] = [
+                        'nome' => $item->equipe->nome,
+                        'telefone' => $item->equipe->telefone,
+                        'ativo' => $item->equipe->ativo,
+                        'dados_bancarios' => $item->equipe->dados_bancarios,
+                        'email' => $item->equipe->email
+                    ];
+
+                array_push($response, $array);
+
+
+            }
+            return $response;
 
         } catch (\Exception $e) {
             return [
@@ -74,11 +110,16 @@ class ProcessosRepository
     public function create($data)
     {
         try {
-            $data['pasta'] = !is_null($data['carga']) ? 1 : 0;
+            $getProcess = $this->processo->where('pasta', '>', 0)->orderBy("pasta", "DESC")->limit(1)->first();
+            if (is_null($getProcess)) {
+                $data['pasta'] = 1;
+            } else {
+                $data['pasta'] = $getProcess->pasta + 1;
+            }
             $data['honorario'] = !is_null($data['honorario']) ? str_replace(',', '.', str_replace('.', '', $data['honorario'])) : $data['honorario'];
             $data['calculo_conforme_erro'] = !is_null($data['honorario']) ? floatval($data['honorario'] * 0.3) : null;
 
-            $processos = $this->processo->create($data);
+            $this->processo->create($data);
 
             $response = ['message' => 'Processo cadastrado com sucesso!', 'code' => 200];
         } catch (Exception $e) {
@@ -220,7 +261,7 @@ class ProcessosRepository
             $pagamentoRepository = new PagamentosRepository();
             if ($pagamentos) {
                 foreach ($pagamentos as $pagamentoItem)
-                $pagamentoRepository->delete($pagamentoItem->id);
+                    $pagamentoRepository->delete($pagamentoItem->id);
             }
             $processoDelete = $this->processo->find($id);
             $processoDelete->delete();
