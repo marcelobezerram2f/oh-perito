@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
         return view('processos.index');
     });
     Route::get('/processos/getAll', [ProcessosController::class, 'getAll']);
+    Route::get('/processos/getProcessPerYear', [ProcessosController::class, 'getProcessPerYear']);
+
     Route::get('/processo/create', function () {
         return view('processos.create');
     });

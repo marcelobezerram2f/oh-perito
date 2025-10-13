@@ -123,15 +123,15 @@
                     dataSrc: ''
                 },
                 columns: [
-                    { data: 'vencer', render: function() {return ''} },
+                    { data: 'vencer', render: function () { return '' } },
                     {
 
                         data: 'id',
                         className: 'text-center',
                         render: function (data) {
                             return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
-                                        <i class="fa fa-folder-open-o"></i>
-                                    </button>`;
+                                            <i class="fa fa-folder-open-o"></i>
+                                        </button>`;
                         }
                     },
                     { data: 'mes_ano', render: data => formatarData(data) },
@@ -142,7 +142,16 @@
                     { data: 'reclamada' },
                     { data: 'carga', render: data => formatarData(data) },
                     { data: 'prazo', render: data => formatarData(data) },
-                    { data: 'equipe.nome' },
+                    {
+                        data: 'equipe',
+                        render: function (data, type, row) {
+                            // verifica se o campo existe e não é vazio
+                            if (!data || !data.nome || data.nome.trim() === '') {
+                                return '-';
+                            }
+                            return data.nome;
+                        }
+                    },
                     {
                         data: 'status',
                         render: function (data) {
@@ -164,9 +173,9 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `<i class="fa fa-trash text-danger delete-processo"
-                                        data-nomeprocesso="${row.reclamante}"
-                                        data-idprocesso="${row.id}"
-                                        title="Excluir"></i>`;
+                                            data-nomeprocesso="${row.reclamante}"
+                                            data-idprocesso="${row.id}"
+                                            title="Excluir"></i>`;
                         }
                     }
                 ],
@@ -184,17 +193,17 @@
                     if (vencer < 0 && data.status === 'andamento') {
                         $(row).css('background-color', '#FFEEBF');
                         $primeiraColuna.html(`
-                            <i class="fa fa-circle text-danger"></i>
-                            `);
+                                <i class="fa fa-circle text-danger"></i>
+                                `);
                     }
-                     else if (vencer > 0 &&  vencer < 6 && data.status === 'andamento') {
+                    else if (vencer > 0 && vencer < 6 && data.status === 'andamento') {
                         $primeiraColuna.html(`
-                            <i class="fa fa-circle text-warning"></i>
-                            `);
+                                <i class="fa fa-circle text-warning"></i>
+                                `);
                     } else {
                         $primeiraColuna.html(`
-                            <i class="fa fa-circle text-success"></i>
-                            `);
+                                <i class="fa fa-circle text-success"></i>
+                                `);
                     }
 
                 }

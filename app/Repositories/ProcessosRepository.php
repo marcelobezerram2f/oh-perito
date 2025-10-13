@@ -73,7 +73,7 @@ class ProcessosRepository
                     'doc_reclamada' => $item->doc_reclamada,
                     'carga' => $item->carga,
                     'prazo' => $item->prazo,
-                    'vencer'=> diasRestantes($item->prazo),
+                    'vencer' => diasRestantes($item->prazo),
                     'laudo_judicial' => $item->laudo_judicial,
                     'equipe_id' => $item->equipe_id,
                     'honorario' => $item->honorario,
@@ -81,6 +81,8 @@ class ProcessosRepository
                     'calculo_conforme_erro' => $item->liquidado,
                     'observacoes' => $item->observacoes
                 ];
+                if (!is_null($item->equipe_id) || !empty($item->equipe_id)) {
+                    Log::info($item->equipe->nome." - ". $item->id);
                     $array['equipe'] = [
                         'nome' => $item->equipe->nome,
                         'telefone' => $item->equipe->telefone,
@@ -89,23 +91,53 @@ class ProcessosRepository
                         'email' => $item->equipe->email
                     ];
 
+                } else {
+                    $array['equipe'] = [];
+                }
+
                 array_push($response, $array);
 
 
             }
             return $response;
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [
                 'message' => 'Falha fatal na coleta dos processos, Contate o suporte!',
                 'code' => 400,
-                'erro' => $e->getMessage()
+                'erro' => $e->getMessage(),
+                'trace'=> $e->getTraceAsString()
             ];
         }
     }
 
 
+    public function getProcessPerYear()
+    {
+        $anoAtual = now()->year;
+        $anosConsiderados = [$anoAtual - 3, $anoAtual - 2, $anoAtual - 1, $anoAtual];
 
+        // Busca os processos agrupados por ano (apenas onde há registros)
+        $processos = Processo::selectRaw('YEAR(created_at) as ano, COUNT(*) as total')
+            ->whereIn(\DB::raw('YEAR(created_at)'), $anosConsiderados)
+            ->groupBy('ano')
+            ->orderBy('ano', 'asc')
+            ->get()
+            ->pluck('total', 'ano') // cria array associativo [ano => total]
+            ->toArray();
+
+        // Garante que todos os anos estejam presentes, mesmo com total = 0
+        $resultado = [];
+        foreach ($anosConsiderados as $ano) {
+            $resultado[] = [
+                'ano' => $ano,
+                'total' => $processos[$ano] ?? 0
+            ];
+        }
+
+        return $resultado;
+
+    }
 
     public function create($data)
     {

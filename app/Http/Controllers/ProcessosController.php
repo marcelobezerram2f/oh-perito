@@ -35,6 +35,17 @@ class ProcessosController extends Controller
         return response()->json($response, $code);
     }
 
+    public function getProcessPerYear()
+    {
+        $response = $this->processosRepository->getProcessPerYear();
+        if (isset($response['code'])) {
+            $code = $response['code'];
+        } else {
+            $code = 200;
+        }
+        return response()->json($response, $code);
+    }
+
     public function store(Request $request)
     {
         $response = $this->processosRepository->create($request->all());
