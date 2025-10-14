@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-sm-3"> <i class="fa fa-circle text-success"></i> -  Processo dentro do prazo de entrega</div>
                     <div class="col-sm-3"><i class="fa fa-circle text-warning"></i>  - Processo à vencer nos próximos 5 dias</div>
-                    <div class="col-sm-3"><i class="fa fa-circle text-danger"></i>  - Processo com prazo de entrega atrazado</div>
+                    <div class="col-sm-3"><i class="fa fa-circle text-danger"></i>  - Processo com prazo de entrega atrasado</div>
 
 
                 </div>
