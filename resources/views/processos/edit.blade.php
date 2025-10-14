@@ -1205,10 +1205,7 @@
             const reclamada = $('#reclamada').val()
             const carga = $('#carga').val()
             const prazo = $('#prazo').val()
-            const laudo_judicial = $('#laudo-judicial').val()
-            const select_membros = $('#equipe').val()
             var c = 0
-
 
             if (reclamante === '') {
                 marcarCampoInvalido('reclamante');
@@ -1236,19 +1233,6 @@
                 c++
             } else {
                 desmarcarCampoInvalido('prazo');
-            }
-            if (laudo_judicial === '') {
-                marcarCampoInvalido('laudo-judicial');
-                c++
-            } else {
-                desmarcarCampoInvalido('laudo-judicial');
-            }
-
-            if (select_membros === '') {
-                marcarCampoInvalido('equipe');
-                c++
-            } else {
-                desmarcarCampoInvalido('equipe');
             }
 
             if (c > 0) {

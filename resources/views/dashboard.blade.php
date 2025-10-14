@@ -168,6 +168,7 @@
                     var qtd_erro = response.dados.map(d => d.qtd_erros);
                     var qtd_processos = response.dados.map(d => d.qtd_processos);
                     console.log(response.periodo, nomes, qtd_erro, qtd_processos);
+
                     initChartsChartJS(response.periodo, nomes, qtd_erro, qtd_processos);
                 },
                 error: function (error) {

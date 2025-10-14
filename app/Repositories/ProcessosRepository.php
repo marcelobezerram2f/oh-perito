@@ -99,6 +99,11 @@ class ProcessosRepository
 
 
             }
+
+            usort($response, function ($a, $b) {
+                return $b['id'] <=> $a['id'];
+            });
+
             return $response;
 
         } catch (Exception $e) {
@@ -180,9 +185,9 @@ class ProcessosRepository
 
         try {
             $today = date('Y-m-d');
-            //$dateLimit = date('Y-m-d', strtotime('+5 days'));
+            $dateLimit = date('Y-m-d', strtotime('+5 days'));
             $processos = $this->processo
-                ->where('prazo', '<=', $today)
+                ->where('prazo', '<=', $dateLimit)
                 ->where('status', 'andamento')
                 ->with('equipe')
                 ->get();
