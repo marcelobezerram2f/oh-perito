@@ -21,6 +21,10 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
 
+    Route::get("/teste", function() {
+        return diasRestantes("2025-10-13");
+    });
+
     Route::get('/user/registro', [RegisteredUserController::class, 'create'])
        ->name('create.user');
        Route::post('/user/registro/store', [RegisteredUserController::class, 'store'])

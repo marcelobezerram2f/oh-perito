@@ -120,25 +120,42 @@ function analisarPropostasErros($data) {
     ];
 }
 
-function diasRestantes($data) {
-    // Data atual (sem horas para não atrapalhar a contagem)
-    $hoje = new DateTime(date('Y-m-d'));
+function diasRestantes($data)
+{
+    // Tenta os formatos mais comuns: Y-m-d e d/m/Y
+    $formats = ['Y-m-d', 'd/m/Y'];
+    $dataAlvo = null;
 
-    // Data informada
-    $dataAlvo = DateTime::createFromFormat('Y-m-d', $data);
-
-    if (!$dataAlvo) {
-        return "Data inválida!";
+    foreach ($formats as $fmt) {
+        $d = DateTime::createFromFormat($fmt, $data);
+        // Verifica se o parsing bate exatamente com a string informada
+        if ($d && $d->format($fmt) === $data) {
+            $dataAlvo = $d;
+            break;
+        }
     }
 
-    // Diferença entre as datas
-    $diff = $hoje->diff($dataAlvo);
+    // Se não foi possível pelo formato acima, tenta strtotime() como fallback
+    if (!$dataAlvo) {
+        $ts = strtotime($data);
+        if ($ts === false) {
+            return null; // ou "Data inválida!" se preferir string
+        }
+        $dataAlvo = (new DateTime())->setTimestamp($ts);
+    }
 
-    // Se a data já passou, retorna negativo
-    $dias = (int)$diff->format('%r%a');
+    // Zera horas, minutos e segundos para comparar só a data
+    $dataAlvo->setTime(0, 0, 0);
+    $hoje = new DateTime();
+    $hoje->setTime(0, 0, 0);
+
+    // Calcula diferença em segundos e converte para dias
+    $diffSeconds = $dataAlvo->getTimestamp() - $hoje->getTimestamp();
+    $dias = (int) ($diffSeconds / 86400); // 86400 segundos = 1 dia
 
     return $dias;
 }
+
 
 function agruparPorEquipe(array $dados, $mes): array {
     $resultado = [];

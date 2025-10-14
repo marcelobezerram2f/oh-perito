@@ -24,9 +24,12 @@
                             <i class="fa fa-plus"></i> Novo Processo
                         </a>
                     </div>
-                    <div class="col-sm-3"> <i class="fa fa-circle text-success"></i> -  Processo dentro do prazo de entrega</div>
-                    <div class="col-sm-3"><i class="fa fa-circle text-warning"></i>  - Processo à vencer nos próximos 5 dias</div>
-                    <div class="col-sm-3"><i class="fa fa-circle text-danger"></i>  - Processo com prazo de entrega atrasado</div>
+                    <div class="col-sm-3"> <i class="fa fa-circle text-success"></i> - Processo dentro do prazo de entrega
+                    </div>
+                    <div class="col-sm-3"><i class="fa fa-circle text-warning"></i> - Processo à vencer nos próximos 5 dias
+                    </div>
+                    <div class="col-sm-3"><i class="fa fa-circle text-danger"></i> - Processo com prazo de entrega atrasado
+                    </div>
 
 
                 </div>
@@ -139,8 +142,8 @@
                         className: 'text-center',
                         render: function (data) {
                             return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
-                                                    <i class="fa fa-folder-open-o"></i>
-                                                </button>`;
+                                                        <i class="fa fa-folder-open-o"></i>
+                                                    </button>`;
                         }
                     },
                     { data: 'mes_ano', render: data => formatarData(data) },
@@ -182,9 +185,9 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `<i class="fa fa-trash text-danger delete-processo"
-                                                    data-nomeprocesso="${row.reclamante}"
-                                                    data-idprocesso="${row.id}"
-                                                    title="Excluir"></i>`;
+                                                        data-nomeprocesso="${row.reclamante}"
+                                                        data-idprocesso="${row.id}"
+                                                        title="Excluir"></i>`;
                         }
                     }
                 ],
@@ -199,20 +202,21 @@
                     var vencer = parseInt(data.vencer);
                     // linha com prazo vencido e em andamento
                     var $primeiraColuna = $('td', row).eq(0);
-                    if (vencer <= 0 && data.status === 'andamento') {
+                    console.log(vencer)
+                    if (vencer < 0 && data.status === 'andamento') {
                         $(row).css('background-color', '#FFEEBF');
                         $primeiraColuna.html(`
-                                        <i class="fa fa-circle text-danger"></i>
-                                        `);
+                                            <i class="fa fa-circle text-danger"></i>
+                                            `);
                     }
-                    else if (vencer > 0 && vencer < 6 && data.status === 'andamento') {
+                    else if (vencer >= 0 && vencer < 6 && data.status === 'andamento') {
                         $primeiraColuna.html(`
-                                        <i class="fa fa-circle text-warning"></i>
-                                        `);
-                    } else {
+                                            <i class="fa fa-circle text-warning"></i>
+                                            `);
+                    } else if (vencer > 5) {
                         $primeiraColuna.html(`
-                                        <i class="fa fa-circle text-success"></i>
-                                        `);
+                                            <i class="fa fa-circle text-success"></i>
+                                            `);
                     }
 
                 }

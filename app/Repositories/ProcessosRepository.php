@@ -82,7 +82,7 @@ class ProcessosRepository
                     'observacoes' => $item->observacoes
                 ];
                 if (!is_null($item->equipe_id) || !empty($item->equipe_id)) {
-                    Log::info($item->equipe->nome." - ". $item->id);
+                    Log::info($item->equipe->nome . " - " . $item->id);
                     $array['equipe'] = [
                         'nome' => $item->equipe->nome,
                         'telefone' => $item->equipe->telefone,
@@ -111,7 +111,7 @@ class ProcessosRepository
                 'message' => 'Falha fatal na coleta dos processos, Contate o suporte!',
                 'code' => 400,
                 'erro' => $e->getMessage(),
-                'trace'=> $e->getTraceAsString()
+                'trace' => $e->getTraceAsString()
             ];
         }
     }
@@ -182,38 +182,49 @@ class ProcessosRepository
 
     public function getByDue()
     {
-
         try {
-            $today = date('Y-m-d');
+            $hoje = date('Y-m-d');
             $dateLimit = date('Y-m-d', strtotime('+5 days'));
+
             $processos = $this->processo
-                ->where('prazo', '<=', $dateLimit)
+                ->whereBetween('prazo', [$hoje, $dateLimit])
+                ->orWhere(function ($q) use ($hoje) {
+                    // inclui os prazos já vencidos, ainda em andamento
+                    $q->where('prazo', '<', $hoje)
+                        ->where('status', 'andamento');
+                })
                 ->where('status', 'andamento')
                 ->with('equipe')
                 ->get();
+
             $result = [];
+
             foreach ($processos as $processo) {
+                $prazo = $processo->prazo ? date('d/m/Y', strtotime($processo->prazo)) : null;
+
                 $array = [
                     "id" => $processo->id,
                     "numero_processo" => $processo->numero_processo,
-                    "calculista" => $processo->equipe->nome,
-                    "prazo" => date('d/m/Y', strtotime($processo->prazo)),
+                    "calculista" => $processo->equipe->nome ?? '-',
+                    "prazo" => $prazo,
                     "dias" => diasRestantes($processo->prazo)
                 ];
 
-                array_push($result, $array);
-                unset($array);
-
+                $result[] = $array;
             }
-            $response = $result;
-        } catch (Exception $e) {
-            $response = ['message' => 'Falha fatal na coleta dos processos, Contate o suporte!', 'code' => 400, 'erro' => $e->getMessage()];
+
+            return $result;
+
+        } catch (\Throwable $e) {
+            return [
+                'message' => 'Falha fatal na coleta dos processos. Contate o suporte!',
+                'code' => 400,
+                'erro' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ];
         }
-
-        return $response;
-
-
     }
+
 
     public function inIds($ids)
     {
