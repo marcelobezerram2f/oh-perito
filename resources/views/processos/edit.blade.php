@@ -101,7 +101,7 @@
                                 <select class="form-control" name="status" id="status">
                                     <option value="">Selecione...</option>
                                     <option value="andamento">Andamento</option>
-                                    <option value="sustenso">Suspenso</option>
+                                    <option value="suspenso">Suspenso</option>
                                     <option value="assistência">Assistência</option>
                                     <option value="cancelado">Cancelado</option>
                                     <option value="entregue">Entregue</option>

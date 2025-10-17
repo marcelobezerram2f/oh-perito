@@ -174,17 +174,17 @@
                         data: 'status',
                         render: function (data) {
                             if (data === 'andamento')
-                                return `<span class="badge bg-primary text-black">${data.toUpperCase()}</span>`;
+                                return `<span class="badge badge-pill badge-primary text-black">${data.toUpperCase()}</span>`;
                             if (data === 'entregue')
-                                return `<span class="badge bg-success text-black">${data.toUpperCase()}</span>`;
+                                return `<span class="badge badge-pill badge-success text-black">${data.toUpperCase()}</span>`;
                             if (data === 'suspenso')
-                                return `<span class="badge bg-warning text-black">${data.toUpperCase()}</span>`;
-                            if (data === 'cancelada')
-                                return `<span class="badge bg-warning text-black">${data.toUpperCase()}</span>`;
+                                return `<span class="bbadge badge-pill badge-warning">${data.toUpperCase()}</span>`;
+                            if (data === 'cancelado')
+                                return `<span class="badge badge-pill badge-warning">${data.toUpperCase()}</span>`;
                             if (data === 'assistência')
-                                return `<span class="badge badge-info text-black">${data.toUpperCase()}</span>`;
+                                return `<span class="badge badge-pill badge-info text-black">${data.toUpperCase()}</span>`;
                             if (data === 'liquidado')
-                                return `<span class="badge bg-danger text-black">${data.toUpperCase()}</span>`;
+                                return `<span class="badge badge-pill badge-danger text-black">${data.toUpperCase()}</span>`;
                             return data;
                         }
                     },

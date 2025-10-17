@@ -321,30 +321,5 @@ class ProcessosRepository
         return $response;
     }
 
-    public function reportByOperator()
-    {
-        try {
 
-
-            $prods = $this->processo->selectRaw('equipe_id, COUNT(*) as total')
-                ->with('equipe') // traz apenas o id e o nome da equipe
-                ->whereNotNull('equipe_id')
-                ->groupBy('equipe_id')
-                ->get();
-
-            $response = [];
-            foreach ($prods as $prod) {
-                $array = [
-                    "nome" => $prod->equipe->nome,
-                    "qtd_processos" => $prod->total
-                ];
-
-                array_push($response, $array);
-            }
-        }catch (Exception $e) {
-            $response = ['message' => 'Falha fatal na coleta de dados de processo por calculista, Contate o suporte!', 'code' => 400, 'erro' => $e->getMessage(), 'trace' => $e->getTraceAsString()];
-        }
-        return $response;
-
-    }
 }
