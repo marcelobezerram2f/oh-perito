@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/equipe/update', [EquipeController::class, 'update']);
     Route::get('/equipe/delete/{id}', [EquipeController::class, 'delete']);
     Route::get('/equipe/report', [EquipeController::class, 'report']);
+    Route::get('/equipe/reportByProductivity', [EquipeController::class, 'reportByProductivity']);
 
     /** Rotas de Pagamento */
     Route::get('/pagamentos', function() { return view ('pagamentos.index');});

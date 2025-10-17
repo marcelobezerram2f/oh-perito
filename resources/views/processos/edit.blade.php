@@ -89,22 +89,15 @@
                                 <input type="text" id="honorario" class="form-control" name='honorario'
                                     placeholder="0,00" oninput="mascaraMoeda(this)">
                             </div>
-
                             <div class="col-lg-3 mt-2">
-                                <label class="form-control-label">Calculo Erro:</label>
-                                <input type="text" id="calculo-conforme-erro" name="calculo_conforme_erro"
-                                    class="form-control" placeholder="0,00" readonly>
-                            </div>
-
-                            <div class="col-lg-4 mt-2">
-                                <label class="form-control-label">Pago:</label>
+                                <label class="form-control-label">Calculista Pago:</label>
                                 <select class="form-control" name="liquidado" id="liquidado">
                                     <option value="0">Não</option>
                                     <option value="1">Sim</option>
                                 </select>
                             </div>
                             <div class="col-lg-4 mt-2">
-                                <label class="form-control-label">status:</label>
+                                <label class="form-control-label">Status:</label>
                                 <select class="form-control" name="status" id="status">
                                     <option value="">Selecione...</option>
                                     <option value="andamento">Andamento</option>
@@ -112,6 +105,8 @@
                                     <option value="assistência">Assistência</option>
                                     <option value="cancelado">Cancelado</option>
                                     <option value="entregue">Entregue</option>
+                                    <option value="liquidado">Liquidado</option>
+
                                 </select>
                             </div>
 
@@ -386,32 +381,32 @@
             /** Submit do formulário de pagamento */
             $("#form-pagamentos").on("submit", function (e) {
                 e.preventDefault(); // evita o envio normal do form
-                let pagamento = parseFloat(parseValorBR($('#valor-pagamento').val()))
-                let valorPago = parseFloat(localStorage.getItem("valor_pago"))
-                let calculoConformeErro = parseFloat(localStorage.getItem("calculo-conforme-erro"))
-                let acumulado = 0;
+                // let pagamento = parseFloat(parseValorBR($('#valor-pagamento').val()))
+                // let valorPago = parseFloat(localStorage.getItem("valor_pago"))
+                // let calculoConformeErro = parseFloat(localStorage.getItem("calculo-conforme-erro"))
+                // let acumulado = 0;
 
-                if ($('#id-pagamento').val() == "") {
-                    acumulado = pagamento + valorPago
-                } else {
-                    acumulado = pagamento
-                }
-                let saldo = calculoConformeErro - valorPago
-                if (acumulado > calculoConformeErro) {
-                    Swal.fire({
-                        icon: "error",
-                        title: 'OPS!',
-                        customClass: {
-                            confirmButton: "btn btn-danger"
-                        },
-                        text: `Valor de pagamento excede ao valor ao saldo devedor  de R$ ${parseFloat(saldo).toFixed(2).replaceAll('.', ',')}`.toUpperCase(),
-                        confirmButtonText: "OK"
-                    })
-                    return; // <-- interrompe a função aqui
-                } else if (acumulado == honorario) {
-                    $('#liquidado').val(1)
-                    $('#liquidado').trigger('change')
-                }
+                // if ($('#id-pagamento').val() == "") {
+                //     acumulado = pagamento + valorPago
+                // } else {
+                //     acumulado = pagamento
+                // }
+                // let saldo = calculoConformeErro - valorPago
+                // if (acumulado > calculoConformeErro) {
+                //     Swal.fire({
+                //         icon: "error",
+                //         title: 'OPS!',
+                //         customClass: {
+                //             confirmButton: "btn btn-danger"
+                //         },
+                //         text: `Valor de pagamento excede ao valor ao saldo devedor  de R$ ${parseFloat(saldo).toFixed(2).replaceAll('.', ',')}`.toUpperCase(),
+                //         confirmButtonText: "OK"
+                //     })
+                //     return; // <-- interrompe a função aqui
+                // } else if (acumulado == honorario) {
+                //     $('#liquidado').val(1)
+                //     $('#liquidado').trigger('change')
+                // }
                 let form = $(this)[0]; // pega o form "puro"
                 let formData = new FormData(form);
                 formData.append('processo_id', localStorage.getItem('id'))

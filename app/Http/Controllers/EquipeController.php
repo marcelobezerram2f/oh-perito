@@ -13,14 +13,14 @@ class EquipeController extends Controller
 
     public function __construct()
     {
-        $this->equipeRepository =  new EquipeRepository();
+        $this->equipeRepository = new EquipeRepository();
     }
 
 
     public function getAll()
     {
-        $response  =  $this->equipeRepository->getAll();
-        if(isset($response['code'])) {
+        $response = $this->equipeRepository->getAll();
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;
@@ -30,8 +30,8 @@ class EquipeController extends Controller
 
     public function store(Request $request)
     {
-        $response  =  $this->equipeRepository->create($request->all());
-        if(isset($response['code'])) {
+        $response = $this->equipeRepository->create($request->all());
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;
@@ -41,8 +41,8 @@ class EquipeController extends Controller
 
     public function getById($id)
     {
-        $response  =  $this->equipeRepository->getById($id);
-        if(isset($response['code'])) {
+        $response = $this->equipeRepository->getById($id);
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;
@@ -51,8 +51,8 @@ class EquipeController extends Controller
     }
     public function update(Request $request)
     {
-        $response  =  $this->equipeRepository->update($request->all());
-        if(isset($response['code'])) {
+        $response = $this->equipeRepository->update($request->all());
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;
@@ -61,8 +61,18 @@ class EquipeController extends Controller
     }
     public function delete($id)
     {
-        $response  =  $this->equipeRepository->delete($id);
-        if(isset($response['code'])) {
+        $response = $this->equipeRepository->delete($id);
+        if (isset($response['code'])) {
+            $code = $response['code'];
+        } else {
+            $code = 200;
+        }
+        return response()->json($response, $code);
+    }
+    public function reportByProductivity()
+    {
+        $response = $this->equipeRepository->reportByProductivity();
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;
@@ -70,10 +80,10 @@ class EquipeController extends Controller
         return response()->json($response, $code);
     }
 
-
-    public function report() {
-        $response  =  $this->equipeRepository->failReport();
-        if(isset($response['code'])) {
+    public function report()
+    {
+        $response = $this->equipeRepository->failReport();
+        if (isset($response['code'])) {
             $code = $response['code'];
         } else {
             $code = 200;

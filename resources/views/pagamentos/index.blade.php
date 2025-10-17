@@ -56,7 +56,6 @@
                                     <td class="font-w600 text-center">Número do Processo</td>
                                     <td class="font-w600 text-center">Reclamante</td>
                                     <td class="font-w600 text-center">Honorário</td>
-                                    <td class="font-w600 text-center">Cáculo Conf. Erro</td>
 
                                 </tr>
                             </thead>
@@ -151,7 +150,6 @@
                                 <td>${processo.numero_processo}</td>
                                 <td>${processo.reclamante}</td>
                                 <td class="text-right">${processo.honorario}</td>
-                                <td class="text-right">${processo.calculo_conforme_erro}</td>
 
                             </tr>
                            `

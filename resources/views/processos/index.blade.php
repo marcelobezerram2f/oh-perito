@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/css/datatable/buttons.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{ asset('plugins/css/datatable/responsive.bootstrap5.min.css')}}">
     <link rel="stylesheet" href="{{ asset('plugins/css/sweetalert2/sweetalert2.min.css') }}" />
+
+
 @endsection
 
 @section('content')
@@ -18,21 +20,25 @@
                 <h3 class="block-title">Processos</h3>
             </div>
             <div class="block-content pb-4">
-                <div class="row">
+                <div class="row col-12">
                     <div class="col-sm-2">
                         <a class="btn btn-alt-success mb-4" href="/processo/create">
                             <i class="fa fa-plus"></i> Novo Processo
                         </a>
                     </div>
-                    <div class="col-sm-3"> <i class="fa fa-circle text-success"></i> - Processo dentro do prazo de entrega
+                    <div class="col-sm-2"> <i class="fa fa-circle text-success"></i> - Processo dentro do prazo de entrega
                     </div>
-                    <div class="col-sm-3"><i class="fa fa-circle text-warning"></i> - Processo à vencer nos próximos 5 dias
+                    <div class="col-sm-2"><i class="fa fa-circle text-warning"></i> - Processo à vencer nos próximos 5 dias
                     </div>
-                    <div class="col-sm-3"><i class="fa fa-circle text-danger"></i> - Processo com prazo de entrega atrasado
+                    <div class="col-sm-2"><i class="fa fa-circle text-danger"></i> - Processo com prazo de entrega atrasado
+                    </div>
+                    <div class="col-sm-2"><i class="fa fa-circle text-info"></i> - Pagamento efetuado ao calculista
                     </div>
 
 
                 </div>
+
+                <div style="height: 30px;"></div>
 
                 <form class="form-horizontal" id="form-search-all" autocomplete="off">
                     @csrf
@@ -142,8 +148,8 @@
                         className: 'text-center',
                         render: function (data) {
                             return `<button class="btn btn-link text-center" type="button" onClick="showProcesso(${data})">
-                                                        <i class="fa fa-folder-open-o"></i>
-                                                    </button>`;
+                                                            <i class="fa fa-folder-open-o"></i>
+                                                        </button>`;
                         }
                     },
                     { data: 'mes_ano', render: data => formatarData(data) },
@@ -168,15 +174,17 @@
                         data: 'status',
                         render: function (data) {
                             if (data === 'andamento')
-                                return `<span class="badge bg-primary text-white">${data.toUpperCase()}</span>`;
+                                return `<span class="badge bg-primary text-black">${data.toUpperCase()}</span>`;
                             if (data === 'entregue')
-                                return `<span class="badge bg-success text-white">${data.toUpperCase()}</span>`;
+                                return `<span class="badge bg-success text-black">${data.toUpperCase()}</span>`;
                             if (data === 'suspenso')
-                                return `<span class="badge bg-warning text-white">${data.toUpperCase()}</span>`;
-                            if (data === 'cancelado')
-                                return `<span class="badge bg-danger text-white">${data.toUpperCase()}</span>`;
+                                return `<span class="badge bg-warning text-black">${data.toUpperCase()}</span>`;
+                            if (data === 'cancelada')
+                                return `<span class="badge bg-warning text-black">${data.toUpperCase()}</span>`;
                             if (data === 'assistência')
-                                return `<span class="badge bg-info text-white">${data.toUpperCase()}</span>`;
+                                return `<span class="badge badge-info text-black">${data.toUpperCase()}</span>`;
+                            if (data === 'liquidado')
+                                return `<span class="badge bg-danger text-black">${data.toUpperCase()}</span>`;
                             return data;
                         }
                     },
@@ -185,9 +193,9 @@
                         className: 'text-center',
                         render: function (data, type, row) {
                             return `<i class="fa fa-trash text-danger delete-processo"
-                                                        data-nomeprocesso="${row.reclamante}"
-                                                        data-idprocesso="${row.id}"
-                                                        title="Excluir"></i>`;
+                                                            data-nomeprocesso="${row.reclamante}"
+                                                            data-idprocesso="${row.id}"
+                                                            title="Excluir"></i>`;
                         }
                     }
                 ],
@@ -203,24 +211,33 @@
                     // linha com prazo vencido e em andamento
                     var $primeiraColuna = $('td', row).eq(0);
                     console.log(vencer)
-                    if (vencer < 0 && data.status === 'andamento') {
+                    if(data.status=='liquidado') {
                         $(row).css('background-color', '#FFEEBF');
+                    }
+
+                    if(data.liquidado==1) {
                         $primeiraColuna.html(`
-                                            <i class="fa fa-circle text-danger"></i>
-                                            `);
+                                                <i class="fa fa-circle text-info"></i>
+                                                `);
+
+                    }
+
+                    if (vencer < 0 && data.status === 'andamento') {
+                        $(row).css('background-color', '#f7fec8');
+                        $primeiraColuna.html(`
+                                                <i class="fa fa-circle text-danger"></i>
+                                                `);
                     }
                     else if (vencer >= 0 && vencer < 6 && data.status === 'andamento') {
                         $primeiraColuna.html(`
-                                            <i class="fa fa-circle text-warning"></i>
-                                            `);
-                    } else if (vencer > 5) {
+                                                <i class="fa fa-circle text-warning"></i>
+                                                `);
+                    } else if (vencer > 5 && data.status === 'andamento') {
                         $primeiraColuna.html(`
-                                            <i class="fa fa-circle text-success"></i>
-                                            `);
+                                                <i class="fa fa-circle text-success"></i>
+                                                `);
                     }
-
                 }
-
             });
 
 

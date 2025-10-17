@@ -143,7 +143,7 @@ class EquipeRepository
             $calculistas = $this->equipe->all();
             $result = [];
             foreach ($calculistas as $calculista) {
-                $processos = $this->processo->whereBetween('carga', [$initial_date, $end_date])->where('equipe_id', $calculista->id)->with('errosExecucao');
+                $processos = $this->processo->whereBetween('prazo', [$initial_date, $end_date])->where('equipe_id', $calculista->id)->with('errosExecucao');
                 $qtdProcessos = $processos->count();
                 $qtdErros = 0;
                 $processos = $processos->get();
@@ -173,6 +173,27 @@ class EquipeRepository
         }
         return $response;
 
+
+    }
+
+    public function reportByProductivity()
+    {
+        try {
+            $calculistas = $this->equipe->all();
+            $response = [];
+           foreach($calculistas as $calculista){
+               $qtd = $this->processo->where('equipe_id' ,$calculista->id)->count();
+               $array = [
+                    "nome" => $calculista->nome,
+                    "qtd_processos" => $qtd
+                ];
+
+                array_push($response, $array);
+            }
+        }catch (Exception $e) {
+            $response = ['message' => 'Falha fatal na coleta de dados de processo por calculista, Contate o suporte!', 'code' => 400, 'erro' => $e->getMessage(), 'trace' => $e->getTraceAsString()];
+        }
+        return $response;
 
     }
 

@@ -14,7 +14,7 @@
 @section('content')
 
     <div class="row">
-        <!-- Gráfico de barras -->
+        <!-- Gráfico de barras ERROS-->
         <div class="col-xl-7 ml-2 d-flex">
             <div class="block flex-fill mt-3">
                 <div class="block-header block-header-default">
@@ -60,6 +60,24 @@
                     </table>
                     <!-- espaço extra para ocupar a altura do gráfico -->
                     <div class="flex-grow-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de barras -->
+        <div class="col-xl-11 ml-2 d-flex">
+            <div class="block flex-fill mt-3">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">Produtividade por Calculista</h3>
+                    <div class="block-options">
+                        <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle"
+                            data-action-mode="demo">
+                            <i class="si si-refresh"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <canvas class="js-chartjs-bars-operator"></canvas>
                 </div>
             </div>
         </div>
@@ -141,7 +159,7 @@
         jQuery(document).ready(function () {
             initRandomEasyPieChart();
 
-            // AJAX para buscar dados
+            // AJAX para buscar dados para os graficos de erro
             $.ajax({
                 url: '/equipe/report' + location.search,
                 type: 'GET',
@@ -151,12 +169,12 @@
 
                     response.dados.forEach(function (dado) {
                         var pieChart = `
-                                                    <div class="col-6 col-md-4">
-                                                        <div class="js-pie-chart pie-chart" data-percent="${dado.percert_erros}" data-line-width="2" data-size="100"
-                                                                    data-bar-color="#ef5350" data-track-color="#e9e9e9" data-scale-color="#d9d9d9">
-                                                            <span>${dado.nome}<br><small class="text-muted">${dado.percert_erros}%</small></span>
-                                                        </div>
-                                                    </div>`
+                                                        <div class="col-6 col-md-4">
+                                                            <div class="js-pie-chart pie-chart" data-percent="${dado.percert_erros}" data-line-width="2" data-size="100"
+                                                                        data-bar-color="#ef5350" data-track-color="#e9e9e9" data-scale-color="#d9d9d9">
+                                                                <span>${dado.nome}<br><small class="text-muted">${dado.percert_erros}%</small></span>
+                                                            </div>
+                                                        </div>`
                         $pieContainer.append(pieChart);
                     });
 
@@ -169,7 +187,28 @@
                     var qtd_processos = response.dados.map(d => d.qtd_processos);
                     console.log(response.periodo, nomes, qtd_erro, qtd_processos);
 
-                    initChartsChartJS(response.periodo, nomes, qtd_erro, qtd_processos);
+                    initChartsBarFail(response.periodo, nomes, qtd_erro, qtd_processos);
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'OPS!',
+                        text: `${error.message}`
+                    });
+                }
+            });
+            // AJAX para buscar dados para os graficos produtividade
+
+            $.ajax({
+                url: '/equipe/reportByProductivity' + location.search,
+                type: 'GET',
+                success: function (response) {
+                    // Chart.js
+                    console.log(response, "operator")
+                    var nomes = response.map(d => d.nome);
+                    var qtd_processos = response.map(d => d.qtd_processos);
+
+                    initChartsBarProd(nomes, qtd_processos);
                 },
                 error: function (error) {
                     Swal.fire({
@@ -181,32 +220,24 @@
             });
 
 
-            // Inicialização dos gráficos Chart.js
-            function initChartsChartJS(periodo, nomes, qtd_erro, qtd_processos) {
+            // Inicialização do grafico de erro por operador
+            function initChartsBarFail(periodo, nomes, qtd_erro, qtd_processos) {
                 // Configurações globais
                 Chart.defaults.global.defaultFontColor = "#555555";
                 Chart.defaults.scale.gridLines.color = "rgba(0,0,0,.04)";
                 Chart.defaults.scale.gridLines.zeroLineColor = "rgba(0,0,0,.1)";
                 Chart.defaults.scale.ticks.beginAtZero = true;
-
                 Chart.defaults.global.elements.line.borderWidth = 2;
                 Chart.defaults.global.elements.point.radius = 5;
                 Chart.defaults.global.elements.point.hoverRadius = 7;
-
                 Chart.defaults.global.tooltips.cornerRadius = 3;
                 Chart.defaults.global.legend.labels.boxWidth = 12;
 
                 // Seletores dos gráficostio
-                var chartLines = jQuery(".js-chartjs-lines");
                 var chartBars = jQuery(".js-chartjs-bars");
-                var chartRadar = jQuery(".js-chartjs-radar");
-                var chartPolar = jQuery(".js-chartjs-polar");
-                var chartPie = jQuery(".js-chartjs-pie");
-                var chartDonut = jQuery(".js-chartjs-donut");
 
-                // Dados para Line, Bar, Radar
-
-                var dataLines = {
+                // Dados o Gráfico
+                var dataBars = {
                     labels: nomes,
                     datasets: [
                         {
@@ -233,94 +264,101 @@
                         }
 
                     ]
-                };
+                }
+                // Inicializando os gráficos se existirem no DOM
+                if (chartBars.length) {
+                    new Chart(chartBars, { type: "bar", data: dataBars });
+                }
+            }
 
-                // Dados para Pie / Donut / Polar
-                var dataPie = {
-                    labels: ["Earnings", "Sales", "Tickets"],
+            function initChartsBarProd(nomes, qtd_processos) {
+                Chart.defaults.global.defaultFontColor = "#555555";
+                Chart.defaults.scale.gridLines.color = "rgba(0,0,0,.04)";
+                Chart.defaults.scale.gridLines.zeroLineColor = "rgba(0,0,0,.1)";
+                Chart.defaults.scale.ticks.beginAtZero = true;
+                Chart.defaults.global.elements.line.borderWidth = 2;
+                Chart.defaults.global.elements.point.radius = 5;
+                Chart.defaults.global.elements.point.hoverRadius = 7;
+                Chart.defaults.global.tooltips.cornerRadius = 3;
+                Chart.defaults.global.legend.labels.boxWidth = 12;
+
+                var chartBars = jQuery(".js-chartjs-bars-operator");
+
+                var dataBars = {
+                    labels: nomes,
                     datasets: [
                         {
-                            data: [50, 30, 25],
-                            backgroundColor: [
-                                "rgba(156,204,101,1)",  // verde
-                                "rgba(255,202,40,1)",   // amarelo
-                                "rgba(239,83,80,1)"     // vermelho
-                            ],
-                            hoverBackgroundColor: [
-                                "rgba(156,204,101,.5)",
-                                "rgba(255,202,40,.5)",
-                                "rgba(239,83,80,.5)"
-                            ]
+                            label: "Quantidade de Processos",
+                            backgroundColor: "rgba(66, 245, 161, 0.25)",
+                            borderColor: "rgb(66, 245, 161)",
+                            data: qtd_processos
                         }
                     ]
                 };
 
-                // Inicializando os gráficos se existirem no DOM
-                if (chartLines.length) {
-                    new Chart(chartLines, { type: "line", data: dataLines });
-                }
                 if (chartBars.length) {
-                    new Chart(chartBars, { type: "bar", data: dataLines });
-                }
-                if (chartRadar.length) {
-                    new Chart(chartRadar, { type: "radar", data: dataLines });
-                }
-                if (chartPolar.length) {
-                    new Chart(chartPolar, { type: "polarArea", data: dataPie });
-                }
-                if (chartPie.length) {
-                    new Chart(chartPie, { type: "pie", data: dataPie });
-                }
-                if (chartDonut.length) {
-                    new Chart(chartDonut, { type: "doughnut", data: dataPie });
+                    // Define altura do gráfico no canvas
+                    chartBars.attr('height', 500);
+
+                    new Chart(chartBars, {
+                        type: "bar",
+                        data: dataBars,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
                 }
             }
 
+
+
             // Executa quando o DOM estiver pronto
             jQuery(function () {
-                initChartsChartJS();
+                initChartsBarFail();
             });
 
 
 
         })
-        $('#focus').DataTable({
-    responsive: true,
-    pageLength: 5,
-    lengthChange: false,
-    searching: false,
-    destroy: true, // garante reinicialização limpa
-    ajax: {
-        url: '/processo/getByDue' + location.search,
-        dataSrc: '' // porque o retorno já é um array
-    },
-    columns: [
-        {
-            data: 'id',
-            render: function (data, type, row) {
-                return `<a href="/processo/show/${row.id}" class="btn btn-link">${row.numero_processo}</a>`;
-            }
-        },
-        { data: 'calculista' },
-        { data: 'prazo' },
-        {
-            data: 'dias',
-            render: function (dias) {
-                if (dias == 5) return `<span class="btn btn-alt-primary mr-5 mb-5">${dias} dias</span>`;
-                if (dias == 4) return `<span class="btn btn-alt-info mr-5 mb-5">${dias} dias</span>`;
-                if (dias == 3) return `<span class="btn btn-alt-warning mr-5 mb-5">${dias} dias</span>`;
-                if (dias == 2) return `<span class="btn btn-alt-danger mr-5 mb-5">${dias} dias</span>`;
-                if (dias == 1) return `<span class="btn btn-alt-secondary mr-5 mb-5">${dias} dias</span>`;
-                if (dias == 0) return `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`;
-                if (dias < 0) return `<span class="btn btn-danger mr-5 mb-5">vencido a ${Math.abs(dias)} dias</span>`;
 
+        $('#focus').DataTable({
+            responsive: true,
+            pageLength: 5,
+            lengthChange: false,
+            searching: false,
+            destroy: true, // garante reinicialização limpa
+            ajax: {
+                url: '/processo/getByDue' + location.search,
+                dataSrc: '' // porque o retorno já é um array
+            },
+            columns: [
+                {
+                    data: 'id',
+                    render: function (data, type, row) {
+                        return `<a href="/processo/show/${row.id}" class="btn btn-link">${row.numero_processo}</a>`;
+                    }
+                },
+                { data: 'calculista' },
+                { data: 'prazo' },
+                {
+                    data: 'dias',
+                    render: function (dias) {
+                        if (dias == 5) return `<span class="btn btn-alt-primary mr-5 mb-5">${dias} dias</span>`;
+                        if (dias == 4) return `<span class="btn btn-alt-info mr-5 mb-5">${dias} dias</span>`;
+                        if (dias == 3) return `<span class="btn btn-alt-warning mr-5 mb-5">${dias} dias</span>`;
+                        if (dias == 2) return `<span class="btn btn-alt-danger mr-5 mb-5">${dias} dias</span>`;
+                        if (dias == 1) return `<span class="btn btn-alt-secondary mr-5 mb-5">${dias} dias</span>`;
+                        if (dias == 0) return `<span class="btn btn-danger mr-5 mb-5">Hoje</span>`;
+                        if (dias < 0) return `<span class="btn btn-danger mr-5 mb-5">vencido a ${Math.abs(dias)} dias</span>`;
+
+                    }
+                }
+            ],
+            language: {
+                url: "{{ asset('plugins/js/datatable/pt-BR.json') }}"
             }
-        }
-    ],
-    language: {
-        url: "{{ asset('plugins/js/datatable/pt-BR.json') }}"
-    }
-});
+        });
 
 
 
