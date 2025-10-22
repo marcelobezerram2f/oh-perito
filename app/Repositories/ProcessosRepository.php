@@ -60,6 +60,97 @@ class ProcessosRepository
             $response = [];
 
             foreach ($processos as $item) {
+                if ($item->status != "liquidado") {
+                    $array = [
+                        'id' => $item->id,
+                        'numero_processo' => $item->numero_processo,
+                        'mes_ano' => $item->mes_ano,
+                        'pasta' => $item->pasta,
+                        'vara' => $item->vara,
+                        'reclamante' => $item->reclamante,
+                        'doc_reclamante' => $item->doc_reclamante,
+                        'status' => $item->status,
+                        'reclamada' => $item->reclamada,
+                        'doc_reclamada' => $item->doc_reclamada,
+                        'carga' => $item->carga,
+                        'prazo' => $item->prazo,
+                        'vencer' => diasRestantes($item->prazo),
+                        'laudo_judicial' => $item->laudo_judicial,
+                        'equipe_id' => $item->equipe_id,
+                        'honorario' => $item->honorario,
+                        'liquidado' => $item->liquidado,
+                        'calculo_conforme_erro' => $item->liquidado,
+                        'observacoes' => $item->observacoes
+                    ];
+                    if (!is_null($item->equipe_id) || !empty($item->equipe_id)) {
+                        Log::info($item->equipe->nome . " - " . $item->id);
+                        $array['equipe'] = [
+                            'nome' => $item->equipe->nome,
+                            'telefone' => $item->equipe->telefone,
+                            'ativo' => $item->equipe->ativo,
+                            'dados_bancarios' => $item->equipe->dados_bancarios,
+                            'email' => $item->equipe->email
+                        ];
+
+                    } else {
+                        $array['equipe'] = [];
+                    }
+
+                    array_push($response, $array);
+                }
+
+
+            }
+
+            usort($response, function ($a, $b) {
+                return $b['id'] <=> $a['id'];
+            });
+
+            return $response;
+
+        } catch (Exception $e) {
+            return [
+                'message' => 'Falha fatal na coleta dos processos, Contate o suporte!',
+                'code' => 400,
+                'erro' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ];
+        }
+    }
+
+    public function getLiquidated($data)
+    {
+        try {
+
+            $query = $this->processo->where('status', 'liquidado')
+                ->with('equipe');
+
+            $response = [];
+
+            // filtro opcional: número do processo
+            if (!empty($data['numero_processo'])) {
+                $query->where('numero_processo', $data['numero_processo']);
+            }
+
+            // filtro opcional: prazo
+            if (!empty($data['prazo'])) {
+                $query->whereDate('prazo', $data['prazo']);
+            }
+
+            // filtro opcional: equipe
+            if (!empty($data['equipe_id'])) {
+                $query->where('equipe_id', $data['equipe_id']);
+            }
+            // filtro opcional: Reclamante / Reclamada
+            if (!empty($data['reclamante_reclamado'])) {
+                $query->where('reclamante', 'like', '%' . $data['reclamante_reclamado'] . '%')
+                    ->orWhere('reclamada', 'like', '%' . $data['reclamante_reclamado'] . '%');
+            }
+
+            $processos = $query->orderBy('created_at', 'DESC')->get();
+            $response = [];
+
+            foreach ($processos as $item) {
                 $array = [
                     'id' => $item->id,
                     'numero_processo' => $item->numero_processo,
@@ -97,7 +188,6 @@ class ProcessosRepository
 
                 array_push($response, $array);
 
-
             }
 
             usort($response, function ($a, $b) {
@@ -108,14 +198,14 @@ class ProcessosRepository
 
         } catch (Exception $e) {
             return [
-                'message' => 'Falha fatal na coleta dos processos, Contate o suporte!',
+                'message' => 'Falha fatal na coleta dos processos liquidados, Contate o suporte!',
                 'code' => 400,
                 'erro' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ];
         }
-    }
 
+    }
 
     public function getProcessPerYear()
     {
@@ -201,16 +291,17 @@ class ProcessosRepository
 
             foreach ($processos as $processo) {
                 $prazo = $processo->prazo ? date('d/m/Y', strtotime($processo->prazo)) : null;
+                if ($processo->status == "andamento") {
+                    $array = [
+                        "id" => $processo->id,
+                        "numero_processo" => $processo->numero_processo,
+                        "calculista" => $processo->equipe->nome ?? '-',
+                        "prazo" => $prazo,
+                        "dias" => diasRestantes($processo->prazo)
+                    ];
+                    $result[] = $array;
+                }
 
-                $array = [
-                    "id" => $processo->id,
-                    "numero_processo" => $processo->numero_processo,
-                    "calculista" => $processo->equipe->nome ?? '-',
-                    "prazo" => $prazo,
-                    "dias" => diasRestantes($processo->prazo)
-                ];
-
-                $result[] = $array;
             }
 
             return $result;

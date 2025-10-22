@@ -160,6 +160,11 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/liquidados">
+                                <i class="si si-key"></i><span class="sidebar-mini-hide">Liquidados</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="/pagamentos">
                                 <i class="si si-wallet"></i><span class="sidebar-mini-hide">Pagamentos</span>
                             </a>

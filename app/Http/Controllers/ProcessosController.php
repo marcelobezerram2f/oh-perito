@@ -35,6 +35,26 @@ class ProcessosController extends Controller
         return response()->json($response, $code);
     }
 
+    public function getLiquidated(Request $request)
+    {
+        $data = [
+            'numero_processo' => $request->get('numero_processo'),
+            'prazo' => $prazo = $request->get('prazo'),
+            'equipe_id' => $equipe_id = $request->get('equipe_id'),
+            'reclamante_reclamado' => trim($request->get('reclamante_reclamado'))
+        ];
+
+
+        $response = $this->processosRepository->getLiquidated($data);
+        if (isset($response['code'])) {
+            $code = $response['code'];
+        } else {
+            $code = 200;
+        }
+        return response()->json($response, $code);
+    }
+
+
     public function getProcessPerYear()
     {
         $response = $this->processosRepository->getProcessPerYear();
